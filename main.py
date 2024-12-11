@@ -9,7 +9,6 @@ from dll_manager import DllManager
 from theme_manager import install_and_apply_theme, execute_theme
 from languages import translations, current_language
 
-
 class MainApp(QStackedWidget):
     def __init__(self):
         super().__init__()
