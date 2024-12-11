@@ -1,6 +1,5 @@
 import locale
 
-# Translations
 translations = {
     "pt-br": {
         # main

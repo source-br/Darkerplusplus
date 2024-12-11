@@ -22,7 +22,7 @@ class PopupWindow(QDialog):
 
         # Ícone centralizado
         icon_label = QLabel()
-        icon = QIcon("files/imagens/SVG/dialog-warning.svg")  # Substitua pelo caminho do seu ícone
+        icon = QIcon("Data/imagens/SVG/dialog-warning.svg")  # Substitua pelo caminho do seu ícone
         icon_label.setPixmap(icon.pixmap(60, 60))  # Ajuste o tamanho do ícone
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         popup_layout.addWidget(icon_label)
@@ -82,7 +82,7 @@ class PopupWindow(QDialog):
 
         self.setLayout(popup_layout)
         self.setWindowTitle(translations[current_language]["atention"])
-        self.setWindowIcon(QIcon("files/imagens/SVG/dialog-warning.svg"))
+        self.setWindowIcon(QIcon("Data/imagens/SVG/dialog-warning.svg"))
         self.setFixedSize(300, 300)
         
 class WelcomeInterface(QWidget):
@@ -131,7 +131,7 @@ class WelcomeInterface(QWidget):
 
         # Imagem
         image_label = QLabel()
-        pixmap = QPixmap("files/imagens/dazai.png")
+        pixmap = QPixmap("Data/imagens/dazai.png")
         pixmap = pixmap.scaled(900, 400, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         image_label.setPixmap(pixmap)
         image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
