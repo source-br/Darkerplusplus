@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import QMessageBox, QApplication
 class DllManager:
     def __init__(self):
         self.default_drives = ["C:\\", "D:\\", "E:\\", "K:\\"]  # Discos padrão para busca
-        self.dll_folder = Path("files/Tools/dll")  # Repositório de DLLs
+        self.dll_folder = Path("Data/Tools/dll")  # Repositório de DLLs
         self.game_paths = {
             "Half-Life 2": r"Half-Life 2\bin\hammerplusplus\bin",
             "Left 4 Dead 2": r"Left 4 Dead 2\bin\hammerplusplus\bin",
