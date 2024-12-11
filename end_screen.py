@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QApplicat
 from PyQt6.QtCore import Qt
 from PyQt6.QtSvg import QSvgRenderer
 from PyQt6.QtGui import QPainter, QPixmap
+from languages import translations, current_language
 
 class EndScreenInterface(QWidget):
     def __init__(self):
@@ -31,7 +32,7 @@ class EndScreenInterface(QWidget):
         main_layout.addWidget(image_label)
 
         # Título
-        title_label = QLabel("PRONTO!")
+        title_label = QLabel(translations[current_language]["title 3"])
         title_label.setStyleSheet("""
             QLabel {
                 font-size: 32px;
@@ -44,7 +45,7 @@ class EndScreenInterface(QWidget):
         main_layout.addWidget(title_label)
 
         # Subtítulo
-        subtitle_label = QLabel("Aproveite seu Hammer++ com o modo escuro")
+        subtitle_label = QLabel(translations[current_language]["subtitle 3"])
         subtitle_label.setStyleSheet("""
             QLabel {
                 font-size: 16px;
@@ -56,7 +57,7 @@ class EndScreenInterface(QWidget):
         main_layout.addWidget(subtitle_label)
 
         # Botão de fechar
-        self.close_button = QPushButton("Fechar")
+        self.close_button = QPushButton(translations[current_language]["close"])
         self.close_button.setStyleSheet("""
             QPushButton {
                 background-color: #444;

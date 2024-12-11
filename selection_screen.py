@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, pyqtSignal
 from pathlib import Path
+from languages import translations, current_language
 
 class GameSelectionInterface(QWidget):
     install_signal = pyqtSignal()
@@ -26,7 +27,7 @@ class GameSelectionInterface(QWidget):
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Título
-        header_label = QLabel("JOGOS ENCONTRADOS")
+        header_label = QLabel(translations[current_language]["title 2"])
         header_label.setStyleSheet(f"""
             QLabel {{
                 font-size: 24px;
@@ -40,7 +41,7 @@ class GameSelectionInterface(QWidget):
         main_layout.addWidget(header_label)
 
         # Subtítulo
-        sub_label = QLabel("Clique no jogo para selecionar sua pasta manualmente")
+        sub_label = QLabel(translations[current_language]["subtitle 2"])
         sub_label.setStyleSheet(f"""
             QLabel {{
                 font-size: 16px;
@@ -86,7 +87,7 @@ class GameSelectionInterface(QWidget):
         install_layout.addItem(install_spacer)
 
         # Botão "Instalar"
-        install_button = QPushButton("Instalar")
+        install_button = QPushButton(translations[current_language]["install"])
         install_button.setStyleSheet(f"""
             QPushButton {{
                 background-color: #3584e4;
@@ -132,14 +133,14 @@ class GameSelectionInterface(QWidget):
         self.install_signal.emit()
 
     def select_game_path(self, game_name, button):
-        selected_dir = QFileDialog.getExistingDirectory(self, f"Selecione o diretório do {game_name}")
+        selected_dir = QFileDialog.getExistingDirectory(self, translations[current_language]["select"].format(game_name=game_name))
         if selected_dir:
             path = Path(selected_dir)
             self.dll_manager.set_user_defined_path(game_name, selected_dir)
 
             # Verificar se o caminho selecionado é válido
             if game_name in self.dll_manager.found_game_paths:
-                QMessageBox.information(self, "Caminho Atualizado", f"Caminho para {game_name} atualizado com sucesso.")
+                QMessageBox.information(self, translations[current_language]["path"], translations[current_language]["path 2"].format(game_name=game_name))
                 # Alterar a borda do botão para verde quando o caminho é selecionado manualmente
                 button.setStyleSheet(f"""
                     QPushButton {{
@@ -156,4 +157,4 @@ class GameSelectionInterface(QWidget):
                     }}
                 """)
             else:
-                QMessageBox.warning(self, "Caminho Inválido", "O caminho selecionado não contém o jogo esperado.")
+                QMessageBox.warning(self, translations[current_language]["invalid"], translations[current_language]["invalid 2"])

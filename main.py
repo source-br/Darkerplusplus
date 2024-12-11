@@ -7,6 +7,8 @@ from selection_screen import GameSelectionInterface
 from end_screen import EndScreenInterface
 from dll_manager import DllManager
 from theme_manager import install_and_apply_theme, execute_theme
+from languages import translations, current_language
+
 
 class MainApp(QStackedWidget):
     def __init__(self):
@@ -69,8 +71,8 @@ class MainApp(QStackedWidget):
         if not selected_games:
             QMessageBox.warning(
                 self,
-                "Nenhum jogo selecionado",
-                "Por favor, selecione pelo menos um jogo para continuar."
+                translations[current_language]["no game"],
+                translations[current_language]["please select"],
             )
             return
 
