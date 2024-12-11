@@ -131,7 +131,7 @@ class WelcomeInterface(QWidget):
         # Imagem
         image_label = QLabel()
         pixmap = QPixmap("files/imagens/dazai.png")
-        pixmap = pixmap.scaled(900, 400, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        pixmap = pixmap.scaled(800, 400, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         image_label.setPixmap(pixmap)
         image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         image_label.setStyleSheet("margin: 0; padding: 0; background: none; ")
