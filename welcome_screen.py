@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QDialog
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import Qt
+from languages import translations, current_language
 
 class PopupWindow(QDialog):
     def __init__(self, background_color="#333", text_color="white"):
@@ -27,7 +28,7 @@ class PopupWindow(QDialog):
         popup_layout.addWidget(icon_label)
 
         # Título abaixo do ícone
-        title_label = QLabel("ATENÇÃO")
+        title_label = QLabel(translations[current_language]["atention"])
         title_label.setStyleSheet(f"""
             QLabel {{
                 font-size: 18px;
@@ -41,7 +42,7 @@ class PopupWindow(QDialog):
         popup_layout.addWidget(title_label)
 
         # Parágrafo de conteúdo
-        content_label = QLabel("O darker++ utiliza o Ultrauxtheme <br> para poder aplicar o tema escuro, <br> somente prossiga caso já o tenha <br> instalado e reiniciado seu computador.")
+        content_label = QLabel(translations[current_language]["info"])
         content_label.setStyleSheet(f"""    
             QLabel {{
                 font-size: 14px;
@@ -60,7 +61,7 @@ class PopupWindow(QDialog):
         button_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Botão "Continuar"
-        continue_button = QPushButton("Continuar")
+        continue_button = QPushButton(translations[current_language]["continue"])
         continue_button.setStyleSheet(f"""
             QPushButton {{
                 background-color: #3584e4;
@@ -80,7 +81,7 @@ class PopupWindow(QDialog):
         popup_layout.addLayout(button_layout)
 
         self.setLayout(popup_layout)
-        self.setWindowTitle("Atenção")
+        self.setWindowTitle(translations[current_language]["atention"])
         self.setWindowIcon(QIcon("files/imagens/SVG/dialog-warning.svg"))
         self.setFixedSize(300, 300)
         
@@ -102,7 +103,7 @@ class WelcomeInterface(QWidget):
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Título
-        welcome_label = QLabel("BEM VINDO AO DARKER++")
+        welcome_label = QLabel(translations[current_language]["title 1"])
         welcome_label.setStyleSheet(f"""
             QLabel {{
                 font-size: 24px;
@@ -116,7 +117,7 @@ class WelcomeInterface(QWidget):
         main_layout.addWidget(welcome_label)
 
         # Subtítulo
-        subtitle_label = QLabel("Deixe seu Hammer++ no modo escuro de maneira simples")
+        subtitle_label = QLabel(translations[current_language]["subtitle 1"])
         subtitle_label.setStyleSheet(f"""
             QLabel {{
                 font-size: 16px;
@@ -131,7 +132,7 @@ class WelcomeInterface(QWidget):
         # Imagem
         image_label = QLabel()
         pixmap = QPixmap("files/imagens/dazai.png")
-        pixmap = pixmap.scaled(800, 400, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        pixmap = pixmap.scaled(900, 400, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         image_label.setPixmap(pixmap)
         image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         image_label.setStyleSheet("margin: 0; padding: 0; background: none; ")
@@ -142,7 +143,7 @@ class WelcomeInterface(QWidget):
         button_layout.setContentsMargins(10, 10, 10, 10)  # Define pequenas margens para o botão
         button_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
 
-        self.continue_button = QPushButton("Continuar")
+        self.continue_button = QPushButton(translations[current_language]["continue"])
         self.continue_button.setStyleSheet(f"""
             QPushButton {{
                 background-color: #444;
