@@ -1,0 +1,27 @@
+; Copyright � Microsoft Corp.
+
+[Theme]
+; Windows 10 - IDS_THEME_DISPLAYNAME_Dark 1
+DisplayName=Escuro 
+SetLogonBackground=0
+
+[Control Panel\Desktop]
+Wallpaper=%SystemRoot%\Resources\Themes\Dark\Wallpaper
+TileWallpaper=0
+WallpaperStyle=10
+Pattern=
+
+[VisualStyles]
+Path=%SystemRoot%\Resources\Themes\Dark\Dark 1.msstyles
+ColorStyle=NormalColor
+Size=NormalSize
+AutoColorization=0
+ColorizationColor=0XFF444444
+SystemMode=Dark
+AppMode=Dark
+
+[boot]
+SCRNSAVE.EXE=
+
+[MasterThemeSelector]
+MTSM=RJSPBS
