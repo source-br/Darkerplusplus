@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<h1 align="center">Darker++</h1>
-
-<img align="right" width="128" height="128" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Data/imagens/icon.png" alt="Darker++ icon" />
+<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Data/imagens/darker_logo.png" alt="Darker++ icon" />
 
 ###
 
@@ -33,6 +31,7 @@ Se você gosta do Darker++, considere nos dar suporte para o desenvolvimento do 
 
 - Certifique-se de fazer backup dos seus arquivos antes de usar o Darker++, especialmente das configurações do Hammer++, não nos responsabilizamos por nenhuma perca.
 - Este programa só funciona no windows 10.
+- Sempre que uma nova versão do Hammer++ for lançada atualizaremos nosso instalador também, então será necessario baixar a versão mais recente do instalador e reinstalar o tema.
 
 ##
 
