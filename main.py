@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QStackedWidget, QMessageBox
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QPalette, QColor
 
 from welcome_screen import WelcomeInterface
 from selection_screen import GameSelectionInterface
@@ -19,6 +19,8 @@ class MainApp(QStackedWidget):
         # Definindo o estilo global para todo o aplicativo
         self.set_application_style()
 
+        # Ajustando a barra de título do Windows para preto
+        self.set_dark_title_bar()
         self.dll_manager = DllManager()
 
         # Inicializando as interfaces
@@ -60,6 +62,13 @@ class MainApp(QStackedWidget):
                 color: white;
             }
         """)
+
+    def set_dark_title_bar(self):
+        # Configurando uma paleta escura para a barra de título
+        dark_palette = QPalette()
+        dark_palette.setColor(QPalette.ColorRole.Window, QColor(30, 30, 30))  # Cor da barra de título
+        dark_palette.setColor(QPalette.ColorRole.WindowText, QColor(255, 255, 255))  # Texto do título
+        QApplication.setPalette(dark_palette)
 
     def show_game_selection(self):
         self.setCurrentWidget(self.game_selection_screen)
