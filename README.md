@@ -27,11 +27,10 @@ Se você gosta do Darker++, considere nos dar suporte para o desenvolvimento do 
 
 ##
 
-### ⚠️ Avisos:
-
-- Certifique-se de fazer backup dos seus arquivos antes de usar o Darker++, especialmente das configurações do Hammer++, não nos responsabilizamos por nenhuma perca.
-- Este programa só funciona no windows 10.
-- Sempre que uma nova versão do Hammer++ for lançada atualizaremos nosso instalador também, então será necessario baixar a versão mais recente do instalador e reinstalar o tema.
+> [!WARNING]
+> - Certifique-se de fazer backup dos seus arquivos antes de usar o Darker++, especialmente das configurações do Hammer++, não nos responsabilizamos por nenhuma perca.
+> - Este programa só funciona no windows 10.
+> - Sempre que uma nova versão do Hammer++ for lançada atualizaremos nosso instalador também, então será necessario baixar a versão mais recente do instalador e reinstalar o tema.
 
 ##
 
