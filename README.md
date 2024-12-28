@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<h1 align="center">Darker++</h1>
-
-<img align="right" width="128" height="128" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Data/imagens/icon.png" alt="Darker++ icon" />
+<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Data/imagens/darker_logo.png" alt="Darker++ icon" />
 
 ###
 
-<p>Darker++ é um instalador de tema escuro projetado para o Hammer++, que oferece uma melhor experiência visual tanto no Windows 10 quanto no Hammer++.</p>
-<p>O projeto combina a aplicação de um tema escuro no sistema operacional Windows com as substituições das DLLs do Hammer++, garantindo que o programa funcione 100% no modo escuro.</p>
+Darker++ é um instalador de tema escuro projetado para o Hammer++, que oferece uma melhor experiência visual tanto no Windows 10 quanto no Hammer++.
+
+O projeto combina a aplicação de um tema escuro no sistema operacional Windows com as substituições das DLLs do Hammer++, garantindo que o programa funcione 100% no modo escuro.
 
 ##
 
@@ -29,13 +28,7 @@ Se você gosta do Darker++, considere nos dar suporte para o desenvolvimento do 
 
 ##
 
-### ⚠️ Avisos:
-
-- Certifique-se de fazer backup dos seus arquivos antes de usar o Darker++, especialmente das configurações do Hammer++, não nos responsabilizamos por nenhuma perca.
-- Este programa só funciona no windows 10.
-
-##
-
-### Suporte e Feedback:
-
-   <a href="https://discord.gg/tVNv6SNZZT" target="_blank"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white" target="_blank"></a>
+> [!WARNING]
+> - Certifique-se de fazer backup dos seus arquivos antes de usar o Darker++, especialmente das configurações do Hammer++, não nos responsabilizamos por nenhuma perca.
+> - Este programa só funciona no windows 10.
+> - Sempre que uma nova versão do Hammer++ for lançada atualizaremos nosso instalador também, então será necessario baixar a versão mais recente do instalador e reinstalar o tema.
