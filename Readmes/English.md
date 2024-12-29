@@ -1,5 +1,13 @@
 <!DOCTYPE html>
-<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Data/imagens/darker_logo.png" alt="Darker++ icon" />
+<div align="right">
+
+<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/README.md" target="_blank"><img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Imagens/flag_br.png" height="30" width="30" target="_blank"></a>
+
+</div>
+
+###
+
+<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Imagens/title.png" alt="Darker++ icon" />
 
 ###
 
