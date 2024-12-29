@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <div align="right">
 
-[🇺🇸](https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/English.md)
+<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/English.md" target="_blank"><img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Imagens/flag_eua.png" height="30" width="30" target="_blank"></a>
 
 </div>
 
 ###
 
-<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Data/imagens/darker_logo.png" alt="Darker++ icon" />
+<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Imagens/title.png" alt="Darker++ icon" />
 
 ###
 
