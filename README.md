@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <div align="right">
 
-<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank"><img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Imagens/flag_br.png" height="30" width="30" target="_blank"></a>
+<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank"><img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Imagens/flag_br.png" height="25" width="25" target="_blank"></a>
 
 </div>
 
@@ -27,7 +27,7 @@ If you enjoy Darker++, consider supporting us in the development of the project.
 
 ##
 
-### Instalação:
+### Installation:
 
 - Run the UltraUX.exe file included in the zip.
 - After installing UltraUX and restarting your computer, run the installer and follow the on-screen instructions.
