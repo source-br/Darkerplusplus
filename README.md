@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<div align="right">
+
+[🇺🇸](https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/English.md)
+
+</div>
+
+###
+
 <img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Data/imagens/darker_logo.png" alt="Darker++ icon" />
 
 ###
