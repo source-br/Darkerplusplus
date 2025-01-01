@@ -4,7 +4,7 @@ from pathlib import Path
 
 def install_and_apply_theme(repository_path):
     # Instala e aplica automaticamente o tema padrão, copiando também os arquivos de suporte necessários.
-    theme_folder = Path(repository_path) / "Data" / "themes"
+    theme_folder = Path(repository_path) / "Resources" / "themes"
     theme_file = theme_folder / "Dark_1.theme"  # Arquivo principal do tema
     msstyles_folder = theme_folder / "Dark"
     windows_theme_folder = Path("C:\\Windows\\Resources\\Themes")
