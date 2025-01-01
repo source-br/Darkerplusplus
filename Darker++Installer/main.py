@@ -14,7 +14,7 @@ class MainApp(QStackedWidget):
         super().__init__()
         self.setWindowTitle("Darker++")
         self.setFixedSize(800, 500)
-        self.setWindowIcon(QIcon("Data/imagens/icon.png"))
+        self.setWindowIcon(QIcon("Resources/images/icon.png"))
 
         # Definindo o estilo global para todo o aplicativo
         self.set_application_style()

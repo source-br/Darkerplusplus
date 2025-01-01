@@ -16,7 +16,7 @@ class EndScreenInterface(QWidget):
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Renderizando a imagem SVG
-        self.svg_renderer = QSvgRenderer("Data/imagens/SVG/done-icon.svg")
+        self.svg_renderer = QSvgRenderer("Resources/images/SVG/done-icon.svg")
         self.svg_pixmap = QPixmap(100, 100)
         self.svg_pixmap.fill(Qt.GlobalColor.transparent)
 

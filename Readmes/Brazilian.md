@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <div align="right">
 
-<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/README.md" target="_blank"><img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Imagens/flag_eua.png" height="25" width="25" target="_blank"></a>
+<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/README.md" target="_blank"><img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_eua.png" height="25" width="25" target="_blank"></a>
 
 </div>
 
 ###
 
-<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Imagens/title.png" alt="Darker++ icon" />
+<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/title.png" alt="Darker++ icon" />
 
 ###
 
