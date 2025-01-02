@@ -1,0 +1,27 @@
+; Copyright � Microsoft Corp.
+
+[Theme]
+; Windows 10 - IDS_THEME_DISPLAYNAME_Dark 1
+DisplayName=Darker++
+SetLogonBackground=0
+
+[Control Panel\Desktop]
+Wallpaper=%SystemRoot%\Resources\Themes\Dark\Wallpaper
+TileWallpaper=0
+WallpaperStyle=10
+Pattern=
+
+[VisualStyles]
+Path=%SystemRoot%\Resources\Themes\Aerodark10\Aerodark10.msstyles
+ColorStyle=NormalColor
+Size=NormalSize
+AutoColorization=0
+ColorizationColor=000000
+SystemMode=Dark
+AppMode=Dark
+
+[boot]
+SCRNSAVE.EXE=
+
+[MasterThemeSelector]
+MTSM=RJSPBS
