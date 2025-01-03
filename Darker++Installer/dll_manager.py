@@ -3,7 +3,6 @@ import shutil
 from pathlib import Path
 from PyQt6.QtWidgets import QMessageBox, QApplication
 
-
 class DllManager:
     def __init__(self):
         self.default_drives = ["C:\\", "D:\\", "E:\\", "K:\\"]  # Discos padrão para busca

@@ -1,4 +1,6 @@
 import sys
+import ctypes
+import platform
 from PyQt6.QtWidgets import QApplication, QStackedWidget, QMessageBox
 from PyQt6.QtGui import QIcon, QPalette, QColor
 
@@ -6,8 +8,21 @@ from welcome_screen import WelcomeInterface
 from selection_screen import GameSelectionInterface
 from end_screen import EndScreenInterface
 from dll_manager import DllManager
-from theme_manager import install_and_apply_theme, execute_theme
+from theme_manager import install_and_apply_theme
 from languages import translations, current_language
+
+def request_admin_permissions():
+    try:
+        if ctypes.windll.shell32.IsUserAnAdmin():
+            return True
+        else:
+            ctypes.windll.shell32.ShellExecuteW(
+                None, "runas", sys.executable, " ".join(sys.argv), None, 1
+            )
+            sys.exit()
+    except Exception as e:
+        QMessageBox.critical(None, "Erro", f"Erro ao solicitar permissões de administrador: {str(e)}")
+        sys.exit()
 
 class MainApp(QStackedWidget):
     def __init__(self):
@@ -16,36 +31,42 @@ class MainApp(QStackedWidget):
         self.setFixedSize(800, 500)
         self.setWindowIcon(QIcon("Resources/images/icon.png"))
 
-        # Definindo o estilo global para todo o aplicativo
-        self.set_application_style()
+        self.windows_version = self.detect_windows_version()
 
-        # Ajustando a barra de título do Windows para preto
+        self.set_application_style()
         self.set_dark_title_bar()
         self.dll_manager = DllManager()
 
-        # Inicializando as interfaces
         self.dll_manager.find_game_folders()  # Busca inicial pelos jogos
         self.welcome_screen = WelcomeInterface()
         self.game_selection_screen = GameSelectionInterface(self.dll_manager)
-        self.end_screen = EndScreenInterface()  # Adicionando a tela de agradecimento
+        self.end_screen = EndScreenInterface()
 
-        # Adicionando telas ao QStackedWidget
         self.addWidget(self.welcome_screen)
         self.addWidget(self.game_selection_screen)
         self.addWidget(self.end_screen)
 
-        # Conectando botões para navegação
         self.welcome_screen.continue_button.clicked.connect(self.show_game_selection)
         self.game_selection_screen.install_signal.connect(self.execute_installation)
 
-        # Exibindo a tela inicial
         self.setCurrentWidget(self.welcome_screen)
 
+    def detect_windows_version(self):
+        release = platform.release()  # Obtém a versão do Windows (ex.: '10', '11')
+        if release == "10":
+            print("Sistema detectado: Windows 10")
+            return "Windows 10"
+        elif release == "11":
+            print("Sistema detectado: Windows 11")
+            return "Windows 11"
+        else:
+            print("Sistema operacional não suportado.")
+            return "Desconhecido"
+
     def set_application_style(self):
-        # Estilo global para todos os widgets do aplicativo
         self.setStyleSheet("""
             QWidget {
-                background-color: #1e1e1e;  
+                background-color: #1e1e1e;
                 color: white;
             }
             QPushButton {
@@ -64,10 +85,9 @@ class MainApp(QStackedWidget):
         """)
 
     def set_dark_title_bar(self):
-        # Configurando uma paleta escura para a barra de título
         dark_palette = QPalette()
-        dark_palette.setColor(QPalette.ColorRole.Window, QColor(30, 30, 30))  # Cor da barra de título
-        dark_palette.setColor(QPalette.ColorRole.WindowText, QColor(255, 255, 255))  # Texto do título
+        dark_palette.setColor(QPalette.ColorRole.Window, QColor(30, 30, 30))
+        dark_palette.setColor(QPalette.ColorRole.WindowText, QColor(255, 255, 255))
         QApplication.setPalette(dark_palette)
 
     def show_game_selection(self):
@@ -85,14 +105,9 @@ class MainApp(QStackedWidget):
             return
 
         try:
-            # Substituir DLLs usando o DllManager
-            self.dll_manager.replace_dlls()
+            repository_path = ""  
+            install_and_apply_theme(repository_path, self.windows_version)
 
-            # Copiar e aplicar o tema
-            repository_path = ""  # Substitua pelo caminho correto do repositório
-            install_and_apply_theme(repository_path)
-
-            # Exibir a tela de agradecimento após a instalação
             self.setCurrentWidget(self.end_screen)
 
         except Exception as e:
@@ -103,6 +118,9 @@ class MainApp(QStackedWidget):
             )
 
 if __name__ == "__main__":
+    if not request_admin_permissions():
+        sys.exit()  # Encerra se o usuário não conceder permissões
+
     app = QApplication(sys.argv)
     main_app = MainApp()
     main_app.show()
