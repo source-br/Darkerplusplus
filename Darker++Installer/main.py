@@ -105,6 +105,9 @@ class MainApp(QStackedWidget):
             return
 
         try:
+            # Substituir DLLs
+            self.dll_manager.replace_dlls()
+
             repository_path = ""  
             install_and_apply_theme(repository_path, self.windows_version)
 
