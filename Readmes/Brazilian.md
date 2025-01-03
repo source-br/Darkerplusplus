@@ -11,7 +11,7 @@
 
 ###
 
-Darker++ é um instalador de tema escuro projetado para o Hammer++, que oferece uma melhor experiência visual tanto no Windows 10 quanto no Hammer++.
+Darker++ é um instalador de tema escuro projetado para o Hammer++, que oferece uma melhor experiência visual Hammer++ e no Windows.
 
 O projeto combina a aplicação de um tema escuro no sistema operacional Windows com as substituições das DLLs do Hammer++, garantindo que o programa funcione 100% no modo escuro.
 
@@ -38,5 +38,4 @@ Se você gosta do Darker++, considere nos dar suporte para o desenvolvimento do 
 
 > [!WARNING]
 > - Certifique-se de fazer backup dos seus arquivos antes de usar o Darker++, especialmente das configurações do Hammer++, não nos responsabilizamos por nenhuma perca.
-> - Este programa só funciona no windows 10.
 > - Sempre que uma nova versão do Hammer++ for lançada atualizaremos nosso instalador também, então será necessario baixar a versão mais recente do instalador e reinstalar o tema.
