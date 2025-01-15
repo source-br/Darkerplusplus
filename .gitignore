@@ -1,7 +1,5 @@
 /__pycache__
-/src/Darker++.spec
-/config.json
-/src/build
-/src/dist
-/src/icon.png
 /src/__pycache__
+/src/config.json
+/build
+/dist
