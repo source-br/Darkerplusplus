@@ -10,11 +10,11 @@ class DllManager:
         self.game_paths = {
             "Half-Life 2": r"Half-Life 2\bin\hammerplusplus\bin",
             "Left 4 Dead 2": r"Left 4 Dead 2\bin\hammerplusplus\bin",
-            "Team Fortress 2": r"Team Fortress 2\bin\hammerplusplus\bin",
+            "Team Fortress 2": r"Team Fortress 2\bin\x64\hammerplusplus\bin",
             "Portal 2": r"Portal 2\bin\hammerplusplus\bin",
             "Garry's Mod": r"GarrysMod\bin\win64\hammerplusplus\bin",
-            "Counter Strike Source": r"Counter-Strike Source\bin\hammerplusplus\bin",
-            "Day of Defeat Source": r"Day of Defeat Source\bin\hammerplusplus\bin",
+            "Counter Strike Source": r"Counter-Strike Source\bin\x64\hammerplusplus\bin",
+            "Day of Defeat Source": r"Day of Defeat Source\bin\x64\hammerplusplus\bin",
             "Source SDK Base 2013 Singleplayer": r"Source SDK Base 2013 Singleplayer\bin\hammerplusplus\bin",
             "Source SDK Base 2013 Multiplayer": r"Source SDK Base 2013 Multiplayer\bin\hammerplusplus\bin",
         }
@@ -61,15 +61,14 @@ class DllManager:
     def find_hammer_path(self, game, custom_path):
         # Tenta encontrar o caminho do Hammer++ dentro da pasta do jogo.
         if game == "Garry's Mod":
-            # Para o GMod, o caminho esperado inclui a pasta 'win64'
             possible_path = custom_path / "bin" / "win64" / "hammerplusplus" / "bin"
-            if possible_path.exists() and possible_path.is_dir():
-                return possible_path
+        elif game in ["Day of Defeat Source", "Team Fortress 2", "Counter Strike Source"]:
+            possible_path = custom_path / "bin" / "x64" / "hammerplusplus" / "bin"
         else:
-            # Para os outros jogos, o caminho esperado é diretamente na pasta 'bin'
             possible_path = custom_path / "bin" / "hammerplusplus" / "bin"
-            if possible_path.exists() and possible_path.is_dir():
-                return possible_path
+
+        if possible_path.exists() and possible_path.is_dir():
+            return possible_path
         return None
 
     def replace_dlls(self):
