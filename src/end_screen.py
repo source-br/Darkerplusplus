@@ -3,6 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtSvg import QSvgRenderer
 from PyQt6.QtGui import QPainter, QPixmap
 from languages import translations, current_language
+from utils import resource_path
 
 class EndScreenInterface(QWidget):
     def __init__(self):
@@ -16,7 +17,7 @@ class EndScreenInterface(QWidget):
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Renderizando a imagem SVG
-        self.svg_renderer = QSvgRenderer("Resources/images/SVG/done-icon.svg")
+        self.svg_renderer = QSvgRenderer(resource_path("Resources/images/SVG/done-icon.svg"))
         self.svg_pixmap = QPixmap(100, 100)
         self.svg_pixmap.fill(Qt.GlobalColor.transparent)
 
