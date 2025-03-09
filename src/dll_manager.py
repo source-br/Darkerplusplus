@@ -2,11 +2,12 @@ import os
 import shutil
 from pathlib import Path
 from PyQt6.QtWidgets import QMessageBox, QApplication
+from utils import resource_path
 
 class DllManager:
     def __init__(self):
         self.default_drives = ["C:\\", "D:\\", "E:\\", "K:\\"]  # Discos padrão para busca
-        self.dll_folder = Path("Resources/Tools/dll")  # Repositório de DLLs
+        self.dll_folder = Path(resource_path("Resources\Tools\dll"))  # Repositório de DLLs
         self.game_paths = {
             "Half-Life 2": r"Half-Life 2\bin\hammerplusplus\bin",
             "Left 4 Dead 2": r"Left 4 Dead 2\bin\hammerplusplus\bin",

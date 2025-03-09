@@ -1,4 +1,5 @@
 import sys
+import os
 import ctypes
 import platform
 from PyQt6.QtWidgets import QApplication, QStackedWidget, QMessageBox
@@ -10,26 +11,14 @@ from end_screen import EndScreenInterface
 from dll_manager import DllManager
 from theme_manager import install_and_apply_theme
 from languages import translations, current_language
-
-def request_admin_permissions():
-    try:
-        if ctypes.windll.shell32.IsUserAnAdmin():
-            return True
-        else:
-            ctypes.windll.shell32.ShellExecuteW(
-                None, "runas", sys.executable, " ".join(sys.argv), None, 1
-            )
-            sys.exit()
-    except Exception as e:
-        QMessageBox.critical(None, "Erro", f"Erro ao solicitar permissões de administrador: {str(e)}")
-        sys.exit()
+from utils import resource_path
 
 class MainApp(QStackedWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Darker++")
         self.setFixedSize(800, 500)
-        self.setWindowIcon(QIcon("Resources/images/icon.png"))
+        self.setWindowIcon(QIcon(resource_path("Resources/images/icon.png")))
 
         self.windows_version = self.detect_windows_version()
 
@@ -121,9 +110,6 @@ class MainApp(QStackedWidget):
             )
 
 if __name__ == "__main__":
-    if not request_admin_permissions():
-        sys.exit()  # Encerra se o usuário não conceder permissões
-
     app = QApplication(sys.argv)
     main_app = MainApp()
     main_app.show()

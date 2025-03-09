@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayo
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import Qt
 from languages import translations, current_language
+from utils import resource_path
 
 class PopupWindow(QDialog):
     def __init__(self, background_color="#333", text_color="white"):
@@ -22,7 +23,7 @@ class PopupWindow(QDialog):
 
         # Ícone centralizado
         icon_label = QLabel()
-        icon = QIcon("Resources/images/SVG/dialog-warning.svg")  # Substitua pelo caminho do seu ícone
+        icon = QIcon(resource_path("Resources/images/SVG/dialog-warning.svg")) # Substitua pelo caminho do seu ícone
         icon_label.setPixmap(icon.pixmap(60, 60))  # Ajuste o tamanho do ícone
         icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         popup_layout.addWidget(icon_label)
@@ -82,7 +83,7 @@ class PopupWindow(QDialog):
 
         self.setLayout(popup_layout)
         self.setWindowTitle(translations[current_language]["atention"])
-        self.setWindowIcon(QIcon("Resources/images/SVG/dialog-warning.svg"))
+        self.setWindowIcon(QIcon(resource_path("Resources/images/SVG/dialog-warning.svg")))
         self.setFixedSize(300, 300)
         
 class WelcomeInterface(QWidget):
@@ -131,7 +132,7 @@ class WelcomeInterface(QWidget):
 
         # Imagem
         image_label = QLabel()
-        pixmap = QPixmap("Resources/images/dazai.png")
+        pixmap = QPixmap(resource_path("Resources/images/dazai.png"))
         pixmap = pixmap.scaled(900, 400, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         image_label.setPixmap(pixmap)
         image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
