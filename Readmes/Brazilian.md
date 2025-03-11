@@ -15,15 +15,17 @@ Darker++ é um instalador de tema escuro projetado para o Hammer++, que oferece 
 
 O projeto combina a aplicação de um tema escuro no sistema operacional Windows com as substituições das DLLs do Hammer++, garantindo que o programa funcione 100% no modo escuro.
 
+https://github.com/user-attachments/assets/b2c1242e-ba93-4077-8a04-321fad9e68cb
+
 ##
 
-### Donate:
+### Doar:
 
 Se você gosta do Darker++, considere nos dar suporte para o desenvolvimento do projeto. Ao nos dar suporte, você ajuda a continuar desenvolvendo esse programa ainda mais ❤️
 
-<a href="https://nubank.com.br/cobrar/1na00u/67594881-0eb2-45fc-b73c-7d065d9ba400" target="_blank"><img src="https://img.shields.io/badge/nubank-820AD1?style=for-the-badge&logo=nubank&logoColor=white" target="_blank"></a>
-<a href="https://ko-fi.com/oficial_dazai" target="_blank"><img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" target="_blank"></a>
-<a href="https://www.paypal.com/donate/?business=AUZRQZ6DZZAPQ&no_recurring=0&currency_code=USD" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" target="_blank"></a>
+<a href="https://nubank.com.br/cobrar/1na00u/67594881-0eb2-45fc-b73c-7d065d9ba400" target="_blank"><img src="https://img.shields.io/badge/-nubank-0D1117?style=for-the-badge&logo=nubank&logoColor=820AD1&labelColor=0D1117" target="_blank"></a>
+<a href="https://ko-fi.com/oficial_dazai" target="_blank"><img src="https://img.shields.io/badge/-kofi-0D1117?style=for-the-badge&logo=ko-fi&logoColor=FF6433&labelColor=0D1117" target="_blank"></a>
+<a href="https://www.paypal.com/donate/?business=AUZRQZ6DZZAPQ&no_recurring=0&currency_code=USD" target="_blank"><img src="https://img.shields.io/badge/-paypal-0D1117?style=for-the-badge&logo=paypal&logoColor=003087&labelColor=0D1117" target="_blank"></a>
 
 ##
 
