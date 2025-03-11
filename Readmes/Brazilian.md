@@ -10,6 +10,7 @@
 <img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/title.png" alt="Darker++ icon" />
 
 ###
+[![GPLv3 license](https://img.shields.io/badge/Licença-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) [![made-with-python](https://img.shields.io/badge/Feito%20em-Python-be00be.svg)](https://www.python.org/) ![Discord](https://img.shields.io/discord/1189628376504340590?logo=Discord&label=Servidor%20do%20Discord&color=be00be) [![Download](https://img.shields.io/badge/Baixar-Estável-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases) ![Version](https://img.shields.io/badge/Versão-V.3-be00be.svg) 
 
 Darker++ é um instalador de tema escuro projetado para o Hammer++, que oferece uma melhor experiência visual Hammer++ e no Windows.
 
