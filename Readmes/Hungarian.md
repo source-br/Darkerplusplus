@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <div align="right">
-<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank">
-    <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_br.png" height="25" width="25" target="_blank"></a>
-</div>
-
-<div align="right">
-<a href="https://github.com/Source-BR/Darkerplusplus/README.md" target="_blank">
-    <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_eua.png" height="25" width="25" target="_blank"></a>
+    <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank">
+        <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_br.png" height="25" width="25">
+    </a>
+    <a href="https://github.com/Source-BR/Darkerplusplus/README.md" target="_blank">
+        <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_eua.png" height="25" width="25">
+    </a>
 </div>
 
 ###
@@ -19,8 +18,7 @@
 
 A Darker++ egy sötét téma telepítő ami a Hammer++-nak lett tervezve, egy jobb vizuális élményt nyújt a Hammer++ és a Windows számára egyaránt.
 
-The project combines the application of a dark theme on the Windows operating system with the replacement of Hammer++ DLLs, ensuring that the program works 100% in dark mode.
-A projekt kombinálja az applikáció
+A projekt egy sötét téma Windows operációs rendszeren történő alkalmazását kombinálja a Hammer++ DLL-ek cseréjével, biztosítva a program 100%-os működését sötét módban.
 
 https://github.com/user-attachments/assets/1f2c9877-c3d8-48cc-af3a-67eddadee963
 
