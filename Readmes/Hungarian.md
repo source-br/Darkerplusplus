@@ -16,7 +16,7 @@
 [![GPLv3 license](https://img.shields.io/badge/Licenc-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) [![made-with-python](https://img.shields.io/badge/Készült-Phytonnal-be00be.svg)](https://www.python.org/) ![Discord](https://img.shields.io/discord/1189628376504340590?logo=Discord&label=Discord%20szerver&color=be00be) [![Download](https://img.shields.io/badge/Letöltés-Stabil-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases) ![Version](https://img.shields.io/badge/Verzió-V.3-be00be.svg) 
 
 
-A Darker++ egy sötét téma telepítő amit a Hammer++-nak lett terveztek, ami egy jobb vizuális élményt nyújt a Hammer++ és a Windows számára egyaránt.
+A Darker++ egy sötét téma telepítő amit a Hammer++-nak terveztek, ami egy jobb vizuális élményt nyújt a Hammer++ és a Windows számára egyaránt.
 
 A projekt egy sötét téma Windows operációs rendszeren történő alkalmazását kombinálja a Hammer++ DLL-ek cseréjével, biztosítva a program 100%-os működését sötét módban.
 
@@ -26,7 +26,7 @@ https://github.com/user-attachments/assets/1f2c9877-c3d8-48cc-af3a-67eddadee963
 
 ### Adományozz:
 
-Ha élvezi a Darker++-t, fontolja meg, hogy támogasson minket a projekt fejlesztésében. A támogatása segít tovább fejleszteni ezt a programot ❤️
+Ha élvezi a Darker++-t, gondolja át, hogy támogasson minket a projekt fejlesztésében. A támogatása segít tovább fejleszteni a programot ❤️
 
 <a href="https://nubank.com.br/cobrar/1na00u/67594881-0eb2-45fc-b73c-7d065d9ba400" target="_blank"><img src="https://img.shields.io/badge/-nubank-0D1117?style=for-the-badge&logo=nubank&logoColor=820AD1&labelColor=0D1117" target="_blank"></a>
 <a href="https://ko-fi.com/oficial_dazai" target="_blank"><img src="https://img.shields.io/badge/-kofi-0D1117?style=for-the-badge&logo=ko-fi&logoColor=FF6433&labelColor=0D1117" target="_blank"></a>
