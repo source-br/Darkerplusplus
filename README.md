@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <div align="right">
-
-<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank"><img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_br.png" height="25" width="25" target="_blank"></a>
-
+    <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank">
+        <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_br.png" height="25" width="25">
+    </a>
+    <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Hungarian.md" target="_blank">
+        <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_hu.png" height="25" width="25">
+    </a>
 </div>
 
 ###
