@@ -5,14 +5,8 @@
 </div>
 
 <div align="right">
-<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank">
-    <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_br.png" height="25" width="25" target="_blank"></a>
-</div>
-
-<div align="right">
-<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Hungarian.md" target="_blank">
-    <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_hu.png" height="25" width="25" target="_blank">
-</a>
+<a href="https://github.com/Source-BR/Darkerplusplus/README.md" target="_blank">
+    <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_eua.png" height="25" width="25" target="_blank"></a>
 </div>
 
 ###
@@ -52,14 +46,6 @@ Ha élvezi a Darker++-t, fontolja meg, hogy támogasson minket a projekt fejlesz
 
 ##
 
-> [!FIGYELEM]
+> [!WARNING]
 > - Mielőtt hasznláná a Darker++-t, legyen biztos abban hogy biztonsági mentéseket készített a fájlrairól, különösen a Hammer++ beállításairól. Nem vállalunk felelősséget az adatvesztésért. 
 > - Mikor egy új Hammer++ verzió ki jön, frissísteni fogjuk a telepítőnket, tehát le kell töltenie a legújabb telepítő verziót és újra telepíteni a témát.
-
-
-<!DOCTYPE html>
-<div align="right">
-<a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Hungarian.md" target="_blank">
-    <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_hu.png" height="25" width="25" target="_blank">
-</a>
-</div>
