@@ -16,7 +16,7 @@
 [![GPLv3 license](https://img.shields.io/badge/Licenc-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) [![made-with-python](https://img.shields.io/badge/Készült-Phytonnal-be00be.svg)](https://www.python.org/) ![Discord](https://img.shields.io/discord/1189628376504340590?logo=Discord&label=Discord%20szerver&color=be00be) [![Download](https://img.shields.io/badge/Letöltés-Stabil-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases) ![Version](https://img.shields.io/badge/Verzió-V.3-be00be.svg) 
 
 
-A Darker++ egy sötét téma telepítő amit a Hammer++-nak lett terveztek, ami egy jobb vizuális élményt nyújt a Hammer++ és a Windows számára egyaránt.
+A Darker++ egy sötét téma telepítő ami a Hammer++-nak lett tervezve, ami egy jobb vizuális élményt nyújt a Hammer++ és a Windows számára egyaránt.
 
 A projekt egy sötét téma Windows operációs rendszeren történő alkalmazását kombinálja a Hammer++ DLL-ek cseréjével, biztosítva a program 100%-os működését sötét módban.
 
