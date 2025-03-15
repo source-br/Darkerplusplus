@@ -79,7 +79,7 @@ translations = {
         "subtitle 3": "Disfruta de tu Hammer++ en modo oscuro.",
         "close": "Cerrar",
     },
-    "hu": {
+    "hu-hu": {
         # main
         "no game": "Nincs játék kiválasztva",
         "please select": "Egy játékot válasszon ki a folytatáshoz",
@@ -108,7 +108,7 @@ translations = {
 }
 
 # Detectar o idioma do sistema operacional
-system_language = locale.getdefaultlocale()[0]  # Retorna algo como 'pt_BR'
+system_language = locale.getdefaultlocale()[0]
 
 # Converter o idioma para o formato usado nas traduções (ex: 'pt-br')
 if system_language:
@@ -118,3 +118,5 @@ else:
 
 # Verificar se o idioma detectado possui tradução disponível
 current_language = formatted_language if formatted_language in translations else "en"
+
+print(f"idioma: {formatted_language}")
