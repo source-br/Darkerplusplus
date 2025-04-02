@@ -35,13 +35,24 @@ Se você gosta do Darker++, considere nos dar suporte para o desenvolvimento do 
 
 ### Instalação:
 
-- Execute o UltraUX.exe que virá junto do zip.
-- Após instalar o UltraUX e reiniciar o computador execute o instalador e siga as instruções na tela.
+1. Execute o UltraUX.exe que virá junto do zip.
+2. Após instalar o UltraUX e reiniciar o computador execute o Darker++.exe e prossiga com a instalação.
+3. Selecione os jogos em que você tem o Hammer++ instalado. O programa irá autodetectar, mas caso ele não encontre, você pode selecionar manualmente a pasta raiz do jogo. Exemplo para o Gmod: C:\Program Files (x86)\Steam\steamapps\common\GarrysMod.
+4. Após isso, finalize a instalação e pronto!
 
-[Download](https://github.com/TeamSourceBR/Darkerplusplus/releases)
+[Baixar](https://github.com/TeamSourceBR/Darkerplusplus/releases)
+
+### Correções de possíveis problemas:
+
+1. Caso o tema do seu Hammer continue branco, vá em Configurações > Personalização > Temas > Darker++.
+2. Caso a sua barra do Windows não tenha ficado escura, vá em Configurações > Personalização > Cores > Barras de título e bordas da janela.
+
+Caso precise de suporte ou queira dar um feedback, entre no nosso Discord.
 
 ##
+> [!NOTE]
+> - A maneira que o Darker funciona, faz com que updates do Windows possam quebrar o tema, isso ocorre porque ao atualizar, o Windows quebra o UltraUXThemePatcher, para resolver basta reinstalar o UltraUXThemePatcher, reinciar o computador, após isso vá em "Configurações > Personalização > Temas > Darker++" e reaplique o tema.
 
 > [!WARNING]
-> - Certifique-se de fazer backup dos seus arquivos antes de usar o Darker++, especialmente das configurações do Hammer++, não nos responsabilizamos por nenhuma perca.
+> - Certifique-se de criar um ponto de restauração para que caso algo dê errado, você possa voltar o sistema para como estava, nós não nos resposabilizamos por qualquer dano.
 > - Sempre que uma nova versão do Hammer++ for lançada atualizaremos nosso instalador também, então será necessario baixar a versão mais recente do instalador e reinstalar o tema.
