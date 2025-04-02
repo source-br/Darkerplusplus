@@ -30,7 +30,6 @@ https://github.com/user-attachments/assets/1f2c9877-c3d8-48cc-af3a-67eddadee963
 If you enjoy Darker++, consider supporting us for the development of the project. Your support helps us continue developing this program even further ❤️
 
 <a href="https://nubank.com.br/cobrar/1na00u/67594881-0eb2-45fc-b73c-7d065d9ba400" target="_blank"><img src="https://img.shields.io/badge/-nubank-0D1117?style=for-the-badge&logo=nubank&logoColor=820AD1&labelColor=0D1117" target="_blank"></a>
-<a href="https://ko-fi.com/oficial_dazai" target="_blank"><img src="https://img.shields.io/badge/-kofi-0D1117?style=for-the-badge&logo=ko-fi&logoColor=FF6433&labelColor=0D1117" target="_blank"></a>
 <a href="https://www.paypal.com/donate/?business=AUZRQZ6DZZAPQ&no_recurring=0&currency_code=USD" target="_blank"><img src="https://img.shields.io/badge/-paypal-0D1117?style=for-the-badge&logo=paypal&logoColor=003087&labelColor=0D1117" target="_blank"></a>
 
 ##
