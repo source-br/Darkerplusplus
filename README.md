@@ -38,12 +38,23 @@ If you enjoy Darker++, consider supporting us for the development of the project
 ### Installation:
 
 
-- Run the UltraUX.exe that comes with the zip file.
-- After installing UltraUX and restarting your computer, run the installer and follow the on-screen instructions.
+1. Run the UltraUX.exe that comes with the zip file.
+2. After installing UltraUX and restarting your computer, run the installer and follow the on-screen instructions.
+3. Select the games where you have Hammer++ installed. The program will autodetect it, but if it doesn't find it, you can manually select the root folder of the game, for example, Gmod: C:\Program Files (x86)\Steam\steamapps\common\GarrysMod.
+4. After that, complete the installation, and you're done!
 
 [Download](https://github.com/TeamSourceBR/Darkerplusplus/releases)
 
+### Fixes for possible issues:
+
+1. If your Hammer theme is still white, go to settings > personalization > themes > Darker++.
+2. If your Windows taskbar is not dark, go to settings > personalization > colors > title bars and window borders.
+
+If you need support or want to provide feedback, join our Discord
+
 ##
+> [!NOTE]
+> - The way Darker works can cause Windows updates to break the theme. This happens because Windows breaks UltraUXThemePatcher during updates. To fix it, simply reinstall UltraUXThemePatcher, restart your computer, then go to "Settings > Personalization > Themes > Darker++" and reapply the theme.
 
 > [!WARNING]
 > - Make sure to back up your files before using Darker++, especially your Hammer++ settings. We are not responsible for any data loss.
