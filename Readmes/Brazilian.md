@@ -50,7 +50,7 @@ Caso precise de suporte ou queira dar um feedback, entre no nosso Discord.
 
 ##
 > [!NOTE]
-> - A maneira que o Darker funciona, faz com que updates do Windows possam quebrar o tema, isso ocorre porque ao atualizar, o Windows quebra o UltraUXThemePatcher, para resolver basta reinstalar o UltraUXThemePatcher, reinciar o computador, após isso vá em "Configurações > Personalização > Temas > Darker++" e reaplique o tema.
+> - A maneira que o Darker funciona, faz com que updates do Windows possam quebrar o tema, isso ocorre porque ao atualizar, o Windows quebra o UltraUXThemePatcher, para resolver basta reinstalar o UltraUXThemePatcher, reiniciar o computador, após isso vá em "Configurações > Personalização > Temas > Darker++" e reaplique o tema.
 
 > [!WARNING]
 > - Certifique-se de criar um ponto de restauração para que caso algo dê errado, você possa voltar o sistema para como estava, nós não nos resposabilizamos por qualquer dano.
