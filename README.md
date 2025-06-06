@@ -13,7 +13,8 @@
 <img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/title.png" alt="Darker++ icon" />
 
 ###
-[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-be00be.svg)](https://www.python.org/) ![Discord](https://img.shields.io/discord/1189628376504340590?logo=Discord&label=Discord%20server&color=be00be) [![Download](https://img.shields.io/badge/Download-Stable-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases) ![Version](https://img.shields.io/badge/Version-V.3-be00be.svg) 
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) 
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-be00be.svg)](https://www.python.org/) ![Discord](https://img.shields.io/discord/1189628376504340590?logo=Discord&label=Discord%20server&color=be00be) [![Download](https://img.shields.io/badge/Download-Stable-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases) ![Version](https://img.shields.io/badge/Version-V.3-be00be.svg) 
 
 
 
