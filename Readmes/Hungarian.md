@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=85&section=header"/>
+
 <div align="right">
     <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank">
         <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_br.png" height="25" width="25">
@@ -50,3 +51,6 @@ Ha élvezi a Darker++-t, fontolja meg, hogy támogasson minket a projekt fejlesz
 > [!WARNING]
 > - Mielőtt hasznláná a Darker++-t, legyen biztos abban hogy biztonsági mentéseket készített a fájlrairól, különösen a Hammer++ beállításairól. Nem vállalunk felelősséget az adatvesztésért. 
 > - Mikor egy új Hammer++ verzió ki jön, frissísteni fogjuk a telepítőnket, tehát le kell töltenie a legújabb telepítő verziót és újra telepíteni a témát.
+
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=100&section=footer"/>
+
