@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=85&section=header"/>
+
 <div align="right">
     <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank">
         <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_br.png" height="25" width="25">
@@ -62,3 +63,6 @@ If you need support or want to provide feedback, join our Discord
 > [!WARNING]
 > - Make sure to back up your files before using Darker++, especially your Hammer++ settings. We are not responsible for any data loss.
 > - Whenever a new version of Hammer++ is released, we will update our installer, so you will need to download the latest version of the installer and reinstall the theme.
+
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=100&section=footer"/>
+
