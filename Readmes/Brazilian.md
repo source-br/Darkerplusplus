@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=85&section=header"/>
+
 <div align="right">
     <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/README.md" target="_blank">
         <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_eua.png" height="25" width="25">
@@ -59,3 +60,6 @@ Caso precise de suporte ou queira dar um feedback, entre no nosso Discord.
 > [!WARNING]
 > - Certifique-se de criar um ponto de restauração para que caso algo dê errado, você possa voltar o sistema para como estava, nós não nos resposabilizamos por qualquer dano.
 > - Sempre que uma nova versão do Hammer++ for lançada atualizaremos nosso instalador também, então será necessario baixar a versão mais recente do instalador e reinstalar o tema.
+
+<img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=100&section=footer"/>
+
