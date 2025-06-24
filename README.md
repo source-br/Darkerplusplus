@@ -1,17 +1,17 @@
 <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=85&section=header"/>
 
 <div align="right">
-    <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank">
-        <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_br.png" height="25" width="25">
+    <a href="Readmes/Brazilian.md" target="_blank">
+        <img src="Readmes/images/flag_br.png" height="25" width="25">
     </a>
-    <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Hungarian.md" target="_blank">
-        <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_hu.png" height="25" width="25">
+    <a href="Readmes/Hungarian.md" target="_blank">
+        <img src="Readmes/images/flag_hu.png" height="25" width="25">
     </a>
 </div>
 
 ###
 
-<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/title.png" alt="Darker++ icon" />
+<img align="center" src="Readmes/images/title.png" alt="Darker++ icon" />
 
 ###
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) 
@@ -41,19 +41,21 @@ If you enjoy Darker++, consider supporting us for the development of the project
 
 ### Installation:
 
-1. Run the UltraUXThemePatcher.exe that comes with the zip file.
+1. Install the UltraUXThemePatcher.exe that comes with the `7z` file.
 2. After installing UltraUX and restarting your computer, run the installer and follow the on-screen instructions.
 3. Select the games where you have Hammer++ installed. The program will autodetect it, but if it doesn't find it, you can manually select the root folder of the game, for example, Gmod:
 - `C:\Program Files (x86)\Steam\steamapps\common\GarrysMod`.
 4. After that, complete the installation, and you're done!
 
 **Manually**
-1. Install UltraUXThemePatcher.exe and restart your computer.
+1. Install UltraUXThemePatcher.exe that comes with the `7z` file and restart your computer.
 2. Copy the folders inside the dll folder into the common folder of your Steam directory, usually located at: 
 - `C:\Program Files (x86)\Steam\steamapps\common` 
 3. Copy the folder and theme that matches your system from the theme folder into the Windows Themes folder: 
 - `C:\Windows\Resources\Themes`
 4. Apply the theme by going to Settings > Personalization > Themes > Darker++. Done!
+
+**[Install on Linux](Docs/Install%20on%20linux.md)**
 
 [Download](https://github.com/TeamSourceBR/Darkerplusplus/releases)
 

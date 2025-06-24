@@ -1,17 +1,17 @@
 <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=85&section=header"/>
 
 <div align="right">
-    <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/Brazilian.md" target="_blank">
-        <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_br.png" height="25" width="25">
+    <a href="../Readmes/Brazilian.md" target="_blank">
+        <img src="../Readmes/images/flag_br.png" height="25" width="25">
     </a>
     <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/README.md" target="_blank">
-        <img src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/flag_eua.png" height="25" width="25">
+        <img src="../Readmes/images/flag_eua.png" height="25" width="25">
     </a>
 </div>
 
 ###
 
-<img align="center" src="https://github.com/Source-BR/Darkerplusplus/blob/main/Readmes/images/title.png" alt="Darker++ icon" />
+<img align="center" src="../Readmes/images/title.png" alt="Darker++ icon" />
 
 ###
 [![GPLv3 license](https://img.shields.io/badge/Licenc-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) 
