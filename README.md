@@ -41,11 +41,19 @@ If you enjoy Darker++, consider supporting us for the development of the project
 
 ### Installation:
 
-
-1. Run the UltraUX.exe that comes with the zip file.
+1. Run the UltraUXThemePatcher.exe that comes with the zip file.
 2. After installing UltraUX and restarting your computer, run the installer and follow the on-screen instructions.
-3. Select the games where you have Hammer++ installed. The program will autodetect it, but if it doesn't find it, you can manually select the root folder of the game, for example, Gmod: C:\Program Files (x86)\Steam\steamapps\common\GarrysMod.
+3. Select the games where you have Hammer++ installed. The program will autodetect it, but if it doesn't find it, you can manually select the root folder of the game, for example, Gmod:
+- `C:\Program Files (x86)\Steam\steamapps\common\GarrysMod`.
 4. After that, complete the installation, and you're done!
+
+**Manually**
+1. Install UltraUXThemePatcher.exe and restart your computer.
+2. Copy the folders inside the dll folder into the common folder of your Steam directory, usually located at: 
+- `C:\Program Files (x86)\Steam\steamapps\common` 
+3. Copy the folder and theme that matches your system from the theme folder into the Windows Themes folder: 
+- `C:\Windows\Resources\Themes`
+4. Apply the theme by going to Settings > Personalization > Themes > Darker++. Done!
 
 [Download](https://github.com/TeamSourceBR/Darkerplusplus/releases)
 
