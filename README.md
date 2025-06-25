@@ -44,7 +44,7 @@ If you enjoy Darker++, consider supporting us for the development of the project
 1. Install the UltraUXThemePatcher.exe that comes with the `7z` file.
 2. After installing UltraUX and restarting your computer, run the installer and follow the on-screen instructions.
 3. Select the games where you have Hammer++ installed. The program will autodetect it, but if it doesn't find it, you can manually select the root folder of the game, for example, Gmod:
-- `C:\Program Files (x86)\Steam\steamapps\common\GarrysMod`.
+- `C:\Program Files (x86)\Steam\steamapps\common\GarrysMod`
 4. After that, complete the installation, and you're done!
 
 **Manually**
