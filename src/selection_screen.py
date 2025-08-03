@@ -12,21 +12,21 @@ class GameSelectionInterface(QWidget):
     def __init__(self, dll_manager, background_color="#333", text_color="white"):
         super().__init__()
 
-        # Definir cores personalizáveis
+        # Define customizable colors
         self.background_color = background_color
         self.text_color = text_color
 
-        # Definir o estilo de fundo e texto
+        # Set background and text style
         self.setStyleSheet(f"background-color: {self.background_color}; color: {self.text_color};")
         self.dll_manager = dll_manager
 
-        # Layout principal
+        # Main layout
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(10, 25, 10, 10)
         main_layout.setSpacing(10)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        # Título
+        # Title
         header_label = QLabel(translations[current_language]["title 2"])
         header_label.setStyleSheet(f"""
             QLabel {{
@@ -40,7 +40,7 @@ class GameSelectionInterface(QWidget):
         header_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(header_label)
 
-        # Subtítulo
+        # Subtitle
         sub_label = QLabel(translations[current_language]["subtitle 2"])
         sub_label.setStyleSheet(f"""
             QLabel {{
@@ -53,24 +53,24 @@ class GameSelectionInterface(QWidget):
         sub_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(sub_label)
 
-        # Layout para os jogos
+        # Layout for games
         grid_layout = QGridLayout()
         grid_layout.setContentsMargins(30, 25, 30, 10)
         grid_layout.setSpacing(10)
 
-        # Atualizar os caminhos detectados antes de construir a interface
+        # Update detected paths before building the interface
         self.dll_manager.find_game_folders()
 
         self.game_widgets = {}
         for row, game in enumerate(self.dll_manager.game_paths.keys()):
-            # Criar o botão estilizado com borda ao redor do nome do jogo
+            # Create a styled button with a border around the game name
             game_button = self.create_game_button(game, game in self.dll_manager.found_game_paths)
             self.game_widgets[game] = game_button
 
-            # Adicionar o botão ao layout de grade
+            # Add the button to the grid layout
             grid_layout.addWidget(game_button, row // 3, row % 3)
 
-        # Adiciona um QSpacerItem antes e depois do grid para centralizar verticalmente
+        # Add a QSpacerItem before and after the grid to vertically center it
         spacer_top = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         spacer_bottom = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -78,15 +78,15 @@ class GameSelectionInterface(QWidget):
         main_layout.addLayout(grid_layout)
         main_layout.addItem(spacer_bottom)
 
-        # Layout para o botão "Instalar"
+        # Layout for the "Install" button
         install_layout = QVBoxLayout()
         install_layout.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignBottom)
 
-        # Adiciona um item de espaço para empurrar o botão para baixo
+        # Add a spacer item to push the button down
         install_spacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         install_layout.addItem(install_spacer)
 
-        # Botão "Instalar"
+        # "Install" button
         install_button = QPushButton(translations[current_language]["install"])
         install_button.setStyleSheet(f"""
             QPushButton {{
@@ -104,13 +104,13 @@ class GameSelectionInterface(QWidget):
         install_button.clicked.connect(self.on_install_clicked)
         install_layout.addWidget(install_button)
 
-        # Adicionar o layout de instalação ao layout principal
+        # Add the install layout to the main layout
         main_layout.addLayout(install_layout)
 
         self.setLayout(main_layout)
 
     def create_game_button(self, game, is_found):
-        # Cria um botão estilizado com borda ao redor do nome do jogo
+        # Create a styled button with a border around the game name
         button = QPushButton(game)
         button.setStyleSheet(f"""
             QPushButton {{
@@ -138,10 +138,10 @@ class GameSelectionInterface(QWidget):
             path = Path(selected_dir)
             self.dll_manager.set_user_defined_path(game_name, selected_dir)
 
-            # Verificar se o caminho selecionado é válido
+            # Check if the selected path is valid
             if game_name in self.dll_manager.found_game_paths:
                 QMessageBox.information(self, translations[current_language]["path"], translations[current_language]["path 2"].format(game_name=game_name))
-                # Alterar a borda do botão para verde quando o caminho é selecionado manualmente
+                # Change the button border to green when the path is manually selected
                 button.setStyleSheet(f"""
                     QPushButton {{
                         background: {self.background_color};

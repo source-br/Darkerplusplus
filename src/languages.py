@@ -6,12 +6,12 @@ translations = {
         "no game": "Nenhum jogo selecionado",
         "please select": "Por favor, selecione pelo menos um jogo para continuar.",
         # welcome screen
-        "title 1": "BEM VINDO AO DARKER++",
+        "title 1": "Bem-vindo ao Hammerfy",
         "subtitle 1": "Deixe seu Hammer++ no modo escuro de maneira simples.",
         "continue": "Continuar",
         # Pop up
         "atention": "ATENÇÃO",
-        "info": "O Darker++ utiliza o Ultrauxtheme <br> para poder aplicar o tema escuro, <br> somente prossiga caso já o tenha <br> instalado e reiniciado seu computador.",
+        "info": "O Hammerfy utiliza o Ultrauxtheme <br> para poder aplicar o tema escuro, <br> somente prossiga caso já o tenha <br> instalado e reiniciado seu computador.",
         # selection screen
         "title 2": "JOGOS ENCONTRADOS",
         "subtitle 2": "Clique no jogo para selecionar sua pasta manualmente.",
@@ -32,7 +32,7 @@ translations = {
         "no game": "No game selected",
         "please select": "Please select at least one game to continue.",
         # welcome screen
-        "title 1": "WELCOME TO DARKER++",
+        "title 1": "Welcome to Hammerfy",
         "subtitle 1": "Set your Hammer++ to dark mode easily.",
         "continue": "Continue",
         # Pop up
@@ -58,7 +58,7 @@ translations = {
         "no game": "No se seleccionó ningún juego",
         "please select": "Por favor, seleccione al menos un juego para continuar.",
         # welcome screen
-        "title 1": "BIENVENIDO A DARKER++",
+        "title 1": "Bienvenido a Hammerfy",
         "subtitle 1": "Configura tu Hammer++ en modo oscuro fácilmente.",
         "continue": "Continuar",
         # Pop up
@@ -107,16 +107,16 @@ translations = {
     }
 }
 
-# Detectar o idioma do sistema operacional
+# Detect the operating system language
 system_language = locale.getdefaultlocale()[0]
 
-# Converter o idioma para o formato usado nas traduções (ex: 'pt-br')
+# Convert the language to the format used in translations (e.g., 'pt-br')
 if system_language:
     formatted_language = system_language.replace('_', '-').lower()
 else:
-    formatted_language = "en"  # Idioma padrão em caso de erro
+    formatted_language = "en"  # Default language in case of error
 
-# Verificar se o idioma detectado possui tradução disponível
+# Check if the detected language has a translation available
 current_language = formatted_language if formatted_language in translations else "en"
 
-print(f"idioma: {formatted_language}")
+print(f"language: {formatted_language}")

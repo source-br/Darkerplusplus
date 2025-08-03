@@ -6,8 +6,8 @@ from utils import resource_path
 
 class DllManager:
     def __init__(self):
-        self.default_drives = ["C:\\", "D:\\", "E:\\", "K:\\"]  # Discos padrão para busca
-        self.dll_folder = Path(resource_path("Resources\Tools\dll"))  # Repositório de DLLs
+        self.default_drives = ["C:\\", "D:\\", "E:\\", "K:\\"]  # Default drives for search
+        self.dll_folder = Path(resource_path("Resources\Tools\dll"))  # DLL repository
         self.game_paths = {
             "Half-Life 2": r"Half-Life 2\bin\hammerplusplus\bin",
             "Left 4 Dead 2": r"Left 4 Dead 2\bin\hammerplusplus\bin",
@@ -22,12 +22,12 @@ class DllManager:
         self.found_game_paths = {}
 
     def find_game_folders(self):
-        # Busca os jogos nos discos padrão e atualiza os caminhos encontrados.
-        self.found_game_paths.clear()  # Limpa os caminhos encontrados anteriormente
+        # Searches for games in the default drives and updates the found paths.
+        self.found_game_paths.clear()  # Clears previously found paths
 
         for drive in self.default_drives:
             for game, relative_path in self.game_paths.items():
-                # Regras especiais para o disco C
+                # Special rules for drive C
                 if drive == "C:\\":
                     full_path = Path(drive) / "Program Files (x86)\\Steam\\steamapps\\common" / relative_path
                 else:
@@ -35,32 +35,32 @@ class DllManager:
 
                 if full_path.exists() and full_path.is_dir():
                     self.found_game_paths[game] = str(full_path)
-                    print(f"Encontrado: {game} em {full_path}")  # Log de depuração
+                    print(f"Encontrado: {game} em {full_path}")  # Debug log
 
     def set_user_defined_path(self, game, custom_path):
-        # Define o caminho personalizado para o jogo especificado.
+        # Sets a custom path for the specified game.
         custom_path = Path(custom_path)
 
         try:
             if not custom_path.exists():
-                raise FileNotFoundError(f"O caminho especificado não existe: {custom_path}")
+                raise FileNotFoundError(f"The specified path does not exist: {custom_path}")
 
-            # Verificar se a pasta do Hammer++ está presente
+            # Check if the Hammer++ folder is present
             hammer_path = self.find_hammer_path(game, custom_path)
             if hammer_path:
                 self.found_game_paths[game] = str(hammer_path)
-                print(f"Caminho personalizado definido para {game}: {hammer_path}")
+                print(f"Custom path set for {game}: {hammer_path}")
             else:
                 raise FileNotFoundError(
-                    f"O caminho do Hammer++ não foi encontrado dentro da pasta do jogo selecionado: {custom_path}"
+                    f"The Hammer++ path was not found inside the selected game folder: {custom_path}"
                 )
         except FileNotFoundError as fnf_error:
-            self.show_error_popup("Erro de Caminho", str(fnf_error))
+            self.show_error_popup("Path Error", str(fnf_error))
         except Exception as e:
-            self.show_error_popup("Erro Desconhecido", str(e))
+            self.show_error_popup("Unknown Error", str(e))
 
     def find_hammer_path(self, game, custom_path):
-        # Tenta encontrar o caminho do Hammer++ dentro da pasta do jogo.
+        # Attempts to find the Hammer++ path inside the game folder.
         if game == "Garry's Mod":
             possible_path = custom_path / "bin" / "win64" / "hammerplusplus" / "bin"
         elif game in ["Day of Defeat Source", "Team Fortress 2", "Counter Strike Source"]:
@@ -73,48 +73,48 @@ class DllManager:
         return None
 
     def replace_dlls(self):
-        # Substitui as DLLs nas pastas dos jogos encontrados.
+        # Replaces the DLLs in the found game folders.
         for game, folder_path in self.found_game_paths.items():
             source_dll = self.dll_folder / game / "hammerplusplus_dll.dll"
             target_dll = Path(folder_path) / "hammerplusplus_dll.dll"
 
             if source_dll.exists() and target_dll.parent.exists():
                 try:
-                    print(f"Tentando substituir DLL de {game} para {target_dll}")
+                    print(f"Attempting to replace DLL for {game} to {target_dll}")
                     shutil.copy2(source_dll, target_dll)
-                    print(f"Substituído com sucesso: {target_dll}")
+                    print(f"Successfully replaced: {target_dll}")
                 except Exception as e:
-                    print(f"Erro ao substituir DLL para {game}: {e}")
+                    print(f"Error replacing DLL for {game}: {e}")
             else:
                 if not source_dll.exists():
-                    print(f"Arquivo DLL de origem não encontrado: {source_dll}")
+                    print(f"Source DLL file not found: {source_dll}")
                 if not target_dll.parent.exists():
-                    print(f"Pasta de destino não encontrada: {target_dll.parent}")
+                    print(f"Target folder not found: {target_dll.parent}")
 
     @staticmethod
     def show_error_popup(title, message):
-        # Exibe um pop-up de erro com o título e mensagem especificados.
+        # Displays an error popup with the specified title and message.
         app = QApplication.instance()
         if app is None:
             app = QApplication([])
         QMessageBox.critical(None, title, message)
-        # O programa continua rodando para permitir novas tentativas.
+        # The program continues running to allow new attempts.
 
 
-# Exemplo de uso
+# Usage example
 if __name__ == "__main__":
     manager = DllManager()
-    manager.find_game_folders()  # Procura pastas dos jogos nos discos padrão
+    manager.find_game_folders()  # Searches for game folders in the default drives
 
-    # Exemplo de caminho personalizado
+    # Example of custom path
     while True:
         try:
-            # Simula o usuário escolhendo a pasta do jogo
+            # Simulates the user choosing the game folder
             user_input = input("Digite o caminho personalizado ou 'sair' para encerrar: ")
             if user_input.lower() == "sair":
                 break
-            manager.set_user_defined_path("Garry's Mod", user_input)  # Define o caminho personalizado para o GMod
+            manager.set_user_defined_path("Garry's Mod", user_input)  # Sets the custom path for GMod
         except Exception as e:
             print(f"Erro ao definir o caminho: {e}")
 
-    manager.replace_dlls()  # Substitui as DLLs encontradas
+    manager.replace_dlls()  # Replaces the found DLLs
