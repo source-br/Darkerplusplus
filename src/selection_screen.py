@@ -130,9 +130,11 @@ class GameSelectionInterface(QWidget):
         return button
 
     def on_install_clicked(self):
+        # Emit the install signal
         self.install_signal.emit()
 
     def select_game_path(self, game_name, button):
+        # Open a dialog to select the game directory
         selected_dir = QFileDialog.getExistingDirectory(self, translations[current_language]["select"].format(game_name=game_name))
         if selected_dir:
             path = Path(selected_dir)

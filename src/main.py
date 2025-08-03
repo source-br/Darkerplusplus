@@ -16,17 +16,23 @@ from utils import resource_path
 class MainApp(QStackedWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Darker++")
+        # Set the main window properties
+        self.setWindowTitle("Hammerfy")
         self.setFixedSize(800, 500)
         self.setWindowIcon(QIcon(resource_path("Resources/images/icon.png")))
 
+        # Detect the Windows version
         self.windows_version = self.detect_windows_version()
 
+        # Set the application style and title bar
         self.set_application_style()
         self.set_dark_title_bar()
+
+        # Initialize the DLL manager
         self.dll_manager = DllManager()
 
-        self.dll_manager.find_game_folders()  # Busca inicial pelos jogos
+        self.dll_manager.find_game_folders()  # Initial search for games
+        # Create and add screens to the stacked widget
         self.welcome_screen = WelcomeInterface()
         self.game_selection_screen = GameSelectionInterface(self.dll_manager)
         self.end_screen = EndScreenInterface()
@@ -35,24 +41,27 @@ class MainApp(QStackedWidget):
         self.addWidget(self.game_selection_screen)
         self.addWidget(self.end_screen)
 
+        # Connect signals and set the initial screen
         self.welcome_screen.continue_button.clicked.connect(self.show_game_selection)
         self.game_selection_screen.install_signal.connect(self.execute_installation)
 
         self.setCurrentWidget(self.welcome_screen)
 
     def detect_windows_version(self):
-        release = platform.release()  # Obtém a versão do Windows (ex.: '10', '11')
+        # Detect the Windows version (e.g., '10', '11')
+        release = platform.release()  # Obtains the Windows version (e.g., '10', '11')
         if release == "10":
-            print("Sistema detectado: Windows 10")
+            print("Detected system: Windows 10")
             return "Windows 10"
         elif release == "11":
-            print("Sistema detectado: Windows 11")
+            print("Detected system: Windows 11")
             return "Windows 11"
         else:
-            print("Sistema operacional não suportado.")
-            return "Desconhecido"
+            print("Unsupported operating system.")
+            return "Unknown"
 
     def set_application_style(self):
+        # Set the application-wide stylesheet
         self.setStyleSheet("""
             QWidget {
                 background-color: #1e1e1e;
@@ -74,15 +83,18 @@ class MainApp(QStackedWidget):
         """)
 
     def set_dark_title_bar(self):
+        # Set the dark title bar palette
         dark_palette = QPalette()
         dark_palette.setColor(QPalette.ColorRole.Window, QColor(30, 30, 30))
         dark_palette.setColor(QPalette.ColorRole.WindowText, QColor(255, 255, 255))
         QApplication.setPalette(dark_palette)
 
     def show_game_selection(self):
+        # Switch to the game selection screen
         self.setCurrentWidget(self.game_selection_screen)
 
     def execute_installation(self):
+        # Execute the installation process
         selected_games = self.dll_manager.found_game_paths.keys()
 
         if not selected_games:
@@ -94,7 +106,7 @@ class MainApp(QStackedWidget):
             return
 
         try:
-            # Substituir DLLs
+            # Replace DLLs
             self.dll_manager.replace_dlls()
 
             repository_path = ""  
@@ -105,11 +117,12 @@ class MainApp(QStackedWidget):
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Erro",
-                f"Ocorreu um erro durante a instalação:\n{str(e)}"
+                "Error",
+                f"An error occurred during installation:\n{str(e)}"
             )
 
 if __name__ == "__main__":
+    # Initialize and run the application
     app = QApplication(sys.argv)
     main_app = MainApp()
     main_app.show()

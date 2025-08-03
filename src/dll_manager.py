@@ -6,6 +6,7 @@ from utils import resource_path
 
 class DllManager:
     def __init__(self):
+        # Initialize default drives and paths
         self.default_drives = ["C:\\", "D:\\", "E:\\", "K:\\"]  # Default drives for search
         self.dll_folder = Path(resource_path("Resources\Tools\dll"))  # DLL repository
         self.game_paths = {
@@ -35,7 +36,7 @@ class DllManager:
 
                 if full_path.exists() and full_path.is_dir():
                     self.found_game_paths[game] = str(full_path)
-                    print(f"Encontrado: {game} em {full_path}")  # Debug log
+                    print(f"Found: {game} in {full_path}")  # Debug log
 
     def set_user_defined_path(self, game, custom_path):
         # Sets a custom path for the specified game.
@@ -110,11 +111,11 @@ if __name__ == "__main__":
     while True:
         try:
             # Simulates the user choosing the game folder
-            user_input = input("Digite o caminho personalizado ou 'sair' para encerrar: ")
-            if user_input.lower() == "sair":
+            user_input = input("Enter the custom path or 'exit' to quit: ")
+            if user_input.lower() == "exit":
                 break
             manager.set_user_defined_path("Garry's Mod", user_input)  # Sets the custom path for GMod
         except Exception as e:
-            print(f"Erro ao definir o caminho: {e}")
+            print(f"Error setting the path: {e}")
 
     manager.replace_dlls()  # Replaces the found DLLs

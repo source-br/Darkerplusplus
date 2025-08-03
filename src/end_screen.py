@@ -10,13 +10,13 @@ class EndScreenInterface(QWidget):
         super().__init__()
         self.setStyleSheet("background-color: #333; color: white;")
 
-        # Layout principal
+        # Main layout
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0, 25, 0, 0)
         main_layout.setSpacing(10)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # Renderizando a imagem SVG
+        # Rendering the SVG image
         self.svg_renderer = QSvgRenderer(resource_path("Resources/images/SVG/done-icon.svg"))
         self.svg_pixmap = QPixmap(100, 100)
         self.svg_pixmap.fill(Qt.GlobalColor.transparent)
@@ -25,14 +25,14 @@ class EndScreenInterface(QWidget):
         self.svg_renderer.render(painter)
         painter.end()
 
-        # Imagem SVG (ícone de sucesso) em QPixmap
+        # SVG image (success icon) in QPixmap
         image_label = QLabel()
         image_label.setPixmap(self.svg_pixmap)
         image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         image_label.setStyleSheet("margin: 0; padding: 0; background: none; ")
         main_layout.addWidget(image_label)
 
-        # Título
+        # Title
         title_label = QLabel(translations[current_language]["title 3"])
         title_label.setStyleSheet("""
             QLabel {
@@ -45,7 +45,7 @@ class EndScreenInterface(QWidget):
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(title_label)
 
-        # Subtítulo
+        # Subtitle
         subtitle_label = QLabel(translations[current_language]["subtitle 3"])
         subtitle_label.setStyleSheet("""
             QLabel {
@@ -57,7 +57,7 @@ class EndScreenInterface(QWidget):
         subtitle_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(subtitle_label)
 
-        # Botão de fechar
+        # Close button
         self.close_button = QPushButton(translations[current_language]["close"])
         self.close_button.setStyleSheet("""
             QPushButton {

@@ -81,6 +81,7 @@ class PopupWindow(QDialog):
 
         popup_layout.addLayout(button_layout)
 
+        # Set the layout and window properties
         self.setLayout(popup_layout)
         self.setWindowTitle(translations[current_language]["atention"])
         self.setWindowIcon(QIcon(resource_path("Resources/images/SVG/dialog-warning.svg")))
@@ -164,5 +165,6 @@ class WelcomeInterface(QWidget):
         self.setLayout(main_layout)
 
     def open_popup(self):
+        # Display the popup modally
         self.popup = PopupWindow(background_color=self.background_color, text_color=self.text_color)
         self.popup.exec()  # Displays the popup modally

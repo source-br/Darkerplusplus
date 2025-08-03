@@ -10,10 +10,10 @@ translations = {
         "subtitle 1": "Deixe seu Hammer++ no modo escuro de maneira simples.",
         "continue": "Continuar",
         # Pop up
-        "atention": "ATENÇÃO",
+        "atention": "Atenção",
         "info": "O Hammerfy utiliza o Ultrauxtheme <br> para poder aplicar o tema escuro, <br> somente prossiga caso já o tenha <br> instalado e reiniciado seu computador.",
         # selection screen
-        "title 2": "JOGOS ENCONTRADOS",
+        "title 2": "Jogos encontrados",
         "subtitle 2": "Clique no jogo para selecionar sua pasta manualmente.",
         "install": "Instalar",
         # Pop ups
@@ -23,7 +23,7 @@ translations = {
         "invalid 2": "O caminho selecionado não contém o jogo esperado.",
         "select": "Selecione o diretório do {game_name}",
         # end Screen
-        "title 3": "PRONTO!",
+        "title 3": "Pronto!",
         "subtitle 3": "Aproveite seu Hammer++ com o modo escuro.",
         "close": "Fechar",
     },
