@@ -4,6 +4,9 @@
     <a href="../Readmes/Brazilian.md" target="_blank">
         <img src="../Readmes/images/flag_br.png" height="25" width="25">
     </a>
+<a href="../Readmes/Russian.md" target="_blank">
+        <img src="images/russian.png" height="25" width="25">
+    </a>
     <a href="https://github.com/Source-BR/Darkerplusplus/blob/main/README.md" target="_blank">
         <img src="../Readmes/images/flag_eua.png" height="25" width="25">
     </a>
