@@ -1,14 +1,14 @@
 <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=85&section=header"/>
 
 <div align="right">
-    <a href="Readmes/Brazilian.md" target="_blank">
-        <img src="Readmes/images/flag_br.png" height="25" width="25">
+    <a href="Brazilian.md" target="_blank">
+        <img src="images/flag_br.png" height="25" width="25">
     </a>
-    <a href="Readmes/Hungarian.md" target="_blank">
-        <img src="Readmes/images/flag_hu.png" height="25" width="25">
+    <a href="Hungarian.md" target="_blank">
+        <img src="images/flag_hu.png" height="25" width="25">
     </a>
-    <a href="Readmes/Russian.md" target="_blank">
-        <img src="Readmes/images/flag_ru.png" height="25" width="25">
+    <a href="../README.md" target="_blank">
+        <img src="Readmes/images/flag_eua.png" height="25" width="25">
     </a>
 </div>
 
@@ -17,65 +17,65 @@
 <img align="center" src="Readmes/images/title.png" alt="Darker++ icon" />
 
 ###
-[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) 
+[![Лицензия GPLv3](https://img.shields.io/badge/License-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-be00be.svg)](https://www.python.org/) 
 [![Discord](https://img.shields.io/discord/1189628376504340590?logo=Discord&label=Discord%20server&color=be00be)](https://discord.gg/tVNv6SNZZT)
-[![Download](https://img.shields.io/badge/Download-Stable-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases) 
-![Version](https://img.shields.io/badge/Version-V.3-be00be.svg) 
+[![Установить](https://img.shields.io/badge/Download-Stable-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases) 
+![Версия](https://img.shields.io/badge/Version-V.3-be00be.svg) 
 
 
 
-Darker++ is a dark theme installer designed for Hammer++, providing an improved visual experience for both Hammer++ and Windows.
+Darker++ это установщик темной темы сделанный для Hammer++, делая комфортный визуал для Hammer++ и Windows.
 
-The project combines the application of a dark theme on the Windows operating system with the replacement of Hammer++ DLLs, ensuring that the program works 100% in dark mode.
+Проект соединяет темную тему на операционной системе Windows с заменой DLL Hammer++, уверяя что программа будет работать 100% в темной теме.
 
 https://github.com/user-attachments/assets/1f2c9877-c3d8-48cc-af3a-67eddadee963
 
 ##
 
-### Donate:
+### Поддержать:
 
-If you enjoy Darker++, consider supporting us for the development of the project. Your support helps us continue developing this program even further ❤️
+Если вам нравится Darker++, вы можете поддержать нас для разработки проекта. Ваша поддержка помогает разрабатывать программу дольше ❤️
 
 <a href="https://nubank.com.br/cobrar/1na00u/67594881-0eb2-45fc-b73c-7d065d9ba400" target="_blank"><img src="https://img.shields.io/badge/-nubank-0D1117?style=for-the-badge&logo=nubank&logoColor=820AD1&labelColor=0D1117" target="_blank"></a>
 <a href="https://www.paypal.com/donate/?business=AUZRQZ6DZZAPQ&no_recurring=0&currency_code=USD" target="_blank"><img src="https://img.shields.io/badge/-paypal-0D1117?style=for-the-badge&logo=paypal&logoColor=003087&labelColor=0D1117" target="_blank"></a>
 
 ##
 
-### Installation:
+### Установка:
 
-1. Install the UltraUXThemePatcher.exe that comes with the `7z` file.
-2. After installing UltraUX and restarting your computer, run the installer and follow the on-screen instructions.
-3. Select the games where you have Hammer++ installed. The program will autodetect it, but if it doesn't find it, you can manually select the root folder of the game, for example, Gmod:
+1. Установите UltraUXThemePatcher.exe который идет совместно с файлом `7z`.
+2. После установки UltraUX перезагрузки вашего компьютера, запустите установщик и следовайте инструкциям на экранне.
+3. Выберите игры там, где вы имеете Hammer++ установленным. Программа автоматически найдет их, но если программа не может автоматически найти их, вы можете самостоятельно выбрать корневую папку игры, например, Garry's Mod:
 - `C:\Program Files (x86)\Steam\steamapps\common\GarrysMod`
-4. After that, complete the installation, and you're done!
+4. После этого, закончите установку, и все готово!
 
-**Manually**
-1. Install UltraUXThemePatcher.exe that comes with the `7z` file and restart your computer.
-2. Copy the folders inside the dll folder into the common folder of your Steam directory, usually located at: 
+**Самостоятельная установка**
+1. Установите UltraUXThemePatcher.exe который идет совместно с файлом `7z`.
+2. Скопируйте папки внутри папки "dll" в папку common внутри папки Steam>steamapps, обычно находится в: 
 - `C:\Program Files (x86)\Steam\steamapps\common` 
-3. Copy the folder and theme that matches your system from the theme folder into the Windows Themes folder: 
+3. Скопируйте папку и тему которая подходит под ващ компьютер из папки тем в папку Windows Themes: 
 - `C:\Windows\Resources\Themes`
-4. Apply the theme by going to Settings > Personalization > Themes > Darker++. Done!
+4. Примените тему в Настройки > Персонализация > Темы > Darker++. И готово!
 
-**[Install on Linux](Docs/Install%20on%20linux.md)**
+**[Установка на Linux](Docs/Install%20on%20linuxRu.md)**
 
-[Download](https://github.com/TeamSourceBR/Darkerplusplus/releases)
+[Установить](https://github.com/TeamSourceBR/Darkerplusplus/releases)
 
-### Fixes for possible issues:
+### Решения для возможных проблем:
 
-1. If your Hammer theme is still white, go to settings > personalization > themes > Darker++.
-2. If your Windows taskbar is not dark, go to settings > personalization > colors > title bars and window borders.
+1. Если ваша тема Hammer++ всё ёще белая, тогда перейдите в Настройки > Персонализация > Темы > Darker++.
+2. Если таскбар Windows всё ёще не темный, тогда перейдите в Настройки > Персонализация > Цвета > Титульные бары и границы окон.
 
-If you need support or want to provide feedback, join our Discord
+Если вам нужна помощь или хотите поделится своим мнением, заходите в наш Discord!
 
 ##
-> [!NOTE]
-> - The way Darker works can cause Windows updates to break the theme. This happens because Windows breaks UltraUXThemePatcher during updates. To fix it, simply reinstall UltraUXThemePatcher, restart your computer, then go to "Settings > Personalization > Themes > Darker++" and reapply the theme.
+> [!ПРЕМИЧАНИЕ]
+> - Путь которым работает Darker++ может сломаться благадоря обновлениям Windows. Это происходит потому-что Windows обновления ломают UltraUXThemePatcher во время обновлений. Чтобы починить это, переустановите UltraUXThemePatcher, перезапустите компьютер, потом перейдите в Настройки > Персонализация > Темы > Darker++" и заново принимите тему.
 
-> [!WARNING]
-> - Make sure to back up your files before using Darker++, especially your Hammer++ settings. We are not responsible for any data loss.
-> - Whenever a new version of Hammer++ is released, we will update our installer, so you will need to download the latest version of the installer and reinstall the theme.
+> [!ВНИМАНИЕ]
+> - Создайте бэкап своих файлов перед изпользованием Darker++, особенно настройки Hammer++. Мы не виноваты за любую потерю файлов.
+> - Когда новая версия Hammer++ выходит, мы обновляем наш инсталятор, так что вам нужно установить последную версию Hammer++ и заново принимить тему.
 
 <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=be00be&height=100&section=footer"/>
 
