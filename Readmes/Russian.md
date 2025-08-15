@@ -8,13 +8,13 @@
         <img src="images/flag_hu.png" height="25" width="25">
     </a>
     <a href="../README.md" target="_blank">
-        <img src="Readmes/images/flag_eua.png" height="25" width="25">
+        <img src="images/flag_eua.png" height="25" width="25">
     </a>
 </div>
 
 ###
 
-<img align="center" src="Readmes/images/title.png" alt="Darker++ icon" />
+<img align="center" src="images/title.png" alt="Darker++ icon" />
 
 ###
 [![Лицензия GPLv3](https://img.shields.io/badge/License-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) 
