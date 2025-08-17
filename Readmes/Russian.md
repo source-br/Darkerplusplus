@@ -58,7 +58,7 @@ https://github.com/user-attachments/assets/1f2c9877-c3d8-48cc-af3a-67eddadee963
 - `C:\Windows\Resources\Themes`
 4. Примените тему в Настройки > Персонализация > Темы > Darker++. И готово!
 
-**[Установка на Linux](Docs/Install%20on%20linuxru.md)**
+**[Установка на Linux](../Docs/RU/Установка%20на%20Linux.md)**
 
 [Установить](https://github.com/TeamSourceBR/Darkerplusplus/releases)
 
