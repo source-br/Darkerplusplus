@@ -53,6 +53,32 @@ translations = {
         "subtitle 3": "Enjoy your Hammer++ in dark mode.",
         "close": "Close",
     },
+    "ru": {
+        # main
+        "no game": "Нет выбранных игр",
+        "please select": "Пожалуйста, выберите минимум одну игру для продолжения.",
+        # welcome screen
+        "title 1": "ДОБРО ПОЖАЛОВАТЬ В DARKER++",
+        "subtitle 1": "Настройте ваш Hammer++ в темную тему легко.",
+        "continue": "Продолжить",
+        # Pop up
+        "atention": "ВНИМАНИЕ",
+        "info": "Darker++ изпользует Ultrauxtheme <br> для применения темной темы. <br> Продолжайте только если вы <br> установили это и перезапустили компьютер.",
+        # selection screen
+        "title 2": "ИГРЫ НАЙДЕНЫ",
+        "subtitle 2": "Нажмите на папку игры чтобы выбрать её.",
+        "install": "Установить",
+        # Pop ups
+        "path": "Путь обновлен",
+        "path 2": "Путь к {game_name} успешно обновлен.",
+        "invalid": "Invalid Path",
+        "invalid 2": "Выбранный путь не имеет ожидаемую игру.",
+        "select": "Выберите директорию {game_name}.",
+        # end screen
+        "title 3": "ГОТОВО!",
+        "subtitle 3": "Наслаждайтесь вашим Hammer++ в темном режиме.",
+        "close": "Закрыть",
+    },
     "es-es": {
         # main
         "no game": "No se seleccionó ningún juego",
