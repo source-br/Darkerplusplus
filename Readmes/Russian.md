@@ -29,7 +29,7 @@ Darker++ это установщик темной темы сделанный д
 
 Проект соединяет темную тему на операционной системе Windows с заменой DLL Hammer++, уверяя что программа будет работать 100% в темной теме.
 
-https://github.com/user-attachments/assets/1f2c9877-c3d8-48cc-af3a-67eddadee963
+https://github.com/user-attachments/assets/3a244d2a-12e3-4257-b221-f2105cbba03c
 
 ##
 
