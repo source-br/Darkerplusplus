@@ -12,7 +12,7 @@ winecfg
 
 | Dark                     | Breeze                       |
 | ------------------------ | ---------------------------- |
-| ![Dark](img/dark.png) | ![Breeze](img/breeze.png) |
+| ![Dark](../img/dark.png) | ![Breeze](../img/breeze.png) |
 
 Скопируйте текст из файла `.txt` из темы которую вы выбрали.
 Затем, откройте ваш Wine `user.reg` файл, обычно находится в папке `.wine`.
