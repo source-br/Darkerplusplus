@@ -53,7 +53,7 @@ translations = {
         "subtitle 3": "Enjoy your Hammer++ in dark mode.",
         "close": "Close",
     },
-    "ru": {
+    "ru-ru": {
         # main
         "no game": "Нет выбранных игр",
         "please select": "Пожалуйста, выберите минимум одну игру для продолжения.",
