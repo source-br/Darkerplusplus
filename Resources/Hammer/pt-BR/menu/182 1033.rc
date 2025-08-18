@@ -1,0 +1,134 @@
+182 MENU
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+{
+  POPUP "Object"
+  {
+    MENUITEM "Cu&t\tCtrl+X",  32941
+    MENUITEM "&Copy\tCtrl+C",  32942
+    MENUITEM "&Delete\tDel",  32858
+    MENUITEM "Paste &Special...",  32921
+    MENUITEM SEPARATOR
+    MENUITEM "&Undo\tCtrl+Z",  57643
+    MENUITEM "&Redo\tCtrl+Y",  57644
+    MENUITEM SEPARATOR
+    MENUITEM "&Carve\tCtrl+Shift+C",  32868
+    MENUITEM "&Merge\tCtrl+Shift+M",  32869
+    MENUITEM "Make Hollow",  32920
+    MENUITEM SEPARATOR
+    MENUITEM "&Group\tCtrl+G",  32871
+    MENUITEM "&Ungroup\tCtrl+U",  32872
+    MENUITEM SEPARATOR
+    MENUITEM "&Tie to Entity\tCtrl+T",  1110
+    MENUITEM "&Tie to Entity Individually\tShift+Ctrl+T",  1115
+    MENUITEM "&Move to World\tCtrl+Shift+W",  32873
+    MENUITEM SEPARATOR
+    MENUITEM "Snap to Grid\tCtrl+B",  32947
+    MENUITEM "Transform\tCtrl+M",  113
+    MENUITEM "Center &Origins",  33182
+    POPUP "&Align"
+    {
+      MENUITEM "To &Left",  32891
+      MENUITEM "To &Right",  32892
+      MENUITEM "To &Top",  32893
+      MENUITEM "To &Bottom",  32894
+    }
+    POPUP "&Flip Objects"
+    {
+      MENUITEM "&Horizontally\tCtrl+L",  32935
+      MENUITEM "&Vertically\tCtrl+I",  32936
+    }
+    MENUITEM "Create Instance from Selection",  33326
+    MENUITEM SEPARATOR
+    MENUITEM "&Properties",  32819
+  }
+  POPUP "Create object"
+  {
+    MENUITEM "&Create Object",  32899
+    MENUITEM "&Create Cylinder",  32897
+    MENUITEM "&Create Arch",  32898
+  }
+  POPUP "2D View"
+  {
+    MENUITEM "&Paste",  32938
+    MENUITEM "Paste &Special",  32921
+    MENUITEM "Export Again",  33025
+    MENUITEM SEPARATOR
+    MENUITEM "&Undo",  57643
+    MENUITEM "&Redo",  57644
+  }
+  POPUP "Path"
+  {
+    MENUITEM "&Delete Nodes",  32990
+    MENUITEM "&Add Node",  32992
+    MENUITEM "&Properties...",  32993
+    MENUITEM SEPARATOR
+    MENUITEM "P&ath Properties...",  32994
+    MENUITEM "Delete Pa&th",  33011
+    MENUITEM "&Select Path",  33023
+    MENUITEM "&Hide Path",  33024
+  }
+  POPUP "Face"
+  {
+    POPUP "&Align texture"
+    {
+      MENUITEM "To face",  33034
+      MENUITEM "To world",  33035
+    }
+    POPUP "&Justify texture"
+    {
+      MENUITEM "&None",  33030
+      MENUITEM "&Top",  33036
+      MENUITEM "&Bottom",  33051
+      MENUITEM "&Left",  33027
+      MENUITEM "&Right",  33028
+      MENUITEM "&Center",  33029
+      MENUITEM "&Fit to face",  33032
+    }
+  }
+  POPUP "Title window"
+  {
+    MENUITEM "2D &Top (x/y)",  32779
+    MENUITEM "2D Front (&y/z)",  32781
+    MENUITEM "2D Side (x/&z)",  32780
+    MENUITEM "2D &Logical",  33205
+    MENUITEM SEPARATOR
+    MENUITEM "3D &Wireframe",  32778
+    MENUITEM "3D &Flat",  32790
+    MENUITEM "3D &Textured",  32777
+    MENUITEM "3D &Shaded Textured Polygons",  32788
+    MENUITEM "3D &Lighting Preview",  33096
+    MENUITEM "3D &Lightmap Grid",  33095
+    MENUITEM "3D &Smooth",  33119
+  }
+  POPUP "Overlay"
+  {
+    MENUITEM "&Properties",  32819
+  }
+  POPUP "Origin Handle"
+  {
+    MENUITEM "&Center on Entity",  33181
+  }
+  POPUP "Logical Object"
+  {
+    MENUITEM "Cu&t\tCtrl+X",  32941
+    MENUITEM "&Copy\tCtrl+C",  32942
+    MENUITEM "&Delete\tDel",  32858
+    MENUITEM "&Paste\tCtrl+V",  32938
+    MENUITEM SEPARATOR
+    MENUITEM "&Undo\tCtrl+Z",  57643
+    MENUITEM "&Redo\tCtrl+Y",  57644
+    MENUITEM SEPARATOR
+    MENUITEM "&Group\tCtrl+G",  32871
+    MENUITEM "&Ungroup\tCtrl+U",  32872
+    MENUITEM SEPARATOR
+    MENUITEM "Select All Connected",  33215
+    MENUITEM "Select All Cascading",  33213
+    MENUITEM SEPARATOR
+    MENUITEM "Layout D&efault",  33221
+    MENUITEM "Layout &Block",  33210
+    MENUITEM "Layout Ge&ometric",  33219
+    MENUITEM "Layout Schematic (TBD)",  33220
+    MENUITEM SEPARATOR
+    MENUITEM "&Properties",  32819
+  }
+}

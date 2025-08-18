@@ -1,0 +1,28 @@
+128 MENU
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+{
+  POPUP "&File"
+  {
+    MENUITEM "&New\tCtrl+N",  57600
+    MENUITEM "&Open...\tCtrl+O",  57601
+    MENUITEM SEPARATOR
+    POPUP "Recent Files..."
+    {
+      MENUITEM "Recent File",  57616,  GRAYED
+    }
+    MENUITEM SEPARATOR
+    MENUITEM "E&xit",  57665
+  }
+  POPUP "&Tools"
+  {
+    MENUITEM "&Options...",  32870
+    MENUITEM "&Keybind Editor...",  33311
+  }
+  POPUP "&Help"
+  {
+    MENUITEM "&Help Topics",  32940
+    MENUITEM SEPARATOR
+    MENUITEM "&About...",  57664
+    MENUITEM "Check for Updates",  33313
+  }
+}

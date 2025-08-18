@@ -1,0 +1,229 @@
+129 MENU
+LANGUAGE LANG_PORTUGUESE, SUBLANG_PORTUGUESE_BRAZILIAN
+{
+  POPUP "&Arquivo"
+  {
+    MENUITEM "&Novo\tCtrl+N",  57600
+    MENUITEM "&Abrir...\tCtrl+O",  57601
+    MENUITEM "&Fechar",  57602
+    MENUITEM "&Salvar\tCtrl+S",  57603
+    MENUITEM "Salvar &como...",  57604
+    MENUITEM SEPARATOR
+    MENUITEM "&Exportar...",  32900
+    MENUITEM "Exportar novamente\tAlt-B",  33025
+    MENUITEM "Exportar para .&DXF",  33001
+    MENUITEM SEPARATOR
+    MENUITEM "C&ompilar mapa...\tF9",  32903
+    MENUITEM SEPARATOR
+    MENUITEM "&Recarregar sons",  33179
+    MENUITEM SEPARATOR
+    POPUP "Arquivos recentes..."
+    {
+      MENUITEM "<None>",  57616
+    }
+    MENUITEM SEPARATOR
+    MENUITEM "S&air",  57665
+  }
+  POPUP "&Editar"
+  {
+    MENUITEM "&Desfazer\tCtrl+Z",  57643
+    MENUITEM "&Refazer\tCtrl+Y",  57644
+    MENUITEM "Desfazer/Refazer Ativo",  32949
+    MENUITEM SEPARATOR
+    MENUITEM "&Encontrar entidades...\tCtrl+Shift+F",  33113
+    MENUITEM "&Substituir...\tCtrl+Shift+R",  57641
+    MENUITEM SEPARATOR
+    MENUITEM "Co&rtar\tCtrl+X",  32941
+    MENUITEM "&Copiar\tCtrl+C",  32942
+    MENUITEM "&Colar\tCtrl+V",  32938
+    MENUITEM "Co&lar especial...",  32921
+    MENUITEM "&Deletar\tDel",  32858
+    MENUITEM SEPARATOR
+    MENUITEM "L&impar seleção\tEscape",  32865
+    MENUITEM "Selecionar &tudo",  32875
+    MENUITEM SEPARATOR
+    MENUITEM "Pr&opriedades\tAlt+Enter",  32819
+  }
+  POPUP "&Mapa"
+  {
+    MENUITEM "&Alinhar à Grade\tShift+W",  32863
+    MENUITEM "Exi&bir Grade\tShift+R",  32796
+    POPUP "&Configurações da Grade"
+    {
+      MENUITEM "&Diminuir grade\t[",  32879
+      MENUITEM "&Aumentar grade\t]",  32880
+    }
+    POPUP "U&nidades"
+    {
+      MENUITEM "&Nenhuma",  33099
+      MENUITEM "&Polegadas",  33100
+      MENUITEM "&Pés + Polegadas",  33101
+    }
+    MENUITEM SEPARATOR
+    MENUITEM "Exibir Número do Brush Selecionado",  33175
+    MENUITEM "&Relatório de Entidades...",  32996
+    MENUITEM "Galeria de E&ntidades",  33171
+    MENUITEM "&Checar problemas\tAlt+P",  32930
+    MENUITEM "Diff Map File",  33203
+    MENUITEM SEPARATOR
+    MENUITEM "&Carregar Pointfile",  33021
+    MENUITEM "&Descarregar Pointfile",  33022
+    MENUITEM "&Carregar Portal File",  33225
+    MENUITEM "&Descarregar Portal File",  33227
+    MENUITEM SEPARATOR
+    MENUITEM "Mostrar &informações",  32916
+    MENUITEM "&Propriedades do mapa...",  32902
+  }
+  POPUP "&Visualizar"
+  {
+    POPUP "Screen &Elements"
+    {
+      MENUITEM "Selection &Mode Bar",  59407
+      MENUITEM "&Object Bar",  59400
+      MENUITEM "Un&do Redo Bar",  59408
+      MENUITEM "Manifest Bar",  59409
+      MENUITEM "Map&tools Bar",  59401
+      MENUITEM "Mapo&perations Bar",  59404
+      MENUITEM "Map&view Bar",  59402
+      MENUITEM "&Filter Control",  59399
+      MENUITEM "Te&xture Bar",  59403
+      MENUITEM SEPARATOR
+      MENUITEM "&Status Bar",  59393
+    }
+    MENUITEM "&Autosize 4 Views\tCtrl+A",  32824
+    MENUITEM SEPARATOR
+    MENUITEM "2D &X/Y",  32779
+    MENUITEM "2D &Y/Z",  32781
+    MENUITEM "2D X/&Z",  32780
+    MENUITEM "2D &Logical",  33205
+    MENUITEM SEPARATOR
+    MENUITEM "3D &Wireframe",  32778
+    MENUITEM "3D &Filled Polygons",  32790
+    MENUITEM "3D &Textured Polygons",  32777
+    MENUITEM "3D &Shaded Textured Polygons",  32788
+    MENUITEM "3D Lighting Preview",  33096
+    MENUITEM SEPARATOR
+    MENUITEM "Set &Grid Size...",  33293
+    MENUITEM "Set &Fog Preview...",  33303
+    MENUITEM "Set Background Images...",  33335
+    MENUITEM SEPARATOR
+    MENUITEM "&Center Views on Selection\tCtrl+E",  32918
+    MENUITEM "Center &3D Views on Selection",  33172
+    MENUITEM "Go to Coordinates...",  33176
+    MENUITEM "G&o to Brush Number...\tCtrl+Shift+G",  33061
+    MENUITEM SEPARATOR
+    MENUITEM "Show C&onnections",  32931
+    MENUITEM "Show Helpers",  33114
+    MENUITEM "Show Models in 2D",  33198
+    MENUITEM "&Hide Items",  32907
+    MENUITEM "Hide Entity &Names",  33102
+    MENUITEM SEPARATOR
+    MENUITEM "QuickHide Objects\tH",  33285
+    MENUITEM "QuickHide Unselected Objects\tCtrl+H",  33286
+    MENUITEM "Unhide QuickHide Objects\tU",  33287
+    MENUITEM "Convert QuickHide Objects to Visgroup",  33289
+    MENUITEM SEPARATOR
+    MENUITEM "Move Selection To V&isgroup",  32925
+    MENUITEM "&Draw Materials Opaque",  33103
+  }
+  POPUP "&Ferramentas"
+  {
+    MENUITEM "&Diferença\tCtrl+Shift+C",  32868
+    MENUITEM "&Mesclar\tCtrl+Shift+M",  32869
+    MENUITEM "Deixar objeto oco",  32920
+    MENUITEM SEPARATOR
+    MENUITEM "&Agrupar\tCtrl+G",  32871
+    MENUITEM "&Desagrupar\tCtrl+U",  32872
+    MENUITEM SEPARATOR
+    MENUITEM "&Vincular à Entidade\tCtrl+T",  1110
+    MENUITEM "&Vincular Individualmente à Entidade\tShift+Ctrl+T",  1115
+    MENUITEM "&Transformar em Brush\tCtrl+Shift+W",  32873
+    MENUITEM SEPARATOR
+    MENUITEM "Te&xture Application\tShift+A",  32913
+    MENUITEM "S&ubstituir texturas",  32946
+    MENUITEM "Travar &Textura\tShift+L",  32956
+    MENUITEM SEPARATOR
+    MENUITEM "&Navegador de Modelos",  33178
+    MENUITEM "&Navegador de Particulas",  33180
+    MENUITEM "&Navegador de Sons",  33177
+    MENUITEM SEPARATOR
+    MENUITEM "Transformar\tCtrl+M",  113
+    MENUITEM "Alinhar seleção à grade\tCtrl+B",  32947
+    MENUITEM "Snap Selected to Grid Individually\tCtrl+Shift+B",  33183
+    MENUITEM "Center &Origins",  33182
+    POPUP "&Alinhar objetos"
+    {
+      MENUITEM "To &Left",  32891
+      MENUITEM "To &Right",  32892
+      MENUITEM "To &Top",  32893
+      MENUITEM "To &Bottom",  32894
+    }
+    POPUP "&Virar objetos"
+    {
+      MENUITEM "&Horizontalmente\tCtrl+L",  32935
+      MENUITEM "&Verticalmente\tCtrl+I",  32936
+    }
+    POPUP "&Mover objetos"
+    {
+      MENUITEM "Nearest Floor",  33298
+      MENUITEM "Nearest Floor (align to normal)",  33299
+      MENUITEM "Nearest Ceiling",  33300
+      MENUITEM "Nearest Ceiling (align to normal)",  33301
+    }
+    MENUITEM "C&riar prefab\tCtrl+R",  32933
+    MENUITEM "Mudar a c&or dos objetos",  33292
+    MENUITEM "Criar instância a partir da seleção",  33326
+    MENUITEM "Propper++",  33342
+    MENUITEM SEPARATOR
+    MENUITEM "&Opções",  32870
+    MENUITEM "&Editor de teclas de atalho",  33311
+  }
+  POPUP "&Instâncias"
+  {
+    POPUP "Collapse"
+    {
+      MENUITEM "Selection",  33280
+      MENUITEM "Selection Recursive",  33329
+      MENUITEM "Todos",  33270
+      MENUITEM "Todos Recursivo",  33330
+    }
+    POPUP "Ver Instâncias"
+    {
+      MENUITEM "Ocultar",  33230
+      MENUITEM "Show Tinted",  33231
+      MENUITEM "Show Normal",  33232
+    }
+    POPUP "Janela"
+    {
+      MENUITEM "Ocultar todas as instâncias",  33262
+      MENUITEM "Exibir todas as instâncias",  33263
+    }
+    MENUITEM SEPARATOR
+    MENUITEM "Criar Manifest...",  33250
+    POPUP "Ver Manifests"
+    {
+      MENUITEM "Hide Except Current",  33255
+      MENUITEM "Tinted",  33256
+      MENUITEM "Show Normal",  33257
+    }
+  }
+  POPUP "&Janela"
+  {
+    MENUITEM "&Nova janela",  57648
+    MENUITEM "&Cascata",  57650
+    MENUITEM "&Tile",  57651
+    MENUITEM "&Organizar ícones",  57649
+    MENUITEM SEPARATOR
+    MENUITEM "&Mensagens\tAlt+F3",  32820
+  }
+  POPUP "&Ajuda"
+  {
+    MENUITEM "&Documentação",  32940
+    MENUITEM SEPARATOR
+    MENUITEM "&Sobre...",  57664
+    MENUITEM "Checar por atualizações",  33313
+    MENUITEM SEPARATOR
+    MENUITEM "Jumpman",  33337
+    MENUITEM "Crash Hammer++",  33341
+  }
+}

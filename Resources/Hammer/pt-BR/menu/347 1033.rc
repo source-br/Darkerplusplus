@@ -1,0 +1,45 @@
+347 MENU
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+{
+  POPUP "Secondary"
+  {
+    POPUP "Move Selection to..."
+    {
+      MENUITEM "SubMap",  33246
+      MENUITEM "New SubMap...",  33247
+    }
+    MENUITEM "Remove...",  33275
+    POPUP "Insert..."
+    {
+      MENUITEM "Empty Sub Map",  33265
+      MENUITEM "Existing Sub Map",  33266
+    }
+    MENUITEM "Properties...",  33273
+  }
+  POPUP "Primary"
+  {
+    POPUP "Move Selection to..."
+    {
+      MENUITEM "New SubMap...",  33247
+    }
+    MENUITEM "Remove...",  33275
+    POPUP "Insert..."
+    {
+      MENUITEM "Empty Sub Map",  33265
+      MENUITEM "Existing Sub Map",  33266
+    }
+    MENUITEM "Properties...",  33273
+  }
+  POPUP "Blank"
+  {
+    POPUP "Move Selection to..."
+    {
+      MENUITEM "New SubMap...",  33247
+    }
+    POPUP "Insert..."
+    {
+      MENUITEM "Empty Sub Map",  33265
+      MENUITEM "Existing Sub Map",  33266
+    }
+  }
+}

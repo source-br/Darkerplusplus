@@ -1,0 +1,9 @@
+342 MENU
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+{
+  POPUP "&File"
+  {
+    MENUITEM "Move Selection to New Submap...",  33240
+    MENUITEM "Import func_instance's",  33242
+  }
+}

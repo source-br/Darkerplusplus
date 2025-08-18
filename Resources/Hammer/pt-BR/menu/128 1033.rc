@@ -1,0 +1,28 @@
+128 MENU
+LANGUAGE LANG_PORTUGUESE, SUBLANG_PORTUGUESE_BRAZILIAN
+{
+  POPUP "&Arquivo"
+  {
+    MENUITEM "&Novo\tCtrl+N",  57600
+    MENUITEM "&Abrir...\tCtrl+O",  57601
+    MENUITEM SEPARATOR
+    POPUP "Arquivos Recentes..."
+    {
+      MENUITEM "Arquivos Recentes",  57616,  GRAYED
+    }
+    MENUITEM SEPARATOR
+    MENUITEM "S&air",  57665
+  }
+  POPUP "&Ferramentas"
+  {
+    MENUITEM "&Opções...",  32870
+    MENUITEM "&Editor de teclas de atalho...",  33311
+  }
+  POPUP "&Ajuda"
+  {
+    MENUITEM "&Documentação",  32940
+    MENUITEM SEPARATOR
+    MENUITEM "&Sobre...",  57664
+    MENUITEM "Checar por atualização",  33313
+  }
+}
