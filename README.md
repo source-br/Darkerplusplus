@@ -21,7 +21,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-be00be.svg)](https://www.python.org/) 
 [![Discord](https://img.shields.io/discord/1189628376504340590?logo=Discord&label=Discord%20server&color=be00be)](https://discord.gg/tVNv6SNZZT)
 [![Download](https://img.shields.io/badge/Download-Stable-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases) 
-![Version](https://img.shields.io/badge/Version-V.3-be00be.svg) 
+![Version](https://img.shields.io/badge/Version-V.4.1-be00be.svg) 
 
 
 
