@@ -36,10 +36,10 @@ translations = {
         "subtitle 1": "Set your Hammer++ to dark mode easily.",
         "continue": "Continue",
         # Pop up
-        "atention": "ATTENTION",
-        "info": "Darker++ uses Ultrauxtheme <br> to apply the dark theme. <br> Only proceed if you have already <br> installed it and restarted your computer.",
+        "atention": "Attention",
+        "info": "Hammerfy uses Ultrauxtheme <br> to apply the dark theme. <br> Only proceed if you have already <br> installed it and restarted your computer.",
         # selection screen
-        "title 2": "GAMES FOUND",
+        "title 2": "Games found",
         "subtitle 2": "Click on the game to manually select its folder.",
         "install": "Install",
         # Pop ups
@@ -49,7 +49,7 @@ translations = {
         "invalid 2": "The selected path does not contain the expected game.",
         "select": "Select the {game_name} directory.",
         # end screen
-        "title 3": "DONE!",
+        "title 3": "Done!",
         "subtitle 3": "Enjoy your Hammer++ in dark mode.",
         "close": "Close",
     },
@@ -63,7 +63,7 @@ translations = {
         "continue": "Continuar",
         # Pop up
         "atention": "ATENCIÓN",
-        "info": "Darker++ utiliza Ultrauxtheme <br> para aplicar el tema oscuro. <br> Solo continúe si ya lo ha <br> instalado y reiniciado su computadora.",
+        "info": "Hammerfy utiliza Ultrauxtheme <br> para aplicar el tema oscuro. <br> Solo continúe si ya lo ha <br> instalado y reiniciado su computadora.",
         # selection screen
         "title 2": "JUEGOS ENCONTRADOS",
         "subtitle 2": "Haga clic en el juego para seleccionar manualmente su carpeta.",
@@ -89,7 +89,7 @@ translations = {
         "continue": "Folytatás",
         # Pop up
         "atention": "FIGYELEM",
-        "info": "Darker++ az Ultrauxtheme-et használja <br> hogy a sötét módot alkalmazza. <br> Csak akkor folytassa, ha már <br> letöltötte és újraindította a számítógépet.",
+        "info": "Hammerfy az Ultrauxtheme-et használja <br> hogy a sötét módot alkalmazza. <br> Csak akkor folytassa, ha már <br> letöltötte és újraindította a számítógépet.",
         # selection screen
         "title 2": "JÁTÉKOK TALÁLVA",
         "subtitle 2": "Nyomjon egy játékra hogy manuálisan kiválassza a mappáját.",
