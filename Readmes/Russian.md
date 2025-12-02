@@ -4,6 +4,9 @@
     <a href="Brazilian.md" target="_blank">
         <img src="images/flag_br.png" height="25" width="25">
     </a>
+    <a href="Spanish.md" target="_blank">
+        <img src="images/flag_es.png" height="25" width="25">
+    </a>
     <a href="Hungarian.md" target="_blank">
         <img src="images/flag_hu.png" height="25" width="25">
     </a>
@@ -17,11 +20,11 @@
 <img align="center" src="images/title.png" alt="Darker++ icon" />
 
 ###
-[![Лицензия GPLv3](https://img.shields.io/badge/License-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html) 
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-be00be.svg)](https://www.python.org/) 
+[![Лицензия GPLv3](https://img.shields.io/badge/License-GPLv3-be00be.svg)](http://perso.crans.org/besson/LICENSE.html)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-be00be.svg)](https://www.python.org/)
 [![Discord](https://img.shields.io/discord/1189628376504340590?logo=Discord&label=Discord%20server&color=be00be)](https://discord.gg/tVNv6SNZZT)
-[![Установить](https://img.shields.io/badge/Download-Stable-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases) 
-![Версия](https://img.shields.io/badge/Version-V.3-be00be.svg) 
+[![Установить](https://img.shields.io/badge/Download-Stable-be00be.svg)](https://github.com/Source-BR/Darkerplusplus/releases)
+![Версия](https://img.shields.io/badge/Version-V.3-be00be.svg)
 
 
 
@@ -52,9 +55,9 @@ https://github.com/user-attachments/assets/3a244d2a-12e3-4257-b221-f2105cbba03c
 
 **Самостоятельная установка**
 1. Установите UltraUXThemePatcher.exe который идет совместно с файлом `7z`.
-2. Скопируйте папки внутри папки "dll" в папку common внутри папки Steam>steamapps, обычно находится в: 
-- `C:\Program Files (x86)\Steam\steamapps\common` 
-3. Скопируйте папку и тему которая подходит под ващ компьютер из папки тем в папку Windows Themes: 
+2. Скопируйте папки внутри папки "dll" в папку common внутри папки Steam>steamapps, обычно находится в:
+- `C:\Program Files (x86)\Steam\steamapps\common`
+3. Скопируйте папку и тему которая подходит под ващ компьютер из папки тем в папку Windows Themes:
 - `C:\Windows\Resources\Themes`
 4. Примените тему в Настройки > Персонализация > Темы > Darker++. И готово!
 

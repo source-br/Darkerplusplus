@@ -4,6 +4,9 @@
     <a href="Readmes/Brazilian.md" target="_blank">
         <img src="Readmes/images/flag_br.png" height="25" width="25">
     </a>
+    <a href="Readmes/Spanish.md" target="_blank">
+        <img src="Readmes/images/flag_es.png" height="25" width="25">
+    </a>
     <a href="Readmes/Hungarian.md" target="_blank">
         <img src="Readmes/images/flag_hu.png" height="25" width="25">
     </a>

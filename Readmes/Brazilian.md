@@ -4,7 +4,10 @@
     <a href="../README.md" target="_blank">
         <img src="../Readmes/images/flag_eua.png" height="25" width="25">
     </a>
-<a href="../Readmes/Russian.md" target="_blank">
+    <a href="../Readmes/Spanish.md" target="_blank">
+        <img src="../Readmes/images/flag_es.png" height="25" width="25">
+    </a>
+    <a href="../Readmes/Russian.md" target="_blank">
         <img src="../Readmes/images/russian.png" height="25" width="25">
     </a>
     <a href="../Readmes/Hungarian.md" target="_blank">
