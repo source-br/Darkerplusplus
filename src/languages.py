@@ -130,6 +130,32 @@ translations = {
         "title 3": "KÉSZ!",
         "subtitle 3": "Élvezze a Hammer++-t sötét módban.",
         "close": "Bezárás",
+    },
+    "fr": {
+        # main
+        "no game": "Aucun jeu sélectionné",
+        "please select": "Sélectionnez au moins un jeu pour continuer",
+        # welcome screen
+        "title 1": "BIENVENUE SUR DARKER++",
+        "subtitle 1": "Obtenez un thème sombre pour HAMMER++",
+        "continue": "Continuer",
+        # Pop up
+        "atention": "ATTENTION",
+        "info": "Darker++ utilise Ultrauxtheme <br> pour appliquer le thème sombre. <br> Ne continuez que si vous l'avez déjà <br> installé et redémarré votre ordinateur.",
+        # selection screen
+        "title 2": "JEUX TROUVÉS",
+        "subtitle 2": "Cliquez sur un jeu pour sélectionner son dossier manuellement.",
+        "install": "Installer",
+        # Pop ups
+        "path": "Chemin de fichier mis à jour",
+        "path 2": "Le chemin vers {game_name} a été mis à jour.",
+        "invalid": "Chemin invalide",
+        "invalid 2": "Le chemin de fichier sélectionné ne contient pas le jeu attendu.",
+        "select": "Sélectionne le dossier contenant les fichiers de {game_name}.",
+        # end screen
+        "title 3": "Terminé !",
+        "subtitle 3": "Reposez-vous les yeux avec le thème sombre d'HAMMER++.",
+        "close": "Fermer",
     }
 }
 
