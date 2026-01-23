@@ -38,8 +38,7 @@ https://github.com/user-attachments/assets/1f2c9877-c3d8-48cc-af3a-67eddadee963
 
 Si disfrutas de Darker++, considera apoyarnos para el desarrollo del proyecto. Tu apoyo nos ayuda a continuar desarrollando este programa aún más ❤️
 
-<a href="https://nubank.com.br/cobrar/1na00u/67594881-0eb2-45fc-b73c-7d065d9ba400" target="_blank"><img src="https://img.shields.io/badge/-nubank-0D1117?style=for-the-badge&logo=nubank&logoColor=820AD1&labelColor=0D1117" target="_blank"></a>
-<a href="https://www.paypal.com/donate/?business=AUZRQZ6DZZAPQ&no_recurring=0&currency_code=USD" target="_blank"><img src="https://img.shields.io/badge/-paypal-0D1117?style=for-the-badge&logo=paypal&logoColor=003087&labelColor=0D1117" target="_blank"></a>
+ [![Donate](https://img.shields.io/badge/-❤️%20Donate-0D1117?style=for-the-badge&labelColor=0D1117)](https://www.sourcebr.com.br/doar)
 
 ##
 
@@ -61,7 +60,7 @@ Si disfrutas de Darker++, considera apoyarnos para el desarrollo del proyecto. T
 
 **[Instalar en Linux](../Docs/ES/Instalar%20en%20linux.md)**
 
-[Descargar](https://github.com/TeamSourceBR/Darkerplusplus/releases)
+[Descargar](https://github.com/source-br/Darkerplusplus/releases)
 
 ### Correcciones para posibles problemas:
 
