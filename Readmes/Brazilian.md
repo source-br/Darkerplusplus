@@ -38,21 +38,20 @@ https://github.com/user-attachments/assets/b2c1242e-ba93-4077-8a04-321fad9e68cb
 
 Se você gosta do Darker++, considere nos dar suporte para o desenvolvimento do projeto. Ao nos dar suporte, você ajuda a continuar desenvolvendo esse programa ainda mais ❤️
 
-<a href="https://nubank.com.br/cobrar/1na00u/67594881-0eb2-45fc-b73c-7d065d9ba400" target="_blank"><img src="https://img.shields.io/badge/-nubank-0D1117?style=for-the-badge&logo=nubank&logoColor=820AD1&labelColor=0D1117" target="_blank"></a>
-<a href="https://www.paypal.com/donate/?business=AUZRQZ6DZZAPQ&no_recurring=0&currency_code=USD" target="_blank"><img src="https://img.shields.io/badge/-paypal-0D1117?style=for-the-badge&logo=paypal&logoColor=003087&labelColor=0D1117" target="_blank"></a>
+ [![Doar](https://img.shields.io/badge/-❤️%20Donate-0D1117?style=for-the-badge&labelColor=0D1117)](https://www.sourcebr.com.br/doar)
 
 ##
 
 ### Instalação:
 
-1. Instale o UltraUXThemePatcher.exe que vem junto do `7z`.
-2. Após instalar o UltraUX e reiniciar o computador execute o Darker++.exe e prossiga com a instalação.
+1. Instale o SecureUxTheme.exe que vem junto do `7z`.
+2. Após instalar o SecureUx e reiniciar o computador execute o Darker++.exe e prossiga com a instalação.
 3. Selecione os jogos em que você tem o Hammer++ instalado. O programa irá autodetectar, mas caso ele não encontre, você pode selecionar manualmente a pasta raiz do jogo, como por exemplo, para o Gmod: 
 - `C:\Program Files (x86)\Steam\steamapps\common\GarrysMod`
 4. Após isso, finalize a instalação e pronto!
 
 **Manualmente**
-1. Instale o UltraUXThemePatcher.exe que vem junto do `7z` e reinicie seu computador.
+1. Instale o SecureUxTheme.exe que vem junto do `7z` e reinicie seu computador.
 2. Cole as pastas dentro da pasta dll na pasta common da sua steam, costuma ser: 
 - `C:\Program Files (x86)\Steam\steamapps\common`
 3. Cole a pasta e o tema do tema correspodente ao seu sistema da pasta theme na pasta Themes do Windows:
@@ -61,7 +60,7 @@ Se você gosta do Darker++, considere nos dar suporte para o desenvolvimento do 
 
 **[Instalar no Linux](../Docs/PT-BR/Instalar%20no%20linux.md)**
 
-[Baixar](https://github.com/TeamSourceBR/Darkerplusplus/releases)
+[Download](https://github.com/source-br/Darkerplusplus/releases)
 
 ### Correções de possíveis problemas:
 

@@ -40,21 +40,20 @@ https://github.com/user-attachments/assets/3a244d2a-12e3-4257-b221-f2105cbba03c
 
 Если вам нравится Darker++, вы можете поддержать нас для разработки проекта. Ваша поддержка помогает разрабатывать программу дольше ❤️
 
-<a href="https://nubank.com.br/cobrar/1na00u/67594881-0eb2-45fc-b73c-7d065d9ba400" target="_blank"><img src="https://img.shields.io/badge/-nubank-0D1117?style=for-the-badge&logo=nubank&logoColor=820AD1&labelColor=0D1117" target="_blank"></a>
-<a href="https://www.paypal.com/donate/?business=AUZRQZ6DZZAPQ&no_recurring=0&currency_code=USD" target="_blank"><img src="https://img.shields.io/badge/-paypal-0D1117?style=for-the-badge&logo=paypal&logoColor=003087&labelColor=0D1117" target="_blank"></a>
+ [![Donate](https://img.shields.io/badge/-❤️%20Donate-0D1117?style=for-the-badge&labelColor=0D1117)](https://www.sourcebr.com.br/doar)
 
 ##
 
 ### Установка:
 
-1. Установите UltraUXThemePatcher.exe который идет совместно с файлом `7z`.
-2. После установки UltraUX перезагрузки вашего компьютера, запустите установщик и следовайте инструкциям на экранне.
+1. Установите SecureUxTheme.exe который идет совместно с файлом `7z`.
+2. После установки SecureUx перезагрузки вашего компьютера, запустите установщик и следовайте инструкциям на экранне.
 3. Выберите игры там, где вы имеете Hammer++ установленным. Программа автоматически найдет их, но если программа не может автоматически найти их, вы можете самостоятельно выбрать корневую папку игры, например, Garry's Mod:
 - `C:\Program Files (x86)\Steam\steamapps\common\GarrysMod`
 4. После этого, закончите установку, и все готово!
 
 **Самостоятельная установка**
-1. Установите UltraUXThemePatcher.exe который идет совместно с файлом `7z`.
+1. Установите SecureUxTheme.exe который идет совместно с файлом `7z`.
 2. Скопируйте папки внутри папки "dll" в папку common внутри папки Steam>steamapps, обычно находится в:
 - `C:\Program Files (x86)\Steam\steamapps\common`
 3. Скопируйте папку и тему которая подходит под ващ компьютер из папки тем в папку Windows Themes:
@@ -63,7 +62,7 @@ https://github.com/user-attachments/assets/3a244d2a-12e3-4257-b221-f2105cbba03c
 
 **[Установка на Linux](../Docs/RU/Установка%20на%20Linux.md)**
 
-[Установить](https://github.com/TeamSourceBR/Darkerplusplus/releases)
+[Установить](https://github.com/source-br/Darkerplusplus/releases)
 
 ### Решения для возможных проблем:
 
