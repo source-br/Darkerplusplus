@@ -27,21 +27,20 @@ The project combines the application of a dark theme on the Windows operating sy
 
 If you enjoy Hammerfy, consider supporting us for the development of the project. Your support helps us continue developing this program even further 💜
 
-<a href="https://nubank.com.br/cobrar/1na00u/67594881-0eb2-45fc-b73c-7d065d9ba400" target="_blank"><img src="https://img.shields.io/badge/-nubank-0D1117?style=for-the-badge&logo=nubank&logoColor=820AD1&labelColor=0D1117" target="_blank"></a>
-<a href="https://www.paypal.com/donate/?business=AUZRQZ6DZZAPQ&no_recurring=0&currency_code=USD" target="_blank"><img src="https://img.shields.io/badge/-paypal-0D1117?style=for-the-badge&logo=paypal&logoColor=003087&labelColor=0D1117" target="_blank"></a>
+[![Donate](https://img.shields.io/badge/-💜%20Donate-0D1117?style=for-the-badge&labelColor=0D1117)](https://www.sourcebr.com.br/doar)
 
 ##
 
 ### Installation:
 
-1. Install the UltraUXThemePatcher.exe that comes with the `7z` file.
+1. Install the SecureUxTheme.exe that comes with the `7z` file.
 2. After installing UltraUX and restarting your computer, run the installer and follow the on-screen instructions.
 3. Select the games where you have Hammer++ installed. The program will autodetect it, but if it doesn't find it, you can manually select the root folder of the game, for example, Gmod:
 - `C:\Program Files (x86)\Steam\steamapps\common\GarrysMod`
 4. After that, complete the installation, and you're done!
 
 **Manually**
-1. Install UltraUXThemePatcher.exe that comes with the `7z` file and restart your computer.
+1. Install SecureUxTheme.exe that comes with the `7z` file and restart your computer.
 2. Copy the folders inside the dll folder into the common folder of your Steam directory, usually located at: 
 - `C:\Program Files (x86)\Steam\steamapps\common` 
 3. Copy the folder and theme that matches your system from the theme folder into the Windows Themes folder: 
@@ -50,7 +49,7 @@ If you enjoy Hammerfy, consider supporting us for the development of the project
 
 **[Install on Linux](Docs/Install%20on%20linux.md)**
 
-[Download](https://github.com/TeamSourceBR/Darkerplusplus/releases)
+[Download](https://github.com/source-br/Darkerplusplus/releases)
 
 ### Fixes for possible issues:
 
