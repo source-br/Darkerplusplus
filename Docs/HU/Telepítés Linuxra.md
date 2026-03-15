@@ -1,7 +1,7 @@
 ﻿## Telepítés Linuxra
 
 Töltsd le a `Linux.7z` fájlt és csomagold ki.
-Nyisd meg a Wine beállításait (futtasd a következő parancsokat a terminálban:)
+Nyisd meg a Wine beállításait (futtasd a következő parancsot a terminálban:)
 
 ```bash
 winecfg
@@ -13,7 +13,7 @@ Ezután menj a `themes` mappába, ami a kicsomagolt `.7z` fájlban található, 
 
 | Dark                     | Breeze                       |
 | ------------------------ | ---------------------------- |
-| ![Dark](img/dark.png) | ![Breeze](img/breeze.png) |
+| ![Dark](../img/dark.png) | ![Breeze](../img/breeze.png) |
 
 Másold ki a szöveget a kiválasztott téma `.txt` fájlából.
 Ezután nyisd meg a Wine `user.reg` fájlodat, ami általában a `.wine` mappában található.
