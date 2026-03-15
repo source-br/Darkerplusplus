@@ -7,9 +7,9 @@ Nyisd meg a Wine beállításait (futtasd a következő parancsokat a terminálb
 winecfg
 ```
 
-Menj a `Desktop Integration` tabra, és a Theme alatt, válaszd a `(No Theme)` lehetőséget, és nyomj az OK-ra.
+Menj a `Desktop Integration` tabra, és a Theme alatt válaszd a `(No Theme)` lehetőséget, és nyomj az OK-ra.
 
-Ezután menj a `themes` mappába ami a kicsomagolt `.7z` fájlban található, és válaszd vagy a **Breeze** vagy a **Dark** témát. A kettő közötti különbség itt található:
+Ezután menj a `themes` mappába, ami a kicsomagolt `.7z` fájlban található, és válaszd a **Breeze** vagy a **Dark** témát. A kettő közötti különbség itt található:
 
 | Dark                     | Breeze                       |
 | ------------------------ | ---------------------------- |
