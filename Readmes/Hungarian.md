@@ -56,7 +56,7 @@ Ha élvezi a Darker++-t, gondolja át, hogy támogasson minket a projekt fejlesz
 - `C:\Windows\Resources\Themes`
 4. Alkalmazd a témát a Gépházban.
 
-**[Telepítés Linux-ra](Docs/HU/Telepítés%20Linuxra.md)**
+**[Telepítés Linux-ra](../Docs/HU/Telepítés%20Linuxra.md)**
 
 [Letöltés](https://github.com/source-br/Darkerplusplus/releases)
 
@@ -64,7 +64,7 @@ Ha segítségre van szükséged vagy visszajelzést szeretnél adni, akkor csatl
 
 ##
 > [!NOTE]
-> - A Windows frissítések a téma működését el tudják rontani. Ez azért van, mivel a Windows az UltraUXThemePatcher működését elrontja frissítések során. Hogy megjavítsd, telepítsd újra az UltraUXThemePatcher-t, indítsd újra a számítógépét, és alkalmazd újra a témát a Gépházban.
+> - A Windows frissítések a téma működését el tudják rontani. Ez azért van, mivel a Windows az UltraUXThemePatcher működését elrontja frissítések során. Hogy megjavítsd, telepítsd újra az UltraUXThemePatcher-t, indítsd újra a számítógépedet, és alkalmazd újra a témát a Gépházban.
 
 > [!WARNING]
 > - Mielőtt használnád a Darker++-t, győződj meg arról, hogy biztonsági mentéseket készítettél a fájlaidról, különösen a Hammer++ beállításaidról. Nem vállalunk felelősséget az adatvesztésért.
