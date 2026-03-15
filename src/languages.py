@@ -108,27 +108,27 @@ translations = {
     "hu-hu": {
         # main
         "no game": "Nincs játék kiválasztva",
-        "please select": "Válasszon ki egy játékot a folytatáshoz",
+        "please select": "Válassz ki egy játékot a folytatáshoz",
         # welcome screen
         "title 1": "ÜDVÖZÖLJÜK A DARKER++-BAN",
-        "subtitle 1": "Állítsa át a Hammer++-t sötét módra egyszerűen.",
+        "subtitle 1": "Egyszerűen állítsd sötét módra a Hammer++-ot.",
         "continue": "Folytatás",
         # Pop up
         "atention": "FIGYELEM",
         "info": "A Darker++ az Ultrauxtheme-et használja <br> hogy a sötét témát alkalmazza. <br> Csak akkor folytassa, ha már <br> telepítette és újraindította a számítógépet.",
         # selection screen
         "title 2": "JÁTÉKOK TALÁLVA",
-        "subtitle 2": "Nyomjon egy játékra hogy manuálisan kiválassza a mappáját.",
+        "subtitle 2": "Nyomj egy játékra hogy manuálisan kiválaszd a mappáját.",
         "install": "Telepítés",
         # Pop ups
         "path": "Útvonal frissítve",
         "path 2": "{game_name} útvonala sikeresen frissítve.",
         "invalid": "Helytelen Útvonal",
         "invalid 2": "A kiválasztott útvonal nem tartalmazza a várt játékot.",
-        "select": "Válassza ki a {game_name} könyvtárát.",
+        "select": "Válaszd ki a {game_name} könyvtárát.",
         # end screen
         "title 3": "KÉSZ!",
-        "subtitle 3": "Élvezze a Hammer++-t sötét módban.",
+        "subtitle 3": "Élvezd a Hammer++-t sötét módban.",
         "close": "Bezárás",
     },
     "fr": {
