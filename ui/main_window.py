@@ -8,6 +8,7 @@ from models.tool import Tool, ToolStatus
 from models.tool import Tool, ToolStatus
 from core.steam import scan_tools
 from core.hammer import open_hammer, open_folder
+from core.updater import get_latest_build, download_and_install, uninstall
 import sys
 
 def _build_tools_from_scan() -> list[Tool]:
@@ -79,6 +80,9 @@ class MainWindow(QMainWindow):
         self.grid.action_folder.connect(self._on_folder)
         self.detail.action_open.connect(self._on_open)
         self.detail.action_folder.connect(self._on_folder)
+        self.grid.action_install.connect(self._on_install)
+        self.detail.action_install.connect(self._on_install)
+        self.detail.action_uninstall.connect(self._on_uninstall)
 
         content_layout.addWidget(self.grid)
         content_layout.addWidget(self._vline())
@@ -144,6 +148,8 @@ class MainWindow(QMainWindow):
             from PySide6.QtWidgets import QMessageBox
             QMessageBox.warning(self, "Hammerfy", msg)
 
+    
+
     def _vline(self):
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
@@ -155,3 +161,71 @@ class MainWindow(QMainWindow):
         line.setFrameShape(QFrame.HLine)
         line.setStyleSheet("background-color: #242424; max-height: 1px;")
         return line
+
+    def _on_install(self, tool: Tool):
+        from PySide6.QtWidgets import QMessageBox, QProgressDialog
+        from PySide6.QtCore import Qt
+
+        build = get_latest_build()
+        if not build:
+            QMessageBox.warning(self, "Hammerfy", "Não foi possível verificar a versão mais recente. Verifique sua conexão.")
+            return
+
+        # Descobre o caminho de instalação pelo steam.py
+        from core.steam import HAMMER_GAMES, find_steam_path, find_library_folders, find_installed_games
+        steam_path = find_steam_path()
+        if not steam_path:
+            QMessageBox.warning(self, "Hammerfy", "Steam não encontrada.")
+            return
+
+        libs = find_library_folders(steam_path)
+        games = find_installed_games(libs)
+
+        game_info = next((v for v in HAMMER_GAMES.values() if v["id"] == tool.id), None)
+        game_folder_name = next((k for k, v in HAMMER_GAMES.items() if v["id"] == tool.id), None)
+
+        if not game_folder_name or game_folder_name not in games:
+            QMessageBox.warning(self, "Hammerfy", f"Jogo não encontrado na biblioteca Steam.\nInstale {tool.game} primeiro.")
+            return
+
+        game_path = games[game_folder_name]
+        install_path = str(game_path / game_info["bin"])
+
+        progress = QProgressDialog(f"Baixando Hammer++ {tool.name}...", "Cancelar", 0, 100, self)
+        progress.setWindowTitle("Hammerfy")
+        progress.setWindowModality(Qt.WindowModal)
+        progress.show()
+
+        def on_progress(downloaded, total):
+            if total > 0:
+                progress.setValue(int(downloaded / total * 100))
+            from PySide6.QtWidgets import QApplication
+            QApplication.processEvents()
+
+        success, msg = download_and_install(tool.id, build, install_path, on_progress)
+        progress.close()
+
+        if success:
+            QMessageBox.information(self, "Hammerfy", f"Hammer++ instalado com sucesso!")
+            self._all_tools = _build_tools_from_scan()
+            self._load_tools()
+        else:
+            QMessageBox.warning(self, "Hammerfy", f"Erro: {msg}")
+
+    def _on_uninstall(self, tool: Tool):
+        from PySide6.QtWidgets import QMessageBox
+        reply = QMessageBox.question(
+            self, "Hammerfy",
+            f"Desinstalar {tool.name}?\nEssa ação não pode ser desfeita.",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        if reply != QMessageBox.Yes:
+            return
+
+        success, msg = uninstall(tool.install_path)
+        if success:
+            QMessageBox.information(self, "Hammerfy", "Hammer++ desinstalado com sucesso.")
+            self._all_tools = _build_tools_from_scan()
+            self._load_tools()
+        else:
+            QMessageBox.warning(self, "Hammerfy", f"Erro: {msg}")
