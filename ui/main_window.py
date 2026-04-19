@@ -5,8 +5,9 @@ from ui.topbar import Topbar
 from ui.tool_grid import ToolGrid
 from ui.detail_panel import DetailPanel
 from models.tool import Tool, ToolStatus
-from core.steam import scan_tools
 from models.tool import Tool, ToolStatus
+from core.steam import scan_tools
+from core.hammer import open_hammer, open_folder
 import sys
 
 def _build_tools_from_scan() -> list[Tool]:
@@ -74,6 +75,10 @@ class MainWindow(QMainWindow):
         self.grid.tool_selected.connect(self._on_tool_selected)
 
         self.detail = DetailPanel()
+        self.grid.action_open.connect(self._on_open)
+        self.grid.action_folder.connect(self._on_folder)
+        self.detail.action_open.connect(self._on_open)
+        self.detail.action_folder.connect(self._on_folder)
 
         content_layout.addWidget(self.grid)
         content_layout.addWidget(self._vline())
@@ -126,6 +131,18 @@ class MainWindow(QMainWindow):
 
     def _on_tool_selected(self, tool):
         self.detail.load_tool(tool)
+
+    def _on_open(self, tool: Tool):
+        success, msg = open_hammer(tool)
+        if not success:
+            from PySide6.QtWidgets import QMessageBox
+            QMessageBox.warning(self, "Hammerfy", msg)
+
+    def _on_folder(self, tool: Tool):
+        success, msg = open_folder(tool)
+        if not success:
+            from PySide6.QtWidgets import QMessageBox
+            QMessageBox.warning(self, "Hammerfy", msg)
 
     def _vline(self):
         line = QFrame()
