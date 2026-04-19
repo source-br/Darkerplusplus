@@ -69,6 +69,7 @@ class DetailPanel(QWidget):
         layout.setSpacing(12)
 
         self._info_section = self._section("Info")
+        self._path_section = self._section("Path")
         self._custom_section = self._section("Customization")
 
         layout.addWidget(self._info_section)
