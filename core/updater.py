@@ -15,6 +15,7 @@ CSGO_BUILD = "8864"
 GAME_ZIP = {
     "gmod":      "hammerplusplus_gmod",
     "tf2":       "hammerplusplus_tf2",
+    "portal"     "hammerplusplus_2013sp"   
     "portal2":   "hammerplusplus_portal2",
     "l4d2":      "hammerplusplus_l4d2",
     "css":       "hammerplusplus_tf2",

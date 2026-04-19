@@ -29,6 +29,14 @@ HAMMER_GAMES = {
         "exe": "hammerplusplus.exe",
         "banner_color": "#3d1a08",
     },
+    "Portal":{
+        "id": "portal",
+        "name": "Hammer++ Portal",
+        "engine": "Source",
+        "bin": r"bin",
+        "exe": "hammerplusplus.exe",
+        "banner_color": "#1a0e35",
+    },
     "Portal 2": {
         "id": "portal2",
         "name": "Hammer++ Portal 2",
