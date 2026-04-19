@@ -142,6 +142,15 @@ class DetailPanel(QWidget):
             ("Game",      tool.game),
         ]
 
+        # Popula seção PATH
+        path_layout = self._path_section.layout()
+        self._clear_layout(path_layout)
+        if tool.install_path:
+            lbl = QLabel(tool.install_path)
+            lbl.setStyleSheet("font-size: 10px; color: #555;")
+            lbl.setWordWrap(True)
+            path_layout.addWidget(lbl)
+
         for key, val in rows:
             layout.addWidget(self._row(key, val))
 
