@@ -54,3 +54,9 @@ QPushButton#btn_primary {
 QPushButton#btn_primary:hover {
     background-color: #c94e17;
 }
+
+QFrame[frameShape="4"],
+QFrame[frameShape="5"] {
+    background-color: #242424;
+    border: none;
+}

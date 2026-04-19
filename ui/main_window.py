@@ -8,12 +8,16 @@ from models.tool import Tool, ToolStatus
 
 
 MOCK_TOOLS = [
-    Tool("tf2",    "Hammer++ TF2",     "Team Fortress 2", "Source", "2024.11", "2024.11", "/fake/path", ToolStatus.INSTALLED,        "#3d1a08"),
-    Tool("cs2",    "Hammer CS2",       "Counter-Strike 2","Source 2","2024.08","2024.11", "/fake/path", ToolStatus.UPDATE_AVAILABLE,  "#0a1f35"),
-    Tool("l4d2",   "Hammer++ L4D2",    "Left 4 Dead 2",   "Source", "2024.09", "2024.09", "/fake/path", ToolStatus.INSTALLED,        "#2a0808"),
-    Tool("portal", "Hammer++ Portal 2","Portal 2",        "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,        "#1a0e35"),
-    Tool("hl2",    "Hammer++ HL2",     "Half-Life 2",     "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,        "#0e2210"),
-    Tool("sdk",    "Source SDK 2013",  "Source SDK",      "Source", None,      "2023.04", None,         ToolStatus.AVAILABLE,        "#252508"),
+    Tool("tf2",      "Hammer++ TF2",              "Team Fortress 2",           "Source", "2024.11", "2024.11", "/fake/path", ToolStatus.INSTALLED,       "#3d1a08"),
+    Tool("gmod",     "Hammer++ GMod",             "Garry's Mod",               "Source", "2024.11", "2024.11", "/fake/path", ToolStatus.INSTALLED,       "#1a2e1a"),
+    Tool("portal2",  "Hammer++ Portal 2",         "Portal 2",                  "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#1a0e35"),
+    Tool("l4d2",     "Hammer++ L4D2",             "Left 4 Dead 2",             "Source", "2024.09", "2024.09", "/fake/path", ToolStatus.INSTALLED,       "#2a0808"),
+    Tool("css",      "Hammer++ CS:S",             "Counter-Strike: Source",    "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#0a1a2a"),
+    Tool("dods",     "Hammer++ DoDS",             "Day of Defeat: Source",     "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#1a1a08"),
+    Tool("hl2",      "Hammer++ HL2",              "Half-Life 2",               "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#0e2210"),
+    Tool("sdk2013sp","Hammer++ SDK 2013 SP",      "Source SDK 2013 SP",        "Source", "2024.08", "2024.11", "/fake/path", ToolStatus.UPDATE_AVAILABLE,"#252508"),
+    Tool("sdk2013mp","Hammer++ SDK 2013 MP",      "Source SDK 2013 MP",        "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#1a1408"),
+    Tool("csgo",     "Hammer++ CS:GO",            "Counter-Strike: Global Offensive", "Source", None, "2024.10", None,      ToolStatus.AVAILABLE,       "#0a1f2a"),
 ]
 
 
@@ -113,11 +117,11 @@ class MainWindow(QMainWindow):
     def _vline(self):
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
-        line.setStyleSheet("background-color: #2a2a2a; max-width: 1px;")
+        line.setStyleSheet("background-color: #242424; max-width: 1px;")
         return line
 
     def _hline(self):
         line = QFrame()
         line.setFrameShape(QFrame.HLine)
-        line.setStyleSheet("background-color: #2a2a2a; max-height: 1px;")
+        line.setStyleSheet("background-color: #242424; max-height: 1px;")
         return line
