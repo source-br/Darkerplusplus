@@ -69,7 +69,6 @@ class DetailPanel(QWidget):
         layout.setSpacing(12)
 
         self._info_section = self._section("Info")
-        self._path_section = self._section("Path")
         self._custom_section = self._section("Customization")
 
         layout.addWidget(self._info_section)
@@ -141,8 +140,6 @@ class DetailPanel(QWidget):
             ("Engine",    tool.engine),
             ("Game",      tool.game),
         ]
-        if tool.install_path:
-            rows.append(("Path", tool.install_path))
 
         for key, val in rows:
             layout.addWidget(self._row(key, val))
