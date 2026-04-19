@@ -3,8 +3,8 @@ import urllib.request
 import urllib.error
 import zipfile
 import shutil
-import os
 from pathlib import Path
+
 
 DOWNLOAD_PAGE = "https://ficool2.github.io/HammerPlusPlus-Website/download.html"
 GITHUB_BASE   = "https://github.com/ficool2/HammerPlusPlus-Website/releases/download"
@@ -14,7 +14,7 @@ CSGO_BUILD = "8864"
 GAME_ZIP = {
     "gmod":      "hammerplusplus_gmod",
     "tf2":       "hammerplusplus_tf2",
-    "portal"     "hammerplusplus_2013sp"   
+    "portal":    "hammerplusplus_2013sp",
     "portal2":   "hammerplusplus_portal2",
     "l4d2":      "hammerplusplus_l4d2",
     "css":       "hammerplusplus_tf2",
@@ -24,6 +24,7 @@ GAME_ZIP = {
     "sdk2013mp": "hammerplusplus_2013mp",
     "csgo":      "hammerplusplus_csgo",
 }
+
 
 def get_latest_build() -> str | None:
     """Busca o número do build mais recente na página oficial."""
@@ -41,6 +42,7 @@ def get_latest_build() -> str | None:
         pass
     return None
 
+
 def get_download_url(game_id: str, build: str) -> str | None:
     """Monta a URL de download para um jogo e build específicos."""
     zip_name = GAME_ZIP.get(game_id)
@@ -49,12 +51,18 @@ def get_download_url(game_id: str, build: str) -> str | None:
     actual_build = CSGO_BUILD if game_id == "csgo" else build
     return f"{GITHUB_BASE}/{actual_build}/{zip_name}_build{actual_build}.zip"
 
+
 def download_and_install(
     game_id: str,
     build: str,
     install_path: str,
     progress_callback=None
 ) -> tuple[bool, str]:
+    """
+    Baixa e instala o Hammer++ para um jogo.
+    install_path: caminho completo até a pasta bin do jogo
+                  ex: C:/Steam/steamapps/common/GarrysMod/bin/win64
+    """
     url = get_download_url(game_id, build)
     if not url:
         return False, f"Jogo '{game_id}' não suportado."
@@ -68,6 +76,7 @@ def download_and_install(
 
     zip_path = dest_folder / "hammerplusplus_temp.zip"
 
+    # Download
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Hammerfy/0.1"})
         with urllib.request.urlopen(req, timeout=30) as resp:
@@ -85,38 +94,43 @@ def download_and_install(
                         progress_callback(downloaded, total)
 
     except urllib.error.URLError as e:
+        zip_path.unlink(missing_ok=True)
         return False, f"Erro de conexão: {e}"
     except Exception as e:
+        zip_path.unlink(missing_ok=True)
         return False, f"Erro ao baixar: {e}"
 
+    # Extração — mescla conteúdo de bin/win64/ (ou bin/) com dest_folder
     try:
         with zipfile.ZipFile(zip_path, "r") as z:
             members = z.namelist()
 
-            # Descobre o prefixo até bin/win64/ ou bin/ dependendo do jogo
+            # Descobre o prefixo até win64/ ou bin/ dentro do zip
             bin_prefix = None
             for m in members:
-                parts = Path(m).parts
+                parts = Path(m.replace("\\", "/")).parts
                 if "win64" in parts:
                     idx = list(parts).index("win64")
-                    bin_prefix = str(Path(*parts[:idx + 1])) + "/"
+                    bin_prefix = "/".join(parts[:idx + 1]) + "/"
                     break
-                elif "bin" in parts and len(parts) >= 2:
+                elif "bin" in parts:
                     idx = list(parts).index("bin")
-                    bin_prefix = str(Path(*parts[:idx + 1])) + "/"
+                    bin_prefix = "/".join(parts[:idx + 1]) + "/"
 
             if not bin_prefix:
+                zip_path.unlink(missing_ok=True)
                 return False, "Estrutura do zip não reconhecida."
 
-            # Extrai apenas o conteúdo dentro do bin_prefix para dest_folder
+            # Copia cada arquivo do zip para dest_folder mantendo subpastas
             for member in members:
-                if not member.startswith(bin_prefix):
+                norm = member.replace("\\", "/")
+                if not norm.startswith(bin_prefix):
                     continue
-                relative = member[len(bin_prefix):]
+                relative = norm[len(bin_prefix):]
                 if not relative:
                     continue
                 target = dest_folder / relative
-                if member.endswith("/"):
+                if norm.endswith("/"):
                     target.mkdir(parents=True, exist_ok=True)
                 else:
                     target.parent.mkdir(parents=True, exist_ok=True)
@@ -133,21 +147,25 @@ def download_and_install(
     zip_path.unlink(missing_ok=True)
     return True, f"Hammer++ instalado em {dest_folder}"
 
-def uninstall(install_path: str) -> tuple[bool, str]:
-    folder = Path(install_path).parent
 
+def uninstall(install_path: str) -> tuple[bool, str]:
+    """
+    Remove os arquivos do Hammer++ de uma instalação.
+    Remove apenas arquivos conhecidos, não a pasta inteira do jogo.
+    """
+    folder = Path(install_path).parent
     if not folder.exists():
         return False, "Pasta não encontrada."
 
     hammer_files = [
         "hammerplusplus.exe",
-        "hlmvplusplus.exe",
-        "hlmvplusplus.dll",
         "hammerplusplus_dlls.dll",
         "hammerplusplus_filesystem_steam.dll",
         "hammerplusplus_settings.ini",
         "hammerplusplus_sequences.txt",
         "hammerplusplus_manifest.txt",
+        "hlmvplusplus.exe",
+        "hlmvplusplus.dll",
     ]
 
     hammer_folders = [
