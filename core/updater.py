@@ -105,17 +105,14 @@ def download_and_install(
         with zipfile.ZipFile(zip_path, "r") as z:
             members = z.namelist()
 
-            # Descobre o prefixo até win64/ ou bin/ dentro do zip
+            # Descobre o prefixo até bin/ dentro do zip
             bin_prefix = None
             for m in members:
                 parts = Path(m.replace("\\", "/")).parts
-                if "win64" in parts:
-                    idx = list(parts).index("win64")
-                    bin_prefix = "/".join(parts[:idx + 1]) + "/"
-                    break
-                elif "bin" in parts:
+                if "bin" in parts:
                     idx = list(parts).index("bin")
                     bin_prefix = "/".join(parts[:idx + 1]) + "/"
+                    break
 
             if not bin_prefix:
                 zip_path.unlink(missing_ok=True)
