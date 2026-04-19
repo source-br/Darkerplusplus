@@ -148,8 +148,6 @@ class MainWindow(QMainWindow):
             from PySide6.QtWidgets import QMessageBox
             QMessageBox.warning(self, "Hammerfy", msg)
 
-    
-
     def _vline(self):
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
