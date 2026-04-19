@@ -5,20 +5,33 @@ from ui.topbar import Topbar
 from ui.tool_grid import ToolGrid
 from ui.detail_panel import DetailPanel
 from models.tool import Tool, ToolStatus
+from core.steam import scan_tools
+from models.tool import Tool, ToolStatus
+import sys
 
+def _build_tools_from_scan() -> list[Tool]:
+    raw = scan_tools()
+    tools = []
+    for t in raw:
+        if t["bin_missing"]:
+            status = ToolStatus.AVAILABLE
+        elif t["is_installed"]:
+            status = ToolStatus.INSTALLED
+        else:
+            status = ToolStatus.AVAILABLE
 
-MOCK_TOOLS = [
-    Tool("tf2",      "Hammer++ TF2",              "Team Fortress 2",           "Source", "2024.11", "2024.11", "/fake/path", ToolStatus.INSTALLED,       "#3d1a08"),
-    Tool("gmod",     "Hammer++ GMod",             "Garry's Mod",               "Source", "2024.11", "2024.11", "/fake/path", ToolStatus.INSTALLED,       "#1a2e1a"),
-    Tool("portal2",  "Hammer++ Portal 2",         "Portal 2",                  "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#1a0e35"),
-    Tool("l4d2",     "Hammer++ L4D2",             "Left 4 Dead 2",             "Source", "2024.09", "2024.09", "/fake/path", ToolStatus.INSTALLED,       "#2a0808"),
-    Tool("css",      "Hammer++ CS:S",             "Counter-Strike: Source",    "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#0a1a2a"),
-    Tool("dods",     "Hammer++ DoDS",             "Day of Defeat: Source",     "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#1a1a08"),
-    Tool("hl2",      "Hammer++ HL2",              "Half-Life 2",               "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#0e2210"),
-    Tool("sdk2013sp","Hammer++ SDK 2013 SP",      "Source SDK 2013 SP",        "Source", "2024.08", "2024.11", "/fake/path", ToolStatus.UPDATE_AVAILABLE,"#252508"),
-    Tool("sdk2013mp","Hammer++ SDK 2013 MP",      "Source SDK 2013 MP",        "Source", None,      "2024.10", None,         ToolStatus.AVAILABLE,       "#1a1408"),
-    Tool("csgo",     "Hammer++ CS:GO",            "Counter-Strike: Global Offensive", "Source", None, "2024.10", None,      ToolStatus.AVAILABLE,       "#0a1f2a"),
-]
+        tools.append(Tool(
+            id=t["id"],
+            name=t["name"],
+            game=t["game"],
+            engine=t["engine"],
+            version_installed=t["version"] if t["is_installed"] else None,
+            version_latest=None,
+            install_path=t["install_path"],
+            status=status,
+            banner_color=t["banner_color"],
+        ))
+    return tools
 
 
 class MainWindow(QMainWindow):
@@ -27,7 +40,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Hammerfy")
         self.setMinimumSize(900, 600)
         self.resize(1100, 680)
-        self._all_tools = MOCK_TOOLS
+        self._all_tools = _build_tools_from_scan()
         self._current_filter = "all"
         self._search_query = ""
         self._build_ui()
