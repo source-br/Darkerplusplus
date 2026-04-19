@@ -2,7 +2,7 @@ import os
 import struct
 import re
 from pathlib import Path
-
+from utils.versions import get_version
 
 HAMMER_GAMES = {
     "GarrysMod": {
@@ -42,7 +42,7 @@ HAMMER_GAMES = {
         "name": "Hammer++ HL2",
         "engine": "Source",
         "bin": r"bin",
-        "exe_path": r"bin\hammerplusplus\bin\hammerplusplus.exe",
+        "exe_path": r"bin\hammerplusplus.exe",
         "banner_color": "#0e2210",
     },
     "Left 4 Dead 2": {
@@ -50,7 +50,7 @@ HAMMER_GAMES = {
         "name": "Hammer++ L4D2",
         "engine": "Source",
         "bin": r"bin",
-        "exe_path": r"bin\hammerplusplus\bin\hammerplusplus.exe",
+        "exe_path": r"bin\hammerplusplus.exe",
         "banner_color": "#2a0808",
     },
     "Portal": {
@@ -58,7 +58,7 @@ HAMMER_GAMES = {
         "name": "Hammer++ Portal",
         "engine": "Source",
         "bin": r"bin",
-        "exe_path": r"bin\hammerplusplus\bin\hammerplusplus.exe",
+        "exe_path": r"bin\hammerplusplus.exe",
         "banner_color": "#0d1a2e",
     },
     "Portal 2": {
@@ -66,7 +66,7 @@ HAMMER_GAMES = {
         "name": "Hammer++ Portal 2",
         "engine": "Source",
         "bin": r"bin",
-        "exe_path": r"bin\hammerplusplus\bin\hammerplusplus.exe",
+        "exe_path": r"bin\hammerplusplus.exe",
         "banner_color": "#1a0e35",
     },
     "Source SDK Base 2013 Singleplayer": {
@@ -74,7 +74,7 @@ HAMMER_GAMES = {
         "name": "Hammer++ SDK 2013 SP",
         "engine": "Source",
         "bin": r"bin",
-        "exe_path": r"bin\hammerplusplus\bin\hammerplusplus.exe",
+        "exe_path": r"bin\hammerplusplus.exe",
         "banner_color": "#252508",
     },
     "Source SDK Base 2013 Multiplayer": {
@@ -82,7 +82,7 @@ HAMMER_GAMES = {
         "name": "Hammer++ SDK 2013 MP",
         "engine": "Source",
         "bin": r"bin",
-        "exe_path": r"bin\hammerplusplus\bin\hammerplusplus.exe",
+        "exe_path": r"bin\hammerplusplus.exe",
         "banner_color": "#1a1408",
     },
     "Counter-Strike Global Offensive": {
@@ -92,7 +92,7 @@ HAMMER_GAMES = {
         "bin": None,
         "exe_path": None,
         "banner_color": "#0a1f2a",
-},
+    },
 }
 
 
@@ -176,7 +176,7 @@ def scan_tools() -> list[dict]:
             if exe_path.exists():
                 is_installed = True
                 hammer_exe = str(exe_path)
-                version = get_hammer_version(exe_path)
+                version = get_version(game_info["id"])
 
         tools.append({
             "id":           game_info["id"],
