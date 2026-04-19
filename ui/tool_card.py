@@ -31,7 +31,7 @@ class ToolCard(QWidget):
         name.setStyleSheet("font-size: 12px; font-weight: 600; color: #e0e0e0;")
         name.setWordWrap(True)
 
-        version_text = self.tool.version_installed or self.tool.version_latest or "—"
+        version_text = self.tool.version_installed or "—"
         version = QLabel(f"{version_text} · {self.tool.engine}")
         version.setStyleSheet("font-size: 10px; color: #555;")
 
