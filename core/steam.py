@@ -171,9 +171,8 @@ def scan_tools() -> list[dict]:
         is_installed = False
         version = None
 
-        if game_path and game_info["bin"] and game_info["exe"]:
-            bin_path = game_path / game_info["bin"]
-            exe_path = bin_path / game_info["exe"]
+        if game_path and game_info["exe_path"]:
+            exe_path = game_path / game_info["exe_path"]
             if exe_path.exists():
                 is_installed = True
                 hammer_exe = str(exe_path)
