@@ -9,16 +9,22 @@ from models.tool import Tool, ToolStatus
 from core.steam import scan_tools
 from core.hammer import open_hammer, open_folder
 from core.updater import get_latest_build, download_and_install, uninstall
+from utils.versions import get_version
 import sys
 
 def _build_tools_from_scan() -> list[Tool]:
     raw = scan_tools()
+    latest = get_latest_build()
     tools = []
     for t in raw:
         if t["bin_missing"]:
             status = ToolStatus.AVAILABLE
         elif t["is_installed"]:
-            status = ToolStatus.INSTALLED
+            installed_build = t["version"]
+            if latest and installed_build and installed_build != latest:
+                status = ToolStatus.UPDATE_AVAILABLE
+            else:
+                status = ToolStatus.INSTALLED
         else:
             status = ToolStatus.AVAILABLE
 
@@ -27,8 +33,8 @@ def _build_tools_from_scan() -> list[Tool]:
             name=t["name"],
             game=t["game"],
             engine=t["engine"],
-            version_installed=t["version"] if t["is_installed"] else None,
-            version_latest=None,
+            version_installed=t["version"],
+            version_latest=latest,
             install_path=t["install_path"],
             status=status,
             banner_color=t["banner_color"],
@@ -220,7 +226,7 @@ class MainWindow(QMainWindow):
         if reply != QMessageBox.Yes:
             return
 
-        success, msg = uninstall(tool.install_path)
+        success, msg = uninstall(tool.install_path, tool.id)
         if success:
             QMessageBox.information(self, "Hammerfy", "Hammer++ desinstalado com sucesso.")
             self._all_tools = _build_tools_from_scan()

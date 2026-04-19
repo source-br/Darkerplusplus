@@ -4,6 +4,7 @@ import urllib.error
 import zipfile
 import shutil
 from pathlib import Path
+from utils.versions import save_version, remove_version
 
 
 DOWNLOAD_PAGE = "https://ficool2.github.io/HammerPlusPlus-Website/download.html"
@@ -142,10 +143,11 @@ def download_and_install(
         return False, f"Erro ao extrair: {e}"
 
     zip_path.unlink(missing_ok=True)
+    save_version(game_id, build)
     return True, f"Hammer++ instalado em {dest_folder}"
 
 
-def uninstall(install_path: str) -> tuple[bool, str]:
+def uninstall(install_path: str, game_id: str) -> tuple[bool, str]:
     """
     Remove os arquivos do Hammer++ de uma instalação.
     Remove apenas arquivos conhecidos, não a pasta inteira do jogo.
@@ -189,4 +191,6 @@ def uninstall(install_path: str) -> tuple[bool, str]:
     if removed == 0:
         return False, "Nenhum arquivo do Hammer++ encontrado para remover."
 
+    # Descobre o game_id pelo install_path — passa como parâmetro
+    remove_version(game_id)
     return True, f"{removed} itens removidos com sucesso."
