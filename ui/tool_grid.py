@@ -6,6 +6,7 @@ from ui.tool_card import ToolCard
 
 class ToolGrid(QWidget):
     tool_selected = Signal(object)
+    empty_clicked = Signal()
     action_open = Signal(object)
     action_folder = Signal(object)
     action_install = Signal(object)
@@ -27,6 +28,7 @@ class ToolGrid(QWidget):
         scroll.setStyleSheet("QScrollArea { border: none; background: transparent; }")
 
         self._container = QWidget()
+        self._container.mousePressEvent = self._on_container_click
         self._grid = QGridLayout(self._container)
         self._grid.setContentsMargins(16, 16, 16, 16)
         self._grid.setSpacing(10)
@@ -57,3 +59,6 @@ class ToolGrid(QWidget):
             card.set_selected(card.tool.id == tool.id)
         self._selected_id = tool.id
         self.tool_selected.emit(tool)
+    
+    def _on_container_click(self, event):
+        self.empty_clicked.emit()
