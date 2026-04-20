@@ -5,6 +5,7 @@ from models.tool import Tool, ToolStatus
 from pathlib import Path
 from PySide6.QtGui import QPixmap
 from utils.icons import load_icon
+from utils import translator
 
 class DetailPanel(QWidget):
     action_open = Signal(object)
@@ -86,12 +87,12 @@ class DetailPanel(QWidget):
         layout.setContentsMargins(12, 12, 12, 12)
         layout.setSpacing(6)
 
-        self.btn_open      = self._action_btn("Open",        icon_name="play",        accent=True)
-        self.btn_folder    = self._action_btn("Open folder", icon_name="folder-open")
-        self.btn_customize = self._action_btn("Customize",   icon_name="settings")
-        self.btn_install   = self._action_btn("Install",     icon_name="download",    accent=True)
-        self.btn_update    = self._action_btn("Update",      icon_name="refresh-cw",  accent=True)
-        self.btn_uninstall = self._action_btn("Uninstall",   icon_name="trash-2",     danger=True)
+        self.btn_open      = self._action_btn(translator.t("detail", "open"),        icon_name="play",        accent=True)
+        self.btn_folder    = self._action_btn(translator.t("detail", "open_folder"), icon_name="folder-open")
+        self.btn_customize = self._action_btn(translator.t("detail", "customize"),   icon_name="settings")
+        self.btn_install   = self._action_btn(translator.t("detail", "install"),     icon_name="download",    accent=True)
+        self.btn_update    = self._action_btn(translator.t("detail", "update"),      icon_name="refresh-cw",  accent=True)
+        self.btn_uninstall = self._action_btn(translator.t("detail", "uninstall"),   icon_name="trash-2",     danger=True)
 
         for btn in [self.btn_open, self.btn_folder, self.btn_customize,
                     self.btn_install, self.btn_update, self.btn_uninstall]:
@@ -180,6 +181,14 @@ class DetailPanel(QWidget):
         self.btn_install.setVisible(is_available)
         self.btn_update.setVisible(has_update)
         self.btn_uninstall.setVisible(is_installed or has_update)
+
+    def refresh_text(self):
+        self.btn_open.setText(translator.t("detail", "open"))
+        self.btn_folder.setText(translator.t("detail", "open_folder"))
+        self.btn_customize.setText(translator.t("detail", "customize"))
+        self.btn_install.setText(translator.t("detail", "install"))
+        self.btn_update.setText(translator.t("detail", "update"))
+        self.btn_uninstall.setText(translator.t("detail", "uninstall"))
 
     def _section(self, title):
         widget = QWidget()

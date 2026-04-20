@@ -254,4 +254,5 @@ class MainWindow(QMainWindow):
     def _refresh_ui_text(self):
         self.sidebar.refresh_text()
         self.topbar.refresh_text()
+        self.detail.refresh_text()
         self._load_tools()
