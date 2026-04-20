@@ -5,6 +5,7 @@ from models.tool import Tool, ToolStatus
 from pathlib import Path
 from utils.icons import load_icon
 from PySide6.QtCore import QSize
+from utils import translator
 
 
 class ToolCard(QWidget):
@@ -87,13 +88,14 @@ class ToolCard(QWidget):
         badge = QLabel()
         badge.setFixedHeight(16)
 
-        styles = {
-            ToolStatus.INSTALLED:       ("Installed", "#1a3a1a", "#5ae87a", "#2a5a2a"),
-            ToolStatus.UPDATE_AVAILABLE:("Update",    "#3a2a0a", "#e8b84a", "#5a4a1a"),
-            ToolStatus.AVAILABLE:       ("Available", "#1a1a2a", "#666",    "#2a2a3a"),
+        status_keys = {
+            ToolStatus.INSTALLED:        ("status", "installed",       "#1a3a1a", "#5ae87a", "#2a5a2a"),
+            ToolStatus.UPDATE_AVAILABLE: ("status", "update_available","#3a2a0a", "#e8b84a", "#5a4a1a"),
+            ToolStatus.AVAILABLE:        ("status", "available",       "#1a1a2a", "#666",    "#2a2a3a"),
         }
 
-        text, bg, fg, border = styles[self.tool.status]
+        section, key, bg, fg, border = status_keys[self.tool.status]
+        text = translator.t(section, key)
         badge.setText(text)
         badge.setStyleSheet(f"""
             background-color: {bg};
