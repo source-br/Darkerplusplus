@@ -55,9 +55,12 @@ class Topbar(QWidget):
         layout.addWidget(self.search)
         layout.addWidget(self.btn_lang)
 
-    def set_title(self, title, count=None):
-        self.title_label.setText(title)
-        self.count_label.setText(f"{count} available" if count is not None else "")
+    def set_title(self, title_key, count=None):
+        self.title_label.setText(translator.t("sidebar", title_key))
+        if count is not None:
+            self.count_label.setText(translator.t("topbar", "available_count", count=count))
+        else:
+            self.count_label.setText("")
 
     def _on_language(self):
         self._current_lang = "ptbr" if self._current_lang == "en" else "en"

@@ -128,11 +128,14 @@ class MainWindow(QMainWindow):
         return tools
 
     def _filter_title(self):
-        titles = {
-            "all": "All tools", "installed": "Installed",
-            "available": "Available", "updates": "Updates", "settings": "Settings"
+        keys = {
+            "all":      "all_tools",
+            "installed":"installed",
+            "available":"available",
+            "updates":  "updates",
+            "settings": "settings",
         }
-        return titles.get(self._current_filter, "All tools")
+        return keys.get(self._current_filter, "all_tools")
 
     def _on_filter(self, filter_id):
         self._current_filter = filter_id

@@ -14,9 +14,9 @@ class Sidebar(QWidget):
         self.setObjectName("sidebar")
         self._active_filter = "all"
         self._buttons = {}
-        self._build_ui()
         self._section_labels = []
-
+        self._build_ui()
+        
     def _build_ui(self):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
