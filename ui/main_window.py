@@ -80,6 +80,7 @@ class MainWindow(QMainWindow):
 
         self.grid = ToolGrid()
         self.grid.tool_selected.connect(self._on_tool_selected)
+        self.grid.empty_clicked.connect(self._on_empty_click)
 
         self.detail = DetailPanel()
         self.grid.action_open.connect(self._on_open)
@@ -233,3 +234,11 @@ class MainWindow(QMainWindow):
             self._load_tools()
         else:
             QMessageBox.warning(self, "Hammerfy", f"Erro: {msg}")
+
+    def _on_empty_click(self):
+        for card in self.grid._cards:
+            card.set_selected(False)
+        self._detail_divider.setVisible(False)
+        self.detail._footer.setVisible(False)
+        self.detail._body.setVisible(False)
+        self.detail._header.setVisible(False)
