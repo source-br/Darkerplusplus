@@ -238,7 +238,6 @@ class MainWindow(QMainWindow):
     def _on_empty_click(self):
         for card in self.grid._cards:
             card.set_selected(False)
-        self._detail_divider.setVisible(False)
         self.detail._footer.setVisible(False)
         self.detail._body.setVisible(False)
         self.detail._header.setVisible(False)
