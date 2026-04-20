@@ -1,9 +1,10 @@
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
                                 QLabel, QPushButton, QFrame)
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, QSize
 from models.tool import Tool, ToolStatus
 from pathlib import Path
 from PySide6.QtGui import QPixmap
+from utils.icons import load_icon
 
 class DetailPanel(QWidget):
     action_open = Signal(object)
@@ -85,12 +86,12 @@ class DetailPanel(QWidget):
         layout.setContentsMargins(12, 12, 12, 12)
         layout.setSpacing(6)
 
-        self.btn_open     = self._action_btn("▶  Open")
-        self.btn_folder   = self._action_btn("📁  Open folder")
-        self.btn_customize= self._action_btn("⚙  Customize")
-        self.btn_install  = self._action_btn("⬇  Install", accent=True)
-        self.btn_update   = self._action_btn("⬆  Update", accent=True)
-        self.btn_uninstall= self._action_btn("🗑  Uninstall", danger=True)
+        self.btn_open      = self._action_btn("Open",        icon_name="play",        accent=True)
+        self.btn_folder    = self._action_btn("Open folder", icon_name="folder-open")
+        self.btn_customize = self._action_btn("Customize",   icon_name="settings")
+        self.btn_install   = self._action_btn("Install",     icon_name="download",    accent=True)
+        self.btn_update    = self._action_btn("Update",      icon_name="refresh-cw",  accent=True)
+        self.btn_uninstall = self._action_btn("Uninstall",   icon_name="trash-2",     danger=True)
 
         for btn in [self.btn_open, self.btn_folder, self.btn_customize,
                     self.btn_install, self.btn_update, self.btn_uninstall]:
@@ -210,10 +211,15 @@ class DetailPanel(QWidget):
         layout.addWidget(v)
         return widget
 
-    def _action_btn(self, text, accent=False, danger=False):
+    def _action_btn(self, text, icon_name=None, accent=False, danger=False):
         btn = QPushButton(text)
         btn.setFixedHeight(30)
         btn.setCursor(Qt.PointingHandCursor)
+
+        if icon_name:
+            color = "white" if accent else ("#e84a4a" if danger else "#aaa")
+            btn.setIcon(load_icon(icon_name, color=color, size=14))
+            btn.setIconSize(QSize(14, 14))
 
         if accent:
             btn.setStyleSheet("""
