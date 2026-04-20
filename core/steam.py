@@ -6,16 +6,16 @@ from utils.versions import get_version
 
 HAMMER_GAMES = {
     "GarrysMod": {
-    "id": "gmod",
-    "name": "Hammer++ GMod",
-    "engine": "Source",
-    "bin": r"bin",
-    "exe_path": r"bin\win64\hammerplusplus.exe",
-    "banner_color": "#1a2e1a",
+        "id": "gmod",
+        "name": "Garry's Mod",
+        "engine": "Source",
+        "bin": r"bin",
+        "exe_path": r"bin\win64\hammerplusplus.exe",
+        "banner_color": "#1a2e1a",
     },
     "Team Fortress 2": {
         "id": "tf2",
-        "name": "Hammer++ TF2",
+        "name": "Team Fortress 2",
         "engine": "Source",
         "bin": r"bin",
         "exe_path": r"bin\x64\hammerplusplus.exe",
@@ -23,7 +23,7 @@ HAMMER_GAMES = {
     },
     "Counter-Strike Source": {
         "id": "css",
-        "name": "Hammer++ CS:S",
+        "name": "Counter-Strike: Source",
         "engine": "Source",
         "bin": r"bin",
         "exe_path": r"bin\x64\hammerplusplus.exe",
@@ -31,7 +31,7 @@ HAMMER_GAMES = {
     },
     "Day of Defeat Source": {
         "id": "dods",
-        "name": "Hammer++ DoDS",
+        "name": "Day of Defeat: Source",
         "engine": "Source",
         "bin": r"bin",
         "exe_path": r"bin\x64\hammerplusplus.exe",
@@ -39,7 +39,7 @@ HAMMER_GAMES = {
     },
     "Half-Life 2": {
         "id": "hl2",
-        "name": "Hammer++ HL2",
+        "name": "Half-Life 2",
         "engine": "Source",
         "bin": r"bin",
         "exe_path": r"bin\hammerplusplus.exe",
@@ -47,7 +47,7 @@ HAMMER_GAMES = {
     },
     "Left 4 Dead 2": {
         "id": "l4d2",
-        "name": "Hammer++ L4D2",
+        "name": "Left 4 Dead 2",
         "engine": "Source",
         "bin": r"bin",
         "exe_path": r"bin\hammerplusplus.exe",
@@ -55,7 +55,7 @@ HAMMER_GAMES = {
     },
     "Portal": {
         "id": "portal1",
-        "name": "Hammer++ Portal",
+        "name": "Portal",
         "engine": "Source",
         "bin": r"bin",
         "exe_path": r"bin\hammerplusplus.exe",
@@ -63,7 +63,7 @@ HAMMER_GAMES = {
     },
     "Portal 2": {
         "id": "portal2",
-        "name": "Hammer++ Portal 2",
+        "name": "Portal 2",
         "engine": "Source",
         "bin": r"bin",
         "exe_path": r"bin\hammerplusplus.exe",
@@ -71,7 +71,7 @@ HAMMER_GAMES = {
     },
     "Source SDK Base 2013 Singleplayer": {
         "id": "sdk2013sp",
-        "name": "Hammer++ SDK 2013 SP",
+        "name": "SDK 2013 Singleplayer",
         "engine": "Source",
         "bin": r"bin",
         "exe_path": r"bin\hammerplusplus.exe",
@@ -79,7 +79,7 @@ HAMMER_GAMES = {
     },
     "Source SDK Base 2013 Multiplayer": {
         "id": "sdk2013mp",
-        "name": "Hammer++ SDK 2013 MP",
+        "name": "SDK 2013 Multiplayer",
         "engine": "Source",
         "bin": r"bin",
         "exe_path": r"bin\hammerplusplus.exe",
@@ -87,7 +87,7 @@ HAMMER_GAMES = {
     },
     "Counter-Strike Global Offensive": {
         "id": "csgo",
-        "name": "Hammer++ CS:GO",
+        "name": "CS: Global Offensive",
         "engine": "Source",
         "bin": None,
         "exe_path": None,
