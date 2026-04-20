@@ -122,7 +122,7 @@ class DetailPanel(QWidget):
             self.banner.setScaledContents(False)
             self.banner.setAlignment(Qt.AlignCenter)
             self.banner.setText("")
-            self.banner.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 6px;")
+            self.banner.setStyleSheet(f"background-color: {self._tool.banner_color}; border-radius: 6px;")
         else:
             self.banner.setPixmap(QPixmap())
             self.banner.setText(tool.id.upper())
