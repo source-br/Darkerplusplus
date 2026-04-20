@@ -247,8 +247,8 @@ class DetailPanel(QWidget):
 
         if accent:
             btn.setStyleSheet("""
-                QPushButton { background: #e05c20; border: none; border-radius: 6px; font-size: 12px; color: white; }
-                QPushButton:hover { background: #c94e17; }
+                QPushButton { background: #7c6be0; border: none; border-radius: 6px; font-size: 12px; color: white; }
+                QPushButton:hover { background: #6559c4; }
             """)
         elif danger:
             btn.setStyleSheet("""

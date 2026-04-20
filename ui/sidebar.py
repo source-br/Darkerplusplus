@@ -35,7 +35,7 @@ class Sidebar(QWidget):
         layout = QHBoxLayout(logo_widget)
         layout.setContentsMargins(12, 0, 12, 0)
 
-        icon = QLabel("🔨")
+        icon = QLabel("")
         icon.setFixedSize(28, 28)
         icon.setAlignment(Qt.AlignCenter)
         icon.setStyleSheet("font-size: 16px;")
