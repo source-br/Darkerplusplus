@@ -1,0 +1,50 @@
+{
+    "sidebar": {
+        "library": "Library",
+        "all_tools": "All tools",
+        "installed": "Installed",
+        "available": "Available",
+        "updates": "Updates",
+        "system": "System",
+        "settings": "Settings"
+    },
+    "topbar": {
+        "search_placeholder": "Search tools...",
+        "available_count": "{count} available"
+    },
+    "detail": {
+        "not_installed": "Not installed",
+        "info": "Info",
+        "path": "Path",
+        "customization": "Customization",
+        "version": "Version",
+        "engine": "Engine",
+        "game": "Game",
+        "open": "Open",
+        "open_folder": "Open folder",
+        "customize": "Customize",
+        "install": "Install",
+        "update": "Update",
+        "uninstall": "Uninstall"
+    },
+    "card": {
+        "open": "Open",
+        "install": "Install",
+        "update": "Update"
+    },
+    "status": {
+        "installed": "Installed",
+        "available": "Available",
+        "update_available": "Update"
+    },
+    "messages": {
+        "install_success": "Hammer++ installed successfully!",
+        "install_error": "Error: {msg}",
+        "uninstall_confirm": "Uninstall {name}?\nThis action cannot be undone.",
+        "uninstall_success": "Hammer++ uninstalled successfully.",
+        "uninstall_error": "Error: {msg}",
+        "no_connection": "Could not check latest version. Check your connection.",
+        "steam_not_found": "Steam not found.",
+        "game_not_found": "Game not found in Steam library.\nInstall {game} first."
+    }
+}
