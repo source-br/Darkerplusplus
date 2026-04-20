@@ -242,3 +242,6 @@ class MainWindow(QMainWindow):
         self.detail._footer.setVisible(False)
         self.detail._body.setVisible(False)
         self.detail._header.setVisible(False)
+
+    def _on_language(self, lang):
+        pass  # implementar no sistema de idiomas
