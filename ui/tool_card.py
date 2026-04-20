@@ -43,7 +43,7 @@ class ToolCard(QWidget):
 
     def _build_banner(self):
         banner = QWidget()
-        banner.setFixedHeight(70)
+        banner.setFixedHeight(75)
         banner.setStyleSheet(f"border-radius: 5px;")
 
         b_layout = QHBoxLayout(banner)
@@ -53,17 +53,16 @@ class ToolCard(QWidget):
         banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
         if banner_path.exists():
             from PySide6.QtGui import QPixmap
-            from PySide6.QtWidgets import QLabel as QImgLabel
-            img = QImgLabel()
+            img = QLabel()
+            img.setFixedSize(165, 75)
+            img.setAlignment(Qt.AlignCenter)
             pixmap = QPixmap(str(banner_path)).scaled(
-                165, 70,
-                Qt.KeepAspectRatioByExpanding,
+                165, 75,
+                Qt.KeepAspectRatio,
                 Qt.SmoothTransformation
             )
             img.setPixmap(pixmap)
-            img.setFixedSize(165, 70)
-            img.setStyleSheet("border-radius: 5px;")
-            img.setScaledContents(True)
+            img.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 5px;")
             b_layout.setContentsMargins(0, 0, 0, 0)
             b_layout.addWidget(img)
         else:
