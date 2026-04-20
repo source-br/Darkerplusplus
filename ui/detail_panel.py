@@ -71,9 +71,9 @@ class DetailPanel(QWidget):
         layout.setContentsMargins(14, 14, 14, 14)
         layout.setSpacing(12)
 
-        self._info_section = self._section("Info")
-        self._path_section = self._section("Path")
-        self._custom_section = self._section("Customization")
+        self._info_section = self._section(translator.t("detail", "info"))
+        self._path_section = self._section(translator.t("detail", "path"))
+        self._custom_section = self._section(translator.t("detail", "customization"))
 
         layout.addWidget(self._info_section)
         layout.addWidget(self._path_section)
@@ -152,10 +152,12 @@ class DetailPanel(QWidget):
         layout = self._info_section.layout()
         self._clear_layout(layout)
 
+        version_text = tool.version_installed or "—"  # adiciona essa linha
+
         rows = [
-            ("Version",   tool.version_installed or tool.version_latest or "—"),
-            ("Engine",    tool.engine),
-            ("Game",      tool.game),
+            (translator.t("detail", "version"), version_text),
+            (translator.t("detail", "engine"),  tool.engine),
+            (translator.t("detail", "game"),    tool.game),
         ]
 
         # Popula seção PATH
@@ -189,6 +191,19 @@ class DetailPanel(QWidget):
         self.btn_install.setText(translator.t("detail", "install"))
         self.btn_update.setText(translator.t("detail", "update"))
         self.btn_uninstall.setText(translator.t("detail", "uninstall"))
+
+        # Atualiza títulos das seções
+        for widget, key in zip(
+            [self._info_section, self._path_section, self._custom_section],
+            ["info", "path", "customization"]
+        ):
+            label = widget.layout().itemAt(0).widget()
+            if label:
+                label.setText(translator.t("detail", key).upper())
+
+        # Rerenderiza info se tiver tool carregada
+        if self._tool:
+            self._refresh_info(self._tool)
 
     def _section(self, title):
         widget = QWidget()
