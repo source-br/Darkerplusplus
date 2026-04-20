@@ -1,15 +1,17 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QLineEdit, QPushButton
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, QSize
+from utils.icons import load_icon
 
 
 class Topbar(QWidget):
     search_changed = Signal(str)
-    view_changed = Signal(str)
+    language_changed = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFixedHeight(48)
         self.setObjectName("topbar")
+        self._current_lang = "en"
         self._build_ui()
 
     def _build_ui(self):
@@ -29,44 +31,34 @@ class Topbar(QWidget):
         self.search.setFixedHeight(30)
         self.search.textChanged.connect(self.search_changed.emit)
 
-        self.btn_grid = QPushButton("Grid")
-        self.btn_list = QPushButton("List")
-        for btn in [self.btn_grid, self.btn_list]:
-            btn.setFixedHeight(28)
-            btn.setFixedWidth(48)
-            btn.setCheckable(True)
-            btn.setStyleSheet("""
-                QPushButton {
-                    background: transparent;
-                    border: 1px solid #2a2a2a;
-                    border-radius: 5px;
-                    font-size: 11px;
-                    color: #666;
-                }
-                QPushButton:checked {
-                    background: #2a2a2a;
-                    color: #ccc;
-                    border-color: #333;
-                }
-                QPushButton:hover { color: #aaa; }
-            """)
-
-        self.btn_grid.setChecked(True)
-        self.btn_grid.clicked.connect(lambda: self._on_view("grid"))
-        self.btn_list.clicked.connect(lambda: self._on_view("list"))
+        self.btn_lang = QPushButton("EN")
+        self.btn_lang.setObjectName("topbar_btn")
+        self.btn_lang.setFixedSize(38, 30)
+        self.btn_lang.setCursor(Qt.PointingHandCursor)
+        self.btn_lang.setToolTip("Toggle language")
+        self.btn_lang.setStyleSheet("""
+            QPushButton {
+                background: transparent;
+                border: 1px solid #2a2a2a;
+                border-radius: 6px;
+                font-size: 11px;
+                color: #aaa;
+            }
+            QPushButton:hover { background: #222; color: #e0e0e0; }
+        """)
+        self.btn_lang.clicked.connect(self._on_language)
 
         layout.addWidget(self.title_label)
         layout.addWidget(self.count_label)
         layout.addStretch()
         layout.addWidget(self.search)
-        layout.addWidget(self.btn_grid)
-        layout.addWidget(self.btn_list)
+        layout.addWidget(self.btn_lang)
 
     def set_title(self, title, count=None):
         self.title_label.setText(title)
         self.count_label.setText(f"{count} available" if count is not None else "")
 
-    def _on_view(self, mode):
-        self.btn_grid.setChecked(mode == "grid")
-        self.btn_list.setChecked(mode == "list")
-        self.view_changed.emit(mode)
+    def _on_language(self):
+        self._current_lang = "ptbr" if self._current_lang == "en" else "en"
+        self.btn_lang.setText("PT" if self._current_lang == "ptbr" else "EN")
+        self.language_changed.emit(self._current_lang)
