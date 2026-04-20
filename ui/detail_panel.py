@@ -2,7 +2,8 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
                                 QLabel, QPushButton, QFrame)
 from PySide6.QtCore import Qt, Signal
 from models.tool import Tool, ToolStatus
-
+from pathlib import Path
+from PySide6.QtGui import QPixmap
 
 class DetailPanel(QWidget):
     action_open = Signal(object)
@@ -110,15 +111,27 @@ class DetailPanel(QWidget):
         self._body.setVisible(True)
         self._header.setVisible(True)
 
-
-        self.banner.setText(tool.id.upper())
-        self.banner.setStyleSheet(f"""
-            background-color: {tool.banner_color};
-            border-radius: 6px;
-            font-size: 28px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.85);
-        """)
+        banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{tool.id}.png"
+        if banner_path.exists():
+            pixmap = QPixmap(str(banner_path)).scaled(
+                240, 80,
+                Qt.KeepAspectRatioByExpanding,
+                Qt.SmoothTransformation
+            )
+            self.banner.setPixmap(pixmap)
+            self.banner.setScaledContents(True)
+            self.banner.setText("")
+            self.banner.setStyleSheet("border-radius: 6px;")
+        else:
+            self.banner.setPixmap(QPixmap())
+            self.banner.setText(tool.id.upper())
+            self.banner.setStyleSheet(f"""
+                background-color: {tool.banner_color};
+                border-radius: 6px;
+                font-size: 28px;
+                font-weight: 700;
+                color: rgba(255,255,255,0.85);
+            """)
         self.lbl_name.setText(tool.name)
 
         status_map = {
