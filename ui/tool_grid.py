@@ -61,4 +61,7 @@ class ToolGrid(QWidget):
         self.tool_selected.emit(tool)
     
     def _on_container_click(self, event):
-        self.empty_clicked.emit()
+        # Verifica se clicou diretamente no container, não num card filho
+        child = self._container.childAt(event.pos())
+        if child is None:
+            self.empty_clicked.emit()
