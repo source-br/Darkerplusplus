@@ -29,7 +29,7 @@ QLineEdit {
 }
 
 QLineEdit:focus {
-    border-color: #e05c20;
+    border-color: #7c6be0;
 }
 
 QPushButton {
@@ -46,13 +46,13 @@ QPushButton:hover {
 }
 
 QPushButton#btn_primary {
-    background-color: #e05c20;
-    border-color: #e05c20;
+    background-color: #7c6be0;
+    border-color: #7c6be0;
     color: white;
 }
 
 QPushButton#btn_primary:hover {
-    background-color: #c94e17;
+    background-color: #6559c4;
 }
 
 QFrame[frameShape="4"],

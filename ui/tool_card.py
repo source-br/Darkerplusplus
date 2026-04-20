@@ -46,11 +46,13 @@ class ToolCard(QWidget):
 
     def _build_banner(self):
         banner = QWidget()
-        banner.setFixedHeight(75)
-        banner.setStyleSheet(f"border-radius: 5px;")
+        banner.setFixedHeight(95)
+        banner.setObjectName("card_banner")
+        banner.setStyleSheet("border-radius: 8px;")
+        self._banner_widget = banner
 
         b_layout = QHBoxLayout(banner)
-        b_layout.setContentsMargins(0, 0, 8, 0)
+        b_layout.setContentsMargins(0, 0, 0, 0)
 
         # Tenta carregar imagem do jogo
         banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
@@ -65,11 +67,12 @@ class ToolCard(QWidget):
                 Qt.SmoothTransformation
             )
             img.setPixmap(pixmap)
+            img.setFixedSize(165, 95)
             img.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 5px;")
-            b_layout.setContentsMargins(0, 0, 0, 0)
+            self._banner_img = img
             b_layout.addWidget(img)
         else:
-            # Fallback para cor sólida com texto
+            self._banner_img = None
             banner.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 5px;")
             text = self.tool.id.upper()
             font_size = 14 if len(text) > 4 else 20
@@ -175,14 +178,14 @@ class ToolCard(QWidget):
             btn.setSizePolicy(btn.sizePolicy().horizontalPolicy(), btn.sizePolicy().verticalPolicy())
             btn.setStyleSheet("""
                 QPushButton {
-                    background: #e05c20;
+                    background: #7c6be0;
                     border: none;
                     border-radius: 5px;
                     font-size: 11px;
                     color: white;
                     padding: 0 8px;
                 }
-                QPushButton:hover { background: #c94e17; }
+                QPushButton:hover { background: #6559c4; }
             """)
         elif muted:
             btn.setFixedHeight(24)
@@ -222,7 +225,7 @@ class ToolCard(QWidget):
             self.setStyleSheet("""
                 ToolCard {
                     background: #271e17;
-                    border: 1px solid #e05c20;
+                    border: 1px solid #7c6be0;
                     border-radius: 8px;
                 }
             """)
@@ -242,3 +245,19 @@ class ToolCard(QWidget):
     def mousePressEvent(self, event):
         self.selected.emit(self.tool)
         super().mousePressEvent(event)
+
+    def update_banner_size(self, card_width: int, banner_height: int):
+        """Atualiza o tamanho do banner dinamicamente."""
+        self._banner_widget.setFixedHeight(banner_height)
+        if hasattr(self, '_banner_img') and self._banner_img:
+            from pathlib import Path
+            from PySide6.QtGui import QPixmap
+            banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
+            if banner_path.exists():
+                pixmap = QPixmap(str(banner_path)).scaled(
+                    card_width, banner_height,
+                    Qt.KeepAspectRatio,
+                    Qt.SmoothTransformation
+                )
+                self._banner_img.setPixmap(pixmap)
+                self._banner_img.setFixedSize(card_width, banner_height)
