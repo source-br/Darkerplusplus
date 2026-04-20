@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushBu
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QColor
 from models.tool import Tool, ToolStatus
+from pathlib import Path
 
 
 class ToolCard(QWidget):
@@ -43,22 +44,40 @@ class ToolCard(QWidget):
     def _build_banner(self):
         banner = QWidget()
         banner.setFixedHeight(70)
-        banner.setStyleSheet(f"""
-            background-color: {self.tool.banner_color};
-            border-radius: 5px;
-        """)
+        banner.setStyleSheet(f"border-radius: 5px;")
 
         b_layout = QHBoxLayout(banner)
-        b_layout.setContentsMargins(8, 0, 8, 0)
+        b_layout.setContentsMargins(0, 0, 8, 0)
 
-        text = self.tool.id.upper()
-        font_size = 14 if len(text) > 4 else 20
-        label = QLabel(text)
-        label.setStyleSheet(f"font-size: {font_size}px; font-weight: 700; color: rgba(255,255,255,0.85);")
-        b_layout.addWidget(label)
-        b_layout.addStretch()
+        # Tenta carregar imagem do jogo
+        banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
+        if banner_path.exists():
+            from PySide6.QtGui import QPixmap
+            from PySide6.QtWidgets import QLabel as QImgLabel
+            img = QImgLabel()
+            pixmap = QPixmap(str(banner_path)).scaled(
+                165, 70,
+                Qt.KeepAspectRatioByExpanding,
+                Qt.SmoothTransformation
+            )
+            img.setPixmap(pixmap)
+            img.setFixedSize(165, 70)
+            img.setStyleSheet("border-radius: 5px;")
+            img.setScaledContents(True)
+            b_layout.setContentsMargins(0, 0, 0, 0)
+            b_layout.addWidget(img)
+        else:
+            # Fallback para cor sólida com texto
+            banner.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 5px;")
+            text = self.tool.id.upper()
+            font_size = 14 if len(text) > 4 else 20
+            label = QLabel(text)
+            label.setStyleSheet(f"font-size: {font_size}px; font-weight: 700; color: rgba(255,255,255,0.85);")
+            b_layout.addWidget(label)
 
+        # Badge de status sempre por cima
         status_badge = self._build_status_badge()
+        b_layout.addStretch()
         b_layout.addWidget(status_badge, alignment=Qt.AlignTop | Qt.AlignRight)
 
         return banner
