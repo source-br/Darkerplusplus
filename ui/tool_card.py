@@ -115,7 +115,7 @@ class ToolCard(QWidget):
         layout.setSpacing(4)
 
         if self.tool.status == ToolStatus.INSTALLED:
-            btn_main = self._btn("Open", primary=True)
+            btn_main = self._btn(translator.t("card", "open"), primary=True)
             btn_main.clicked.connect(lambda: self.action_open.emit(self.tool))
             btn_folder = self._btn("", icon=True, icon_name="folder-open")
             btn_folder.clicked.connect(lambda: self.action_folder.emit(self.tool))
@@ -125,7 +125,7 @@ class ToolCard(QWidget):
             layout.addWidget(btn_settings)
 
         elif self.tool.status == ToolStatus.UPDATE_AVAILABLE:
-            btn_main = self._btn("Update", accent="#8a6200")
+            btn_main = self._btn(translator.t("card", "update"), accent="#8a6200")
             btn_main.clicked.connect(lambda: self.action_update.emit(self.tool))
             btn_folder = self._btn("...", icon=True)
             btn_folder.clicked.connect(lambda: self.action_folder.emit(self.tool))
@@ -133,7 +133,7 @@ class ToolCard(QWidget):
             layout.addWidget(btn_folder)
 
         else:
-            btn_main = self._btn("Install", muted=True)
+            btn_main = self._btn(translator.t("card", "install"), muted=True)
             btn_main.clicked.connect(lambda: self.action_install.emit(self.tool))
             layout.addWidget(btn_main)
 
