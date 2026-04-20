@@ -115,13 +115,14 @@ class DetailPanel(QWidget):
         if banner_path.exists():
             pixmap = QPixmap(str(banner_path)).scaled(
                 240, 80,
-                Qt.KeepAspectRatioByExpanding,
+                Qt.KeepAspectRatio,
                 Qt.SmoothTransformation
             )
             self.banner.setPixmap(pixmap)
-            self.banner.setScaledContents(True)
+            self.banner.setScaledContents(False)
+            self.banner.setAlignment(Qt.AlignCenter)
             self.banner.setText("")
-            self.banner.setStyleSheet("border-radius: 6px;")
+            self.banner.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 6px;")
         else:
             self.banner.setPixmap(QPixmap())
             self.banner.setText(tool.id.upper())
