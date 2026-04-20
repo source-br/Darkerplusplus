@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QFont
+from utils import translator
 
 
 class Sidebar(QWidget):
@@ -14,6 +15,7 @@ class Sidebar(QWidget):
         self._active_filter = "all"
         self._buttons = {}
         self._build_ui()
+        self._section_labels = []
 
     def _build_ui(self):
         layout = QVBoxLayout(self)
@@ -80,6 +82,7 @@ class Sidebar(QWidget):
     def _nav_label(self, text):
         label = QLabel(text.upper())
         label.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1px; padding: 4px 8px;")
+        self._section_labels.append(label)
         return label
 
     def _nav_btn(self, filter_id, text, dot_color):
@@ -138,3 +141,22 @@ class Sidebar(QWidget):
         self._buttons[filter_id].setChecked(True)
         self._active_filter = filter_id
         self.filter_changed.emit(filter_id)
+
+    def refresh_text(self):
+        # Atualiza labels das seções
+        for label, key in zip(self._section_labels, ["library", "system"]):
+            label.setText(translator.t("sidebar", key).upper())
+
+        # Atualiza botões de navegação
+        labels = {
+            "all":      translator.t("sidebar", "all_tools"),
+            "installed":translator.t("sidebar", "installed"),
+            "available":translator.t("sidebar", "available"),
+            "updates":  translator.t("sidebar", "updates"),
+            "settings": translator.t("sidebar", "settings"),
+        }
+        for filter_id, btn in self._buttons.items():
+            if filter_id in labels:
+                # Atualiza o QLabel dentro do botão
+                for child in btn.findChildren(QLabel):
+                    child.setText(labels[filter_id])

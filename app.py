@@ -1,12 +1,14 @@
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFontDatabase
 from ui.main_window import MainWindow
+from utils import translator
 import sys
 import os
 
 class HammerfyApp(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
+        translator.load("en")
         self._load_styles()
         self.window = MainWindow()
         self.window.show()

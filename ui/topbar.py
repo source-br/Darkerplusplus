@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QLineEdit, QPushButton
 from PySide6.QtCore import Qt, Signal, QSize
 from utils.icons import load_icon
+from utils import translator
 
 
 class Topbar(QWidget):
@@ -62,3 +63,10 @@ class Topbar(QWidget):
         self._current_lang = "ptbr" if self._current_lang == "en" else "en"
         self.btn_lang.setText("PT" if self._current_lang == "ptbr" else "EN")
         self.language_changed.emit(self._current_lang)
+
+    def refresh_text(self):
+        self.search.setPlaceholderText(translator.t("topbar", "search_placeholder"))
+        if self._current_lang == "ptbr":
+            self.btn_lang.setText("PT")
+        else:
+            self.btn_lang.setText("EN")

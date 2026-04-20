@@ -10,6 +10,7 @@ from core.steam import scan_tools
 from core.hammer import open_hammer, open_folder
 from core.updater import get_latest_build, download_and_install, uninstall
 from utils.versions import get_version
+from utils import translator
 import sys
 
 def _build_tools_from_scan() -> list[Tool]:
@@ -244,4 +245,10 @@ class MainWindow(QMainWindow):
         self.detail._header.setVisible(False)
 
     def _on_language(self, lang):
-        pass  # implementar no sistema de idiomas
+        translator.load(lang)
+        self._refresh_ui_text()
+
+    def _refresh_ui_text(self):
+        self.sidebar.refresh_text()
+        self.topbar.refresh_text()
+        self._load_tools()

@@ -1,0 +1,50 @@
+{
+    "sidebar": {
+        "library": "Biblioteca",
+        "all_tools": "Todas as ferramentas",
+        "installed": "Instalados",
+        "available": "Disponíveis",
+        "updates": "Atualizações",
+        "system": "Sistema",
+        "settings": "Configurações"
+    },
+    "topbar": {
+        "search_placeholder": "Buscar ferramentas...",
+        "available_count": "{count} disponíveis"
+    },
+    "detail": {
+        "not_installed": "Não instalado",
+        "info": "Info",
+        "path": "Caminho",
+        "customization": "Personalização",
+        "version": "Versão",
+        "engine": "Engine",
+        "game": "Jogo",
+        "open": "Abrir",
+        "open_folder": "Abrir pasta",
+        "customize": "Personalizar",
+        "install": "Instalar",
+        "update": "Atualizar",
+        "uninstall": "Desinstalar"
+    },
+    "card": {
+        "open": "Abrir",
+        "install": "Instalar",
+        "update": "Atualizar"
+    },
+    "status": {
+        "installed": "Instalado",
+        "available": "Disponível",
+        "update_available": "Atualizar"
+    },
+    "messages": {
+        "install_success": "Hammer++ instalado com sucesso!",
+        "install_error": "Erro: {msg}",
+        "uninstall_confirm": "Desinstalar {name}?\nEssa ação não pode ser desfeita.",
+        "uninstall_success": "Hammer++ desinstalado com sucesso.",
+        "uninstall_error": "Erro: {msg}",
+        "no_connection": "Não foi possível verificar a versão mais recente. Verifique sua conexão.",
+        "steam_not_found": "Steam não encontrada.",
+        "game_not_found": "Jogo não encontrado na biblioteca Steam.\nInstale {game} primeiro."
+    }
+}
