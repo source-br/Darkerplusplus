@@ -3,6 +3,8 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QColor
 from models.tool import Tool, ToolStatus
 from pathlib import Path
+from utils.icons import load_icon
+from PySide6.QtCore import QSize
 
 
 class ToolCard(QWidget):
@@ -113,9 +115,9 @@ class ToolCard(QWidget):
         if self.tool.status == ToolStatus.INSTALLED:
             btn_main = self._btn("Open", primary=True)
             btn_main.clicked.connect(lambda: self.action_open.emit(self.tool))
-            btn_folder = self._btn("...", icon=True)
+            btn_folder = self._btn("", icon=True, icon_name="folder-open")
             btn_folder.clicked.connect(lambda: self.action_folder.emit(self.tool))
-            btn_settings = self._btn("⚙", icon=True)
+            btn_settings = self._btn("", icon=True, icon_name="settings")
             layout.addWidget(btn_main)
             layout.addWidget(btn_folder)
             layout.addWidget(btn_settings)
@@ -135,9 +137,14 @@ class ToolCard(QWidget):
 
         return widget
 
-    def _btn(self, text, primary=False, icon=False, muted=False, accent=None):
+    def _btn(self, text, primary=False, icon=False, muted=False, accent=None, icon_name=None):
         btn = QPushButton(text)
         btn.setCursor(Qt.PointingHandCursor)
+
+        if icon_name:
+            color = "white" if primary else "#666"
+            btn.setIcon(load_icon(icon_name, color=color, size=14))
+            btn.setIconSize(QSize(14, 14))
 
         if icon:
             btn.setFixedSize(36, 24)
