@@ -160,9 +160,15 @@ class DetailPanel(QWidget):
         path_layout = self._path_section.layout()
         self._clear_layout(path_layout)
         if tool.install_path:
-            lbl = QLabel(tool.install_path)
+            lbl = QLabel()
             lbl.setStyleSheet("font-size: 10px; color: #555;")
-            lbl.setWordWrap(True)
+            lbl.setWordWrap(False)
+            lbl.setText(tool.install_path)
+            lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
+            metrics = lbl.fontMetrics()
+            elided = metrics.elidedText(tool.install_path, Qt.ElideMiddle, 210)
+            lbl.setText(elided)
+            lbl.setToolTip(tool.install_path)
             path_layout.addWidget(lbl)
 
         for key, val in rows:
