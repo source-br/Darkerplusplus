@@ -27,7 +27,7 @@ class ToolCard(QWidget):
     def _build_ui(self):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(8, 8, 8, 8)
-        layout.setSpacing(4)
+        layout.setSpacing(6)
 
         self._banner_container = self._build_banner()
         layout.addWidget(self._banner_container)
@@ -48,65 +48,40 @@ class ToolCard(QWidget):
         layout.addWidget(self._build_actions())
 
     def _build_banner(self):
-        banner = QWidget()
-        banner.setFixedHeight(95)
-        banner.setObjectName("card_banner")
-        banner.setStyleSheet("border-radius: 8px;")
-        self._banner_widget = banner
-
-        b_layout = QHBoxLayout(banner)
-        b_layout.setContentsMargins(0, 0, 0, 0)
+        outer = QWidget()
+        outer.setFixedHeight(95)
+        self._banner_widget = outer
 
         banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
+
         if banner_path.exists():
-            from PySide6.QtGui import QPixmap, QPainter, QPainterPath
-            from PySide6.QtCore import QRectF
-
-            default_w, default_h = 165, 95
+            from PySide6.QtGui import QPixmap
             pixmap = QPixmap(str(banner_path))
-            scaled = pixmap.scaled(
-                default_w, default_h,
-                Qt.KeepAspectRatioByExpanding,
-                Qt.SmoothTransformation
-            )
-            x = (scaled.width() - default_w) // 2
-            y = (scaled.height() - default_h) // 2
-            cropped = scaled.copy(x, y, default_w, default_h)
+            self._banner_pixmap_orig = pixmap
 
-            # Aplica border-radius via mask
-            rounded = QPixmap(default_w, default_h)
-            rounded.fill(Qt.transparent)
-            painter = QPainter(rounded)
-            painter.setRenderHint(QPainter.Antialiasing)
-            path = QPainterPath()
-            path.addRoundedRect(QRectF(0, 0, default_w, default_h), 8, 8)
-            painter.setClipPath(path)
-            painter.drawPixmap(0, 0, cropped)
-            painter.end()
-
-            img = QLabel()
-            img.setAlignment(Qt.AlignCenter)
-            img.setPixmap(rounded)
-            img.setFixedSize(default_w, default_h)
-            img.setStyleSheet("background: transparent;")
+            img = QLabel(outer)
+            img.setFixedSize(165, 95)
+            img.setScaledContents(True)
+            img.setPixmap(pixmap)
+            img.move(0, 0)
             self._banner_img = img
-            self._banner_pixmap_orig = pixmap  # guarda original para resize
-            b_layout.addWidget(img)
         else:
+            self._banner_pixmap_orig = None
             self._banner_img = None
-            banner.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 8px;")
+            outer.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 8px;")
             text = self.tool.id.upper()
             font_size = 14 if len(text) > 4 else 20
-            label = QLabel(text)
+            label = QLabel(text, outer)
             label.setStyleSheet(f"font-size: {font_size}px; font-weight: 700; color: rgba(255,255,255,0.85);")
-            b_layout.addWidget(label)
+            label.move(8, 30)
 
-        status_badge = self._build_status_badge()
-        b_layout.addStretch()
-        b_layout.addWidget(status_badge, alignment=Qt.AlignTop | Qt.AlignRight)
+        badge = self._build_status_badge()
+        badge.setParent(outer)
+        badge.move(0, 6)
+        self._status_badge = badge
 
-        return banner
-
+        return outer
+    
     def _build_status_badge(self):
         badge = QLabel()
         badge.setFixedHeight(16)
@@ -244,20 +219,20 @@ class ToolCard(QWidget):
         if self._is_selected:
             self.setStyleSheet("""
                 ToolCard {
-                    background: #271e17;
+                    background: #1e1a2e;
                     border: 1px solid #7c6be0;
-                    border-radius: 8px;
+                    border-radius: 10px;
                 }
             """)
         else:
             self.setStyleSheet("""
                 ToolCard {
-                    background: #222;
+                    background: #1e1e1e;
                     border: 1px solid #2a2a2a;
-                    border-radius: 8px;
+                    border-radius: 10px;
                 }
                 ToolCard:hover {
-                    background: #272727;
+                    background: #242424;
                     border-color: #333;
                 }
             """)
@@ -268,28 +243,11 @@ class ToolCard(QWidget):
 
     def update_banner_size(self, card_width: int, banner_height: int):
         self._banner_widget.setFixedHeight(banner_height)
-        if self._banner_img and hasattr(self, '_banner_pixmap_orig'):
-            from PySide6.QtGui import QPainter, QPainterPath, QPixmap
-            from PySide6.QtCore import QRectF
+        self._banner_widget.setFixedWidth(card_width)
 
-            scaled = self._banner_pixmap_orig.scaled(
-                card_width, banner_height,
-                Qt.KeepAspectRatioByExpanding,
-                Qt.SmoothTransformation
-            )
-            x = (scaled.width() - card_width) // 2
-            y = (scaled.height() - banner_height) // 2
-            cropped = scaled.copy(x, y, card_width, banner_height)
-
-            rounded = QPixmap(card_width, banner_height)
-            rounded.fill(Qt.transparent)
-            painter = QPainter(rounded)
-            painter.setRenderHint(QPainter.Antialiasing)
-            path = QPainterPath()
-            path.addRoundedRect(QRectF(0, 0, card_width, banner_height), 8, 8)
-            painter.setClipPath(path)
-            painter.drawPixmap(0, 0, cropped)
-            painter.end()
-
-            self._banner_img.setPixmap(rounded)
+        if self._banner_img and self._banner_pixmap_orig:
             self._banner_img.setFixedSize(card_width, banner_height)
+
+        if hasattr(self, '_status_badge'):
+            badge_w = self._status_badge.sizeHint().width()
+            self._status_badge.move(card_width - badge_w - 6, 6)

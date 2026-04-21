@@ -115,38 +115,18 @@ class DetailPanel(QWidget):
 
         banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{tool.id}.png"
         if banner_path.exists():
-            from PySide6.QtGui import QPixmap, QPainter, QPainterPath
-            from PySide6.QtCore import QRectF
-
-            w, h = 240, 100
             pixmap = QPixmap(str(banner_path))
-            scaled = pixmap.scaled(w, h, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
-            x = (scaled.width() - w) // 2
-            y = (scaled.height() - h) // 2
-            cropped = scaled.copy(x, y, w, h)
-
-            rounded = QPixmap(w, h)
-            rounded.fill(Qt.transparent)
-            painter = QPainter(rounded)
-            painter.setRenderHint(QPainter.Antialiasing)
-            path = QPainterPath()
-            path.addRoundedRect(QRectF(0, 0, w, h), 8, 8)
-            painter.setClipPath(path)
-            painter.drawPixmap(0, 0, cropped)
-            painter.end()
-
-            self.banner.setPixmap(rounded)
-            self.banner.setScaledContents(False)
-            self.banner.setAlignment(Qt.AlignCenter)
+            self.banner.setPixmap(pixmap)
+            self.banner.setScaledContents(True)
             self.banner.setText("")
-            self.banner.setStyleSheet("background: transparent;")
-            self.banner.setFixedHeight(h)
+            self.banner.setStyleSheet("border-radius: 8px;")
+            self.banner.setFixedHeight(100)
         else:
             self.banner.setPixmap(QPixmap())
             self.banner.setText(tool.id.upper())
             self.banner.setStyleSheet(f"""
-                background-color: {tool.banner_color};
-                border-radius: 6px;
+                background-color: {self._tool.banner_color};
+                border-radius: 8px;
                 font-size: 28px;
                 font-weight: 700;
                 color: rgba(255,255,255,0.85);
