@@ -104,11 +104,6 @@ class MainWindow(QMainWindow):
         self.about_panel = AboutPanel()
         self.about_panel.setVisible(False)
 
-        content_layout.addWidget(self.grid)
-        content_layout.addWidget(self.about_panel)
-        content_layout.addWidget(self._detail_divider)
-        content_layout.addWidget(self.detail)
-
         self.detail = DetailPanel()
         self.detail.action_open.connect(self._on_open)
         self.detail.action_folder.connect(self._on_folder)
@@ -127,6 +122,7 @@ class MainWindow(QMainWindow):
         content_layout.addWidget(self.sidebar)
         content_layout.addWidget(self._vline())
         content_layout.addWidget(self.grid)
+        content_layout.addWidget(self.about_panel)
         content_layout.addWidget(self._detail_divider)
         content_layout.addWidget(self.detail)
 
