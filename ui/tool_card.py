@@ -57,33 +57,36 @@ class ToolCard(QWidget):
         b_layout = QHBoxLayout(banner)
         b_layout.setContentsMargins(0, 0, 0, 0)
 
-        # Tenta carregar imagem do jogo
         banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
         if banner_path.exists():
             from PySide6.QtGui import QPixmap
             img = QLabel()
-            img.setFixedSize(165, 75)
             img.setAlignment(Qt.AlignCenter)
-            pixmap = QPixmap(str(banner_path)).scaled(
-                165, 75,
-                Qt.KeepAspectRatio,
+            # Valores iniciais — serão atualizados pelo update_banner_size
+            default_w, default_h = 165, 95
+            pixmap = QPixmap(str(banner_path))
+            scaled = pixmap.scaled(
+                default_w, default_h,
+                Qt.KeepAspectRatioByExpanding,
                 Qt.SmoothTransformation
             )
-            img.setPixmap(pixmap)
-            img.setFixedSize(165, 95)
-            img.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 5px;")
+            x = (scaled.width() - default_w) // 2
+            y = (scaled.height() - default_h) // 2
+            cropped = scaled.copy(x, y, default_w, default_h)
+            img.setPixmap(cropped)
+            img.setFixedSize(default_w, default_h)
+            img.setStyleSheet("border-radius: 8px;")
             self._banner_img = img
             b_layout.addWidget(img)
         else:
             self._banner_img = None
-            banner.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 5px;")
+            banner.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 8px;")
             text = self.tool.id.upper()
             font_size = 14 if len(text) > 4 else 20
             label = QLabel(text)
             label.setStyleSheet(f"font-size: {font_size}px; font-weight: 700; color: rgba(255,255,255,0.85);")
             b_layout.addWidget(label)
 
-        # Badge de status sempre por cima
         status_badge = self._build_status_badge()
         b_layout.addStretch()
         b_layout.addWidget(status_badge, alignment=Qt.AlignTop | Qt.AlignRight)
@@ -250,17 +253,20 @@ class ToolCard(QWidget):
         super().mousePressEvent(event)
 
     def update_banner_size(self, card_width: int, banner_height: int):
-        """Atualiza o tamanho do banner dinamicamente."""
         self._banner_widget.setFixedHeight(banner_height)
-        if hasattr(self, '_banner_img') and self._banner_img:
+        if self._banner_img:
             from pathlib import Path
             from PySide6.QtGui import QPixmap
             banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
             if banner_path.exists():
-                pixmap = QPixmap(str(banner_path)).scaled(
+                pixmap = QPixmap(str(banner_path))
+                scaled = pixmap.scaled(
                     card_width, banner_height,
-                    Qt.KeepAspectRatio,
+                    Qt.KeepAspectRatioByExpanding,
                     Qt.SmoothTransformation
                 )
-                self._banner_img.setPixmap(pixmap)
+                x = (scaled.width() - card_width) // 2
+                y = (scaled.height() - banner_height) // 2
+                cropped = scaled.copy(x, y, card_width, banner_height)
+                self._banner_img.setPixmap(cropped)
                 self._banner_img.setFixedSize(card_width, banner_height)
