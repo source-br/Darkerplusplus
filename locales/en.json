@@ -19,6 +19,7 @@
         "customization": "Customization",
         "version": "Version",
         "engine": "Engine",
+        "hammer": "Hammer",
         "game": "Game",
         "open": "Open",
         "open_folder": "Open folder",

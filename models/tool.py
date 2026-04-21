@@ -12,6 +12,7 @@ class Tool:
     name: str                # ex: "Hammer++ TF2"
     game: str                # ex: "Team Fortress 2"
     engine: str              # ex: "Source", "Source 2"
+    hammer_type: str
     version_installed: str | None
     version_latest: str | None
     install_path: str | None

@@ -35,6 +35,7 @@ def _build_tools_from_scan() -> list[Tool]:
             name=t["name"],
             game=t["game"],
             engine=t["engine"],
+            hammer_type=t["hammer_type"],
             version_installed=t["version"] if t["is_installed"] else None,
             version_latest=latest if t["is_installed"] else None,
             install_path=t["install_path"],

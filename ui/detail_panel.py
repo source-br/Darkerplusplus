@@ -154,6 +154,7 @@ class DetailPanel(QWidget):
             (translator.t("detail", "version"), version_text),
             (translator.t("detail", "engine"),  tool.engine),
             (translator.t("detail", "game"),    tool.game),
+            (translator.t("detail", "hammer"),   tool.hammer_type),
         ]
 
         # Popula seção PATH
