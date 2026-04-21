@@ -37,7 +37,8 @@
     "status": {
         "installed": "Instalado",
         "available": "Disponível",
-        "update_available": "Atualizar"
+        "update_available": "Atualizar",
+        "not_available": "Jogo não instalado"
     },
     "messages": {
         "install_success": "Hammer++ instalado com sucesso!",
