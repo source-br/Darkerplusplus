@@ -18,10 +18,8 @@ def _build_tools_from_scan() -> list[Tool]:
     latest = get_latest_build()
     tools = []
     for t in raw:
-        if not t["game_installed"]:
-            status = ToolStatus.NOT_AVAILABLE  # jogo não instalado
-        if t["bin_missing"]:
-            status = ToolStatus.AVAILABLE
+        if not t["game_installed"] or t["bin_missing"]:
+            status = ToolStatus.NOT_AVAILABLE
         elif t["is_installed"]:
             installed_build = t["version"]
             if latest and installed_build and installed_build != latest:
