@@ -9,6 +9,7 @@ class SidebarLogo(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFixedWidth(210)
+        self.setFixedHeight(48)
         self.setObjectName("logo_area")
         self._build_ui()
 

@@ -112,7 +112,7 @@ class MainWindow(QMainWindow):
         self.detail._header.setVisible(False)
 
         self._detail_divider = self._vline()
-        self._detail_divider.setVisible(False)
+        self._detail_divider.setVisible(True)
 
         content_layout.addWidget(self.sidebar)
         content_layout.addWidget(self._vline())
@@ -185,6 +185,8 @@ class MainWindow(QMainWindow):
         return line
 
     def _hline(self):
+        top = QWidget()
+        top.setFixedHeight(48)
         line = QFrame()
         line.setFrameShape(QFrame.HLine)
         line.setStyleSheet("background-color: #242424; max-height: 1px;")
