@@ -26,21 +26,24 @@ class ToolCard(QWidget):
 
     def _build_ui(self):
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(10, 10, 10, 10)
-        layout.setSpacing(6)
+        layout.setContentsMargins(8, 8, 8, 8)
+        layout.setSpacing(4)
 
-        layout.addWidget(self._build_banner())
+        self._banner_container = self._build_banner()
+        layout.addWidget(self._banner_container)
 
-        name = QLabel(self.tool.name)
-        name.setStyleSheet("font-size: 12px; font-weight: 600; color: #e0e0e0;")
-        name.setWordWrap(True)
+        self.lbl_name = QLabel(self.tool.name)
+        self.lbl_name.setObjectName("card_name")
+        self.lbl_name.setWordWrap(True)
+        self.lbl_name.setStyleSheet("font-size: 11px; font-weight: 600; color: #e0e0e0;")
 
         version_text = self.tool.version_installed or "—"
-        version = QLabel(f"{version_text} · {self.tool.engine}")
-        version.setStyleSheet("font-size: 10px; color: #555;")
+        self.lbl_version = QLabel(f"{version_text} · {self.tool.engine}")
+        self.lbl_version.setObjectName("card_version")
+        self.lbl_version.setStyleSheet("font-size: 10px; color: #555;")
 
-        layout.addWidget(name)
-        layout.addWidget(version)
+        layout.addWidget(self.lbl_name)
+        layout.addWidget(self.lbl_version)
         layout.addStretch()
         layout.addWidget(self._build_actions())
 

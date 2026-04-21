@@ -26,34 +26,9 @@ class Topbar(QWidget):
         self.count_label = QLabel("")
         self.count_label.setStyleSheet("font-size: 12px; color: #555;")
 
-        self.search = QLineEdit()
-        self.search.setPlaceholderText("Search tools...")
-        self.search.setFixedWidth(180)
-        self.search.setFixedHeight(30)
-        self.search.textChanged.connect(self.search_changed.emit)
-
-        self.btn_lang = QPushButton("EN")
-        self.btn_lang.setObjectName("topbar_btn")
-        self.btn_lang.setFixedSize(38, 30)
-        self.btn_lang.setCursor(Qt.PointingHandCursor)
-        self.btn_lang.setToolTip("Toggle language")
-        self.btn_lang.setStyleSheet("""
-            QPushButton {
-                background: transparent;
-                border: 1px solid #2a2a2a;
-                border-radius: 6px;
-                font-size: 11px;
-                color: #aaa;
-            }
-            QPushButton:hover { background: #222; color: #e0e0e0; }
-        """)
-        self.btn_lang.clicked.connect(self._on_language)
-
         layout.addWidget(self.title_label)
         layout.addWidget(self.count_label)
         layout.addStretch()
-        layout.addWidget(self.search)
-        layout.addWidget(self.btn_lang)
 
     def set_title(self, title_key, count=None):
         self.title_label.setText(translator.t("sidebar", title_key))
