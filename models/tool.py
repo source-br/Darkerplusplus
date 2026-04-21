@@ -5,6 +5,7 @@ class ToolStatus(Enum):
     INSTALLED = "installed"
     AVAILABLE = "available"
     UPDATE_AVAILABLE = "update_available"
+    NOT_AVAILABLE = "not_available"
 
 @dataclass
 class Tool:

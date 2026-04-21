@@ -5,7 +5,6 @@ from ui.topbar import Topbar
 from ui.tool_grid import ToolGrid
 from ui.detail_panel import DetailPanel
 from models.tool import Tool, ToolStatus
-from models.tool import Tool, ToolStatus
 from core.steam import scan_tools
 from core.hammer import open_hammer, open_folder
 from core.updater import get_latest_build, download_and_install, uninstall
@@ -19,6 +18,8 @@ def _build_tools_from_scan() -> list[Tool]:
     latest = get_latest_build()
     tools = []
     for t in raw:
+        if not t["game_installed"]:
+            status = ToolStatus.NOT_AVAILABLE  # jogo não instalado
         if t["bin_missing"]:
             status = ToolStatus.AVAILABLE
         elif t["is_installed"]:
@@ -139,10 +140,6 @@ class MainWindow(QMainWindow):
             tools = [t for t in tools if t.status == ToolStatus.AVAILABLE]
         elif self._current_filter == "updates":
             tools = [t for t in tools if t.status == ToolStatus.UPDATE_AVAILABLE]
-
-        if self._search_query:
-            q = self._search_query.lower()
-            tools = [t for t in tools if q in t.name.lower() or q in t.game.lower()]
 
         return tools
 

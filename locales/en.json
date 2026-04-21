@@ -4,6 +4,7 @@
         "all_tools": "All tools",
         "installed": "Installed",
         "available": "Available",
+        "not_available": "Game not installed",
         "updates": "Updates",
         "system": "System",
         "settings": "Settings"
