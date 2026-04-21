@@ -87,9 +87,10 @@ class ToolCard(QWidget):
         badge.setFixedHeight(16)
 
         status_keys = {
-            ToolStatus.INSTALLED:        ("status", "installed",       "#1a3a1a", "#5ae87a", "#2a5a2a"),
-            ToolStatus.UPDATE_AVAILABLE: ("status", "update_available","#3a2a0a", "#e8b84a", "#5a4a1a"),
-            ToolStatus.AVAILABLE:        ("status", "available",       "#1a1a2a", "#666",    "#2a2a3a"),
+            ToolStatus.INSTALLED:       ("status", "installed",        "#1a3a1a", "#5ae87a", "#2a5a2a"),
+            ToolStatus.UPDATE_AVAILABLE:("status", "update_available", "#3a2a0a", "#e8b84a", "#5a4a1a"),
+            ToolStatus.AVAILABLE:       ("status", "available",        "#1a1a2a", "#666",    "#2a2a3a"),
+            ToolStatus.NOT_AVAILABLE:   ("status", "not_available",    "#1a1a1a", "#444",    "#222"),
         }
 
         section, key, bg, fg, border = status_keys[self.tool.status]
@@ -129,6 +130,11 @@ class ToolCard(QWidget):
             btn_folder.clicked.connect(lambda: self.action_folder.emit(self.tool))
             layout.addWidget(btn_main)
             layout.addWidget(btn_folder)
+
+        elif self.tool.status == ToolStatus.NOT_AVAILABLE:
+            btn = self._btn(translator.t("status", "not_available"), muted=True)
+            btn.setEnabled(False)
+            layout.addWidget(btn)
 
         else:
             btn_main = self._btn(translator.t("card", "install"), muted=True)

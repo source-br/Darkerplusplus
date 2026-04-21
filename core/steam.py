@@ -188,6 +188,8 @@ def scan_tools() -> list[dict]:
                 is_installed = True
                 hammer_exe = str(exe_path)
                 version = get_version(game_info["id"])
+        
+        game_installed = game_folder_name in installed_games
 
         tools.append({
             "id":           game_info["id"],
@@ -196,6 +198,7 @@ def scan_tools() -> list[dict]:
             "engine":       game_info["engine"],
             "hammer_type": game_info["hammer_type"],
             "is_installed": is_installed,
+            "game_installed": game_installed,
             "install_path": hammer_exe,
             "version":      version,
             "banner_color": game_info["banner_color"],
