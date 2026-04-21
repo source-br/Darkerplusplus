@@ -4,7 +4,6 @@
         "all_tools": "All tools",
         "installed": "Installed",
         "available": "Available",
-        "not_available": "Game not installed",
         "updates": "Updates",
         "system": "System",
         "settings": "Settings"
@@ -37,7 +36,8 @@
     "status": {
         "installed": "Installed",
         "available": "Available",
-        "update_available": "Update"
+        "update_available": "Update",
+        "not_available": "Game not installed"
     },
     "messages": {
         "install_success": "Hammer++ installed successfully!",

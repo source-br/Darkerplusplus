@@ -137,6 +137,7 @@ class DetailPanel(QWidget):
             ToolStatus.INSTALLED:        ("● Installed",       "#5ae87a"),
             ToolStatus.UPDATE_AVAILABLE: ("● Update available","#e8b84a"),
             ToolStatus.AVAILABLE:        ("○ Not installed",   "#555"),
+            ToolStatus.NOT_AVAILABLE:    ("○ Game not installed", "#444"),
         }
         text, color = status_map[tool.status]
         self.lbl_status.setText(f'<span style="color:{color};">{text}</span> · {tool.engine}')
