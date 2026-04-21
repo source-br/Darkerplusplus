@@ -166,7 +166,7 @@ class DetailPanel(QWidget):
             lbl.setText(tool.install_path)
             lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
             metrics = lbl.fontMetrics()
-            elided = metrics.elidedText(tool.install_path, Qt.ElideMiddle, 210)
+            elided = metrics.elidedText(tool.install_path, Qt.ElideRight, 210)
             lbl.setText(elided)
             lbl.setToolTip(tool.install_path)
             path_layout.addWidget(lbl)
