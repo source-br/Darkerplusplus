@@ -4,13 +4,15 @@ from ui.sidebar import Sidebar
 from ui.topbar import Topbar
 from ui.tool_grid import ToolGrid
 from ui.detail_panel import DetailPanel
+from ui.sidebar import Sidebar, SidebarLogo
+from ui.about_panel import AboutPanel
 from models.tool import Tool, ToolStatus
 from core.steam import scan_tools
 from core.hammer import open_hammer, open_folder
 from core.updater import get_latest_build, download_and_install, uninstall
 from utils.versions import get_version
 from utils import translator
-from ui.sidebar import Sidebar, SidebarLogo
+
 import sys
 
 def _build_tools_from_scan() -> list[Tool]:
@@ -99,6 +101,14 @@ class MainWindow(QMainWindow):
         self.grid.action_install.connect(self._on_install)
         self.grid.action_update.connect(self._on_update)
 
+        self.about_panel = AboutPanel()
+        self.about_panel.setVisible(False)
+
+        content_layout.addWidget(self.grid)
+        content_layout.addWidget(self.about_panel)
+        content_layout.addWidget(self._detail_divider)
+        content_layout.addWidget(self.detail)
+
         self.detail = DetailPanel()
         self.detail.action_open.connect(self._on_open)
         self.detail.action_folder.connect(self._on_folder)
@@ -153,7 +163,22 @@ class MainWindow(QMainWindow):
 
     def _on_filter(self, filter_id):
         self._current_filter = filter_id
-        self._load_tools()
+        if filter_id == "about":
+            self.grid.setVisible(False)
+            self.about_panel.setVisible(True)
+            self._detail_divider.setVisible(False)
+            self.detail._header.setVisible(False)
+            self.detail._body.setVisible(False)
+            self.detail._footer.setVisible(False)
+            self.topbar.set_title("about", None)
+        elif filter_id == "settings":
+            self.grid.setVisible(False)
+            self.about_panel.setVisible(False)
+            self.topbar.set_title("settings", None)
+        else:
+            self.grid.setVisible(True)
+            self.about_panel.setVisible(False)
+            self._load_tools()
 
     def _on_search(self, query):
         self._search_query = query

@@ -77,6 +77,7 @@ class Sidebar(QWidget):
         layout.addSpacing(8)
         layout.addWidget(self._nav_label(translator.t("sidebar", "system")))
         layout.addWidget(self._nav_btn("settings",  translator.t("sidebar", "settings"),   "#444"))
+        layout.addWidget(self._nav_btn("about", translator.t("sidebar", "about"), "#444"))
 
         return nav
 
