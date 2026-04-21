@@ -29,27 +29,33 @@ class Sidebar(QWidget):
 
     def _build_logo(self):
         logo_widget = QWidget()
-        logo_widget.setFixedHeight(56)
+        logo_widget.setFixedHeight(64)
         logo_widget.setObjectName("logo_area")
 
         layout = QHBoxLayout(logo_widget)
-        layout.setContentsMargins(12, 0, 12, 0)
+        layout.setContentsMargins(12, 8, 12, 8)
+        layout.setSpacing(0)
 
-        icon = QLabel("")
-        icon.setFixedSize(28, 28)
-        icon.setAlignment(Qt.AlignCenter)
-        icon.setStyleSheet("font-size: 16px;")
+        from pathlib import Path
+        from PySide6.QtGui import QPixmap
+        from PySide6.QtCore import Qt
 
-        name = QLabel("Hammerfy")
-        name.setObjectName("logo_text")
-        name.setStyleSheet("font-size: 15px; font-weight: 600; color: #f0f0f0;")
+        logo_path = Path(__file__).parent.parent / "assets" / "icons" / "hammerfy-logo.png"
+        if logo_path.exists():
+            img = QLabel()
+            pixmap = QPixmap(str(logo_path)).scaledToHeight(40, Qt.SmoothTransformation)
+            img.setPixmap(pixmap)
+            img.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            layout.addWidget(img)
+        else:
+            name = QLabel("Hammerfy")
+            name.setObjectName("logo_text")
+            name.setStyleSheet("font-size: 15px; font-weight: 600; color: #f0f0f0;")
+            layout.addWidget(name)
 
         version = QLabel("v0.1")
         version.setStyleSheet("font-size: 10px; color: #555;")
         version.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
-
-        layout.addWidget(icon)
-        layout.addWidget(name)
         layout.addStretch()
         layout.addWidget(version)
 
