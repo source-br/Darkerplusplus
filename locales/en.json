@@ -6,7 +6,8 @@
         "available": "Available",
         "updates": "Updates",
         "system": "System",
-        "settings": "Settings"
+        "settings": "Settings",
+        "about": "About"
     },
     "topbar": {
         "search_placeholder": "Search tools...",
