@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QApplication
-from PySide6.QtGui import QFontDatabase
+from PySide6.QtGui import QFontDatabase, QIcon
 from ui.main_window import MainWindow
 from utils import translator
+from pathlib import Path
 import locale
 import sys
 import os
@@ -9,10 +10,16 @@ import os
 class HammerfyApp(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
-        translator.load("en")
+        self._load_language()
         self._load_styles()
+        self._load_icon()
         self.window = MainWindow()
         self.window.show()
+
+    def _load_icon(self):
+        icon_path = Path(__file__).parent / "assets" / "icons" / "hammerfy-icon.png"
+        if icon_path.exists():
+            self.setWindowIcon(QIcon(str(icon_path)))
 
     def _load_language(self):
         lang_code = locale.getdefaultlocale()[0] or "en"
