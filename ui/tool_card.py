@@ -59,10 +59,9 @@ class ToolCard(QWidget):
 
         banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
         if banner_path.exists():
-            from PySide6.QtGui import QPixmap
-            img = QLabel()
-            img.setAlignment(Qt.AlignCenter)
-            # Valores iniciais — serão atualizados pelo update_banner_size
+            from PySide6.QtGui import QPixmap, QPainter, QPainterPath
+            from PySide6.QtCore import QRectF
+
             default_w, default_h = 165, 95
             pixmap = QPixmap(str(banner_path))
             scaled = pixmap.scaled(
@@ -73,10 +72,25 @@ class ToolCard(QWidget):
             x = (scaled.width() - default_w) // 2
             y = (scaled.height() - default_h) // 2
             cropped = scaled.copy(x, y, default_w, default_h)
-            img.setPixmap(cropped)
+
+            # Aplica border-radius via mask
+            rounded = QPixmap(default_w, default_h)
+            rounded.fill(Qt.transparent)
+            painter = QPainter(rounded)
+            painter.setRenderHint(QPainter.Antialiasing)
+            path = QPainterPath()
+            path.addRoundedRect(QRectF(0, 0, default_w, default_h), 8, 8)
+            painter.setClipPath(path)
+            painter.drawPixmap(0, 0, cropped)
+            painter.end()
+
+            img = QLabel()
+            img.setAlignment(Qt.AlignCenter)
+            img.setPixmap(rounded)
             img.setFixedSize(default_w, default_h)
-            img.setStyleSheet("border-radius: 8px;")
+            img.setStyleSheet("background: transparent;")
             self._banner_img = img
+            self._banner_pixmap_orig = pixmap  # guarda original para resize
             b_layout.addWidget(img)
         else:
             self._banner_img = None
@@ -254,19 +268,28 @@ class ToolCard(QWidget):
 
     def update_banner_size(self, card_width: int, banner_height: int):
         self._banner_widget.setFixedHeight(banner_height)
-        if self._banner_img:
-            from pathlib import Path
-            from PySide6.QtGui import QPixmap
-            banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
-            if banner_path.exists():
-                pixmap = QPixmap(str(banner_path))
-                scaled = pixmap.scaled(
-                    card_width, banner_height,
-                    Qt.KeepAspectRatioByExpanding,
-                    Qt.SmoothTransformation
-                )
-                x = (scaled.width() - card_width) // 2
-                y = (scaled.height() - banner_height) // 2
-                cropped = scaled.copy(x, y, card_width, banner_height)
-                self._banner_img.setPixmap(cropped)
-                self._banner_img.setFixedSize(card_width, banner_height)
+        if self._banner_img and hasattr(self, '_banner_pixmap_orig'):
+            from PySide6.QtGui import QPainter, QPainterPath, QPixmap
+            from PySide6.QtCore import QRectF
+
+            scaled = self._banner_pixmap_orig.scaled(
+                card_width, banner_height,
+                Qt.KeepAspectRatioByExpanding,
+                Qt.SmoothTransformation
+            )
+            x = (scaled.width() - card_width) // 2
+            y = (scaled.height() - banner_height) // 2
+            cropped = scaled.copy(x, y, card_width, banner_height)
+
+            rounded = QPixmap(card_width, banner_height)
+            rounded.fill(Qt.transparent)
+            painter = QPainter(rounded)
+            painter.setRenderHint(QPainter.Antialiasing)
+            path = QPainterPath()
+            path.addRoundedRect(QRectF(0, 0, card_width, banner_height), 8, 8)
+            painter.setClipPath(path)
+            painter.drawPixmap(0, 0, cropped)
+            painter.end()
+
+            self._banner_img.setPixmap(rounded)
+            self._banner_img.setFixedSize(card_width, banner_height)
