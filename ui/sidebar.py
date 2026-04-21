@@ -2,6 +2,8 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushBu
 from PySide6.QtCore import Qt, Signal
 from utils import translator
 from pathlib import Path
+from utils.icons import load_icon
+from PySide6.QtCore import QSize
 
 
 class SidebarLogo(QWidget):
@@ -97,14 +99,26 @@ class Sidebar(QWidget):
         layout.setContentsMargins(8, 6, 8, 6)
         layout.setSpacing(8)
 
-        dot = QLabel()
-        dot.setFixedSize(6, 6)
-        dot.setStyleSheet(f"background-color: {dot_color}; border-radius: 3px;")
+        # Ícone SVG com cor do dot
+        icon_map = {
+            "all":       ("grid-2x2",        dot_color),
+            "installed": ("package-check",   dot_color),
+            "available": ("package",         dot_color),
+            "updates":   ("circle-arrow-up", dot_color),
+            "settings":  ("settings",        dot_color),
+            "about":     ("info",            dot_color),
+        }
+        icon_name, color = icon_map.get(filter_id, ("circle", dot_color))
+        icon_lbl = QLabel()
+        icon_lbl.setFixedSize(16, 16)
+        icon_lbl.setPixmap(load_icon(icon_name, color=color, size=16).pixmap(16, 16))
+        self._icon_labels = getattr(self, '_icon_labels', {})
+        self._icon_labels[filter_id] = (icon_lbl, icon_name, color)
 
         label = QLabel(text)
         label.setStyleSheet("font-size: 13px;")
 
-        layout.addWidget(dot)
+        layout.addWidget(icon_lbl)
         layout.addWidget(label)
         layout.addStretch()
 
