@@ -73,7 +73,6 @@ class MainWindow(QMainWindow):
 
         self.topbar = Topbar()
         self.topbar.search_changed.connect(self._on_search)
-        self.topbar.language_changed.connect(self._on_language)
 
         content = QWidget()
         content_layout = QHBoxLayout(content)
