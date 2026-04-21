@@ -43,7 +43,11 @@ class Sidebar(QWidget):
         logo_path = Path(__file__).parent.parent / "assets" / "icons" / "hammerfy-logo.png"
         if logo_path.exists():
             img = QLabel()
-            pixmap = QPixmap(str(logo_path)).scaledToHeight(40, Qt.SmoothTransformation)
+            pixmap = QPixmap(str(logo_path)).scaled(
+                160, 36,
+                Qt.KeepAspectRatio,
+                Qt.SmoothTransformation
+            )
             img.setPixmap(pixmap)
             img.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             layout.addWidget(img)
