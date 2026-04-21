@@ -11,6 +11,7 @@ from core.hammer import open_hammer, open_folder
 from core.updater import get_latest_build, download_and_install, uninstall
 from utils.versions import get_version
 from utils import translator
+from ui.sidebar import Sidebar, SidebarLogo
 import sys
 
 def _build_tools_from_scan() -> list[Tool]:
@@ -55,55 +56,73 @@ class MainWindow(QMainWindow):
         self._build_ui()
         self._load_tools()
 
+    from ui.sidebar import Sidebar, SidebarLogo
+
     def _build_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
 
-        root = QHBoxLayout(central)
+        root = QVBoxLayout(central)
         root.setContentsMargins(0, 0, 0, 0)
         root.setSpacing(0)
 
-        self.sidebar = Sidebar()
-        self.sidebar.filter_changed.connect(self._on_filter)
+        # Topo: logo + linha vertical + topbar
+        top = QWidget()
+        top_layout = QHBoxLayout(top)
+        top_layout.setContentsMargins(0, 0, 0, 0)
+        top_layout.setSpacing(0)
 
-        right = QWidget()
-        right_layout = QVBoxLayout(right)
-        right_layout.setContentsMargins(0, 0, 0, 0)
-        right_layout.setSpacing(0)
-
+        self.sidebar_logo = SidebarLogo()
         self.topbar = Topbar()
-        self.topbar.search_changed.connect(self._on_search)
 
+        top_layout.addWidget(self.sidebar_logo)
+        top_layout.addWidget(self._vline())
+        top_layout.addWidget(self.topbar)
+
+        # Linha horizontal atravessa tudo
+        hline = self._hline()
+
+        # Conteúdo: sidebar nav + linha vertical + grid + detail
         content = QWidget()
         content_layout = QHBoxLayout(content)
         content_layout.setContentsMargins(0, 0, 0, 0)
         content_layout.setSpacing(0)
 
+        self.sidebar = Sidebar()
+        self.sidebar.filter_changed.connect(self._on_filter)
+
         self.grid = ToolGrid()
         self.grid.tool_selected.connect(self._on_tool_selected)
         self.grid.empty_clicked.connect(self._on_empty_click)
-
-        self.detail = DetailPanel()
         self.grid.action_open.connect(self._on_open)
         self.grid.action_folder.connect(self._on_folder)
+        self.grid.action_install.connect(self._on_install)
+        self.grid.action_update.connect(self._on_update)
+
+        self.detail = DetailPanel()
         self.detail.action_open.connect(self._on_open)
         self.detail.action_folder.connect(self._on_folder)
-        self.grid.action_install.connect(self._on_install)
         self.detail.action_install.connect(self._on_install)
+        self.detail.action_update.connect(self._on_update)
         self.detail.action_uninstall.connect(self._on_uninstall)
+        self.detail.action_customize.connect(self._on_customize)
 
-        content_layout.addWidget(self.grid)
+        self.detail._footer.setVisible(False)
+        self.detail._body.setVisible(False)
+        self.detail._header.setVisible(False)
+
+        self._detail_divider = self._vline()
+        self._detail_divider.setVisible(False)
+
+        content_layout.addWidget(self.sidebar)
         content_layout.addWidget(self._vline())
+        content_layout.addWidget(self.grid)
+        content_layout.addWidget(self._detail_divider)
         content_layout.addWidget(self.detail)
 
-        right_layout.addWidget(self._hline())
-        right_layout.addWidget(self.topbar)
-        right_layout.addWidget(self._hline())
-        right_layout.addWidget(content)
-
-        root.addWidget(self.sidebar)
-        root.addWidget(self._vline())
-        root.addWidget(right)
+        root.addWidget(top)
+        root.addWidget(hline)
+        root.addWidget(content)
 
     def _load_tools(self):
         filtered = self._filter_tools()
@@ -239,6 +258,9 @@ class MainWindow(QMainWindow):
         else:
             QMessageBox.warning(self, "Hammerfy", f"Erro: {msg}")
 
+    def _on_update(self, tool: Tool):
+        self._on_install(tool)
+
     def _on_empty_click(self):
         for card in self.grid._cards:
             card.set_selected(False)
@@ -255,3 +277,6 @@ class MainWindow(QMainWindow):
         self.topbar.refresh_text()
         self.detail.refresh_text()
         self._load_tools()
+
+    def _on_customize(self, tool: Tool):
+        pass  # implementar na fase 3
