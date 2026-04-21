@@ -162,12 +162,11 @@ class DetailPanel(QWidget):
         if tool.install_path:
             lbl = QLabel()
             lbl.setStyleSheet("font-size: 10px; color: #555;")
-            lbl.setWordWrap(False)
-            lbl.setText(tool.install_path)
+            lbl.setWordWrap(True)
             lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
-            metrics = lbl.fontMetrics()
-            elided = metrics.elidedText(tool.install_path, Qt.ElideRight, 210)
-            lbl.setText(elided)
+            # Quebra apenas nas barras do path
+            path_display = tool.install_path.replace("\\", "\\\u200b")
+            lbl.setText(path_display)
             lbl.setToolTip(tool.install_path)
             path_layout.addWidget(lbl)
 
