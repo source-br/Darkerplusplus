@@ -57,6 +57,9 @@ class MainWindow(QMainWindow):
         self._current_filter = "all"
         self._search_query = ""
         self._build_ui()
+        self.detail.setVisible(False)
+        self._detail_divider.setVisible(False)
+        self._detail_divider.setMaximumWidth(0)
         self._load_tools()
 
     from ui.sidebar import Sidebar, SidebarLogo
