@@ -3,6 +3,7 @@ import struct
 import re
 from pathlib import Path
 from utils.versions import get_version
+from PySide6.QtCore import QFileSystemWatcher, QObject, Signal
 
 HAMMER_GAMES = {
     "GarrysMod": {
@@ -206,3 +207,25 @@ def scan_tools() -> list[dict]:
         })
 
     return tools
+
+class SteamWatcher(QObject):
+    games_changed = Signal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._watcher = QFileSystemWatcher()
+        self._watcher.directoryChanged.connect(self._on_change)
+        self._watcher.fileChanged.connect(self._on_change)
+
+    def watch(self, libraries: list):
+        """Monitora as pastas common de cada biblioteca Steam."""
+        for lib in libraries:
+            common = str(lib / "common")
+            vdf = str(lib / "libraryfolders.vdf")
+            if (lib / "common").exists():
+                self._watcher.addPath(common)
+            if (lib / "libraryfolders.vdf").exists():
+                self._watcher.addPath(vdf)
+
+    def _on_change(self):
+        self.games_changed.emit()
