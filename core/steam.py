@@ -100,8 +100,8 @@ HAMMER_GAMES = {
         "name": "CS: Global Offensive",
         "engine": "Source",
         "hammer_type": "Hammer++ CS:GO",
-        "bin": None,
-        "exe_path": None,
+        "bin": r"bin",
+        "exe_path": r"bin\hammerplusplus.exe",
         "banner_color": "#0a1f2a",
     },
 }
