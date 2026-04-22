@@ -170,6 +170,7 @@ class MainWindow(QMainWindow):
             self.grid.setVisible(False)
             self.about_panel.setVisible(True)
             self.settings_panel.setVisible(False)
+            self.detail.setVisible(False)
             self._detail_divider.setVisible(False)
             self._detail_divider.setMaximumWidth(0)
             self.detail._header.setVisible(False)
@@ -180,6 +181,7 @@ class MainWindow(QMainWindow):
             self.grid.setVisible(False)
             self.about_panel.setVisible(False)
             self.settings_panel.setVisible(True)
+            self.detail.setVisible(False)
             self._detail_divider.setVisible(False)
             self._detail_divider.setMaximumWidth(0)
             self.detail._header.setVisible(False)
@@ -190,6 +192,7 @@ class MainWindow(QMainWindow):
             self.grid.setVisible(True)
             self.about_panel.setVisible(False)
             self.settings_panel.setVisible(False)
+            self.detail.setVisible(False)
             self._load_tools()
             if self.detail._header.isVisible():
                 self._detail_divider.setVisible(True)
@@ -200,6 +203,7 @@ class MainWindow(QMainWindow):
 
     def _on_tool_selected(self, tool):
         self.detail.load_tool(tool)
+        self.detail.setVisible(True)
         self._detail_divider.setMaximumWidth(1)
         self._detail_divider.setVisible(True)
 
@@ -307,6 +311,7 @@ class MainWindow(QMainWindow):
     def _on_empty_click(self):
         for card in self.grid._cards:
             card.set_selected(False)
+        self.detail.setVisible(False)
         self.detail._footer.setVisible(False)
         self.detail._body.setVisible(False)
         self.detail._header.setVisible(False)
