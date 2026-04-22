@@ -20,18 +20,26 @@ LICENSE = "GPL-3.0"
 
 def get_os_name() -> str:
     system = platform.system()
-    release = platform.release()
     if system == "Windows":
-        version = platform.version()
-        if "11" in version or int(release) >= 11 if release.isdigit() else False:
+        release = platform.release()
+        build = platform.version()
+        if build.startswith("10.0.2"):  # build 20000+ = Windows 11
             return "Windows 11"
         return f"Windows {release}"
     elif system == "Linux":
         try:
             import distro
-            return f"{distro.name()} {distro.version()}"
+            return distro.name(pretty=True)
         except ImportError:
-            return f"Linux {platform.release()}"
+            # fallback lendo /etc/os-release diretamente
+            try:
+                with open("/etc/os-release") as f:
+                    for line in f:
+                        if line.startswith("PRETTY_NAME="):
+                            return line.split("=")[1].strip().strip('"')
+            except Exception:
+                pass
+            return "Linux"
     elif system == "Darwin":
         return f"macOS {platform.mac_ver()[0]}"
     return system
@@ -100,19 +108,6 @@ class AboutPanel(QWidget):
         layout.addWidget(desc)
 
         layout.addStretch()
-
-        badge = QLabel("Free & Open Source")
-        badge.setStyleSheet("""
-            background-color: #1a1a2e;
-            color: #7c6be0;
-            border: 1px solid #2a2a4a;
-            border-radius: 4px;
-            font-size: 11px;
-            padding: 4px 10px;
-        """)
-        badge.setFixedHeight(26)
-        badge.setFixedWidth(140)
-        layout.addWidget(badge)
 
         return widget
 
