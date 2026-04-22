@@ -123,7 +123,7 @@ class ToolCard(QWidget):
         elif self.tool.status == ToolStatus.UPDATE_AVAILABLE:
             btn_main = self._btn(translator.t("card", "update"), accent="#8a6200")
             btn_main.clicked.connect(lambda: self.action_update.emit(self.tool))
-            btn_folder = self._btn("...", icon=True)
+            btn_folder = self._btn("", icon=True, icon_name="folder-open")
             btn_folder.clicked.connect(lambda: self.action_folder.emit(self.tool))
             layout.addWidget(btn_main)
             layout.addWidget(btn_folder)
