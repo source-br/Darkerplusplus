@@ -169,6 +169,7 @@ class MainWindow(QMainWindow):
         if filter_id == "about":
             self.grid.setVisible(False)
             self.about_panel.setVisible(True)
+            self.settings_panel.setVisible(False)
             self._detail_divider.setVisible(False)
             self._detail_divider.setMaximumWidth(0)
             self.detail._header.setVisible(False)
