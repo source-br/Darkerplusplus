@@ -109,6 +109,7 @@ class MainWindow(QMainWindow):
         self.about_panel.setVisible(False)
 
         self.detail = DetailPanel()
+        self.detail.setFixedWidth(240)
         self.detail.action_open.connect(self._on_open)
         self.detail.action_folder.connect(self._on_folder)
         self.detail.action_install.connect(self._on_install)
@@ -121,7 +122,8 @@ class MainWindow(QMainWindow):
         self.detail._header.setVisible(False)
 
         self._detail_divider = self._vline()
-        self._detail_divider.setVisible(True)
+        self._detail_divider.setVisible(False)
+        self._detail_divider.setMaximumWidth(0)
 
         content_layout.addWidget(self.sidebar)
         content_layout.addWidget(self._vline())
@@ -168,6 +170,7 @@ class MainWindow(QMainWindow):
             self.grid.setVisible(False)
             self.about_panel.setVisible(True)
             self._detail_divider.setVisible(False)
+            self._detail_divider.setMaximumWidth(0)
             self.detail._header.setVisible(False)
             self.detail._body.setVisible(False)
             self.detail._footer.setVisible(False)
@@ -177,6 +180,7 @@ class MainWindow(QMainWindow):
             self.about_panel.setVisible(False)
             self.settings_panel.setVisible(True)
             self._detail_divider.setVisible(False)
+            self._detail_divider.setMaximumWidth(0)
             self.detail._header.setVisible(False)
             self.detail._body.setVisible(False)
             self.detail._footer.setVisible(False)
@@ -186,6 +190,8 @@ class MainWindow(QMainWindow):
             self.about_panel.setVisible(False)
             self.settings_panel.setVisible(False)
             self._load_tools()
+            if self.detail._header.isVisible():
+                self._detail_divider.setVisible(True)
 
     def _on_search(self, query):
         self._search_query = query
@@ -193,6 +199,8 @@ class MainWindow(QMainWindow):
 
     def _on_tool_selected(self, tool):
         self.detail.load_tool(tool)
+        self._detail_divider.setMaximumWidth(1)
+        self._detail_divider.setVisible(True)
 
     def _on_open(self, tool: Tool):
         success, msg = open_hammer(tool)
@@ -297,6 +305,8 @@ class MainWindow(QMainWindow):
         self.detail._footer.setVisible(False)
         self.detail._body.setVisible(False)
         self.detail._header.setVisible(False)
+        self._detail_divider.setVisible(False)
+        self._detail_divider.setMaximumWidth(0)
 
     def _on_language(self, lang):
         translator.load(lang)
