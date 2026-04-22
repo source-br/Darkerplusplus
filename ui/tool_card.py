@@ -26,7 +26,7 @@ class ToolCard(QWidget):
 
     def _build_ui(self):
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(8, 8, 8, 8)
+        layout.setContentsMargins(0, 0, 0, 8)
         layout.setSpacing(6)
 
         self._banner_container = self._build_banner()
@@ -56,15 +56,12 @@ class ToolCard(QWidget):
 
         if banner_path.exists():
             from PySide6.QtGui import QPixmap
-            pixmap = QPixmap(str(banner_path))
-            self._banner_pixmap_orig = pixmap
-
-            img = QLabel(outer)
-            img.setFixedSize(165, 95)
-            img.setScaledContents(True)
-            img.setPixmap(pixmap)
-            img.move(0, 0)
-            self._banner_img = img
+            self._banner_pixmap_orig = QPixmap(str(banner_path))
+            self._banner_img = QLabel(outer)
+            self._banner_img.setScaledContents(True)
+            self._banner_img.setPixmap(self._banner_pixmap_orig)
+            self._banner_img.setGeometry(0, 0, 165, 95)
+            outer.setFixedWidth(165)
         else:
             self._banner_pixmap_orig = None
             self._banner_img = None
@@ -251,8 +248,8 @@ class ToolCard(QWidget):
         self._banner_widget.setFixedHeight(banner_height)
         self._banner_widget.setFixedWidth(card_width)
 
-        if self._banner_img and self._banner_pixmap_orig:
-            self._banner_img.setFixedSize(card_width, banner_height)
+        if self._banner_img:
+            self._banner_img.setGeometry(0, 0, card_width, banner_height)
 
         if hasattr(self, '_status_badge'):
             badge_w = self._status_badge.sizeHint().width()

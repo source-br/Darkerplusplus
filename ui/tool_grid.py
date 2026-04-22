@@ -72,8 +72,7 @@ class ToolGrid(QWidget):
 
         cols = max(1, min(self.MAX_COLS, available_width // min_card_width))
         card_width = min(max_card_width, (available_width - (cols - 1) * 10) // cols)
-        card_height = int(card_width * 1.1)  # proporção mais vertical
-        banner_height = int(card_width * 0.55)
+        card_height = int(card_width * 1.1)
 
         for card in self._cards:
             card.setFixedSize(card_width, card_height)
