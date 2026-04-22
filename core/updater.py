@@ -2,10 +2,12 @@ import re
 import urllib.request
 import urllib.error
 import zipfile
+import json
 import shutil
 from pathlib import Path
 from utils.versions import save_version, remove_version
 
+GITHUB_API = "https://api.github.com/repos/ficool2/HammerPlusPlus-Website/releases/latest"
 
 DOWNLOAD_PAGE = "https://ficool2.github.io/HammerPlusPlus-Website/download.html"
 GITHUB_BASE   = "https://github.com/ficool2/HammerPlusPlus-Website/releases/download"
@@ -28,21 +30,20 @@ GAME_ZIP = {
 
 
 def get_latest_build() -> str | None:
-    """Busca o número do build mais recente na página oficial."""
+    """Busca o build mais recente via GitHub API."""
     try:
         req = urllib.request.Request(
-            DOWNLOAD_PAGE,
-            headers={"User-Agent": "Hammerfy/0.1"}
+            GITHUB_API,
+            headers={
+                "User-Agent": "Hammerfy/0.1",
+                "Accept": "application/vnd.github+json"
+            }
         )
         with urllib.request.urlopen(req, timeout=10) as resp:
-            html = resp.read().decode("utf-8")
-        match = re.search(r"Current build version is:.*?(\d{4,})", html)
-        if match:
-            return match.group(1)
+            data = json.loads(resp.read().decode("utf-8"))
+            return data.get("tag_name")
     except Exception:
-        pass
-    return None
-
+        return None
 
 def get_download_url(game_id: str, build: str) -> str | None:
     """Monta a URL de download para um jogo e build específicos."""
