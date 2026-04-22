@@ -42,9 +42,9 @@ class ToolCard(QWidget):
         self.lbl_version.setObjectName("card_version")
         self.lbl_version.setStyleSheet("font-size: 10px; color: #555;")
 
+        layout.addWidget(self._banner_container)
         layout.addWidget(self.lbl_name)
         layout.addWidget(self.lbl_version)
-        layout.addStretch()
         layout.addWidget(self._build_actions())
 
     def _build_banner(self):
