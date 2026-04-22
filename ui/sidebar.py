@@ -73,7 +73,7 @@ class Sidebar(QWidget):
         layout.addWidget(self._nav_label(translator.t("sidebar", "library")))
         layout.addWidget(self._nav_btn("all",       translator.t("sidebar", "all_tools"),  "#7c6be0"))
         layout.addWidget(self._nav_btn("installed", translator.t("sidebar", "installed"),  "#3c9e3c"))
-        layout.addWidget(self._nav_btn("available", translator.t("sidebar", "available"),  "#444"))
+        layout.addWidget(self._nav_btn("available", translator.t("sidebar", "available"),  "#4a9eda"))
         layout.addWidget(self._nav_btn("updates",   translator.t("sidebar", "updates"),    "#e8b84a"))
 
         layout.addSpacing(8)
