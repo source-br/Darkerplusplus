@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Hammerfy")
         self.setMinimumSize(900, 600)
-        self.resize(1100, 680)
+        self.resize(1280, 760)
         self._all_tools = _build_tools_from_scan()
         self._current_filter = "all"
         self._search_query = ""
@@ -276,6 +276,10 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, "Hammerfy", f"Hammer++ instalado com sucesso!")
             self._all_tools = _build_tools_from_scan()
             self._load_tools()
+            if self.detail._header.isVisible() and self.detail._tool and self.detail._tool.id == tool.id:
+                updated_tool = next((t for t in self._all_tools if t.id == tool.id), None)
+                if updated_tool:
+                    self.detail.load_tool(updated_tool)
         else:
             QMessageBox.warning(self, "Hammerfy", f"Erro: {msg}")
 

@@ -90,12 +90,6 @@ class AboutPanel(QWidget):
             name.setStyleSheet("font-size: 22px; font-weight: 700; color: #f0f0f0; background: transparent;")
             layout.addWidget(name)
 
-        layout.addSpacing(10)
-
-        version = QLabel(f"v{VERSION}")
-        version.setStyleSheet("font-size: 12px; color: #555; background: transparent;")
-        layout.addWidget(version)
-
         layout.addSpacing(28)
 
         desc = QLabel(
