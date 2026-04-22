@@ -13,6 +13,7 @@ from core.hammer import open_hammer, open_folder
 from core.updater import get_latest_build, download_and_install, uninstall
 from utils.versions import get_version
 from utils import translator
+from core.steam import SteamWatcher, find_steam_path, find_library_folders
 
 import sys
 
@@ -61,6 +62,7 @@ class MainWindow(QMainWindow):
         self._detail_divider.setVisible(False)
         self._detail_divider.setMaximumWidth(0)
         self._load_tools()
+        self._start_steam_watcher()
 
     from ui.sidebar import Sidebar, SidebarLogo
 
@@ -333,3 +335,16 @@ class MainWindow(QMainWindow):
 
     def _on_customize(self, tool: Tool):
         pass  # implementar na fase 3
+
+    def _start_steam_watcher(self):
+        steam_path = find_steam_path()
+        if not steam_path:
+            return
+        libs = find_library_folders(steam_path)
+        self._steam_watcher = SteamWatcher(self)
+        self._steam_watcher.watch(libs)
+        self._steam_watcher.games_changed.connect(self._on_steam_changed)
+
+    def _on_steam_changed(self):
+        self._all_tools = _build_tools_from_scan()
+        self._load_tools()
