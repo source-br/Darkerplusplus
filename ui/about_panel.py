@@ -1,9 +1,9 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, 
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
                                 QLabel, QPushButton, QFrame)
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QPixmap, QDesktopServices
 from pathlib import Path
-from utils import translator
+import platform
 
 
 LINKS = {
@@ -18,6 +18,25 @@ AUTHOR  = "kenned-candido"
 LICENSE = "GPL-3.0"
 
 
+def get_os_name() -> str:
+    system = platform.system()
+    release = platform.release()
+    if system == "Windows":
+        version = platform.version()
+        if "11" in version or int(release) >= 11 if release.isdigit() else False:
+            return "Windows 11"
+        return f"Windows {release}"
+    elif system == "Linux":
+        try:
+            import distro
+            return f"{distro.name()} {distro.version()}"
+        except ImportError:
+            return f"Linux {platform.release()}"
+    elif system == "Darwin":
+        return f"macOS {platform.mac_ver()[0]}"
+    return system
+
+
 class AboutPanel(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -28,19 +47,14 @@ class AboutPanel(QWidget):
         root.setContentsMargins(0, 0, 0, 0)
         root.setSpacing(0)
 
-        # Coluna esquerda — hero
-        left = self._build_left()
-        root.addWidget(left)
+        root.addWidget(self._build_left())
 
-        # Divisória vertical
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
         line.setStyleSheet("background-color: #242424; max-width: 1px;")
         root.addWidget(line)
 
-        # Coluna direita — info e links
-        right = self._build_right()
-        root.addWidget(right)
+        root.addWidget(self._build_right())
 
     def _build_left(self):
         widget = QWidget()
@@ -61,32 +75,32 @@ class AboutPanel(QWidget):
                 200, 46, Qt.KeepAspectRatio, Qt.SmoothTransformation
             )
             logo.setPixmap(pixmap)
+            logo.setStyleSheet("background: transparent;")
             layout.addWidget(logo)
         else:
             name = QLabel("Hammerfy")
-            name.setStyleSheet("font-size: 22px; font-weight: 700; color: #f0f0f0;")
+            name.setStyleSheet("font-size: 22px; font-weight: 700; color: #f0f0f0; background: transparent;")
             layout.addWidget(name)
 
-        layout.addSpacing(12)
+        layout.addSpacing(10)
 
         version = QLabel(f"v{VERSION}")
-        version.setStyleSheet("font-size: 12px; color: #555;")
+        version.setStyleSheet("font-size: 12px; color: #555; background: transparent;")
         layout.addWidget(version)
 
-        layout.addSpacing(32)
+        layout.addSpacing(28)
 
         desc = QLabel(
             "A free and open-source manager\n"
             "for Hammer++, the map editor\n"
             "for Valve's Source Engine games."
         )
-        desc.setStyleSheet("font-size: 13px; color: #666; line-height: 1.8;")
+        desc.setStyleSheet("font-size: 13px; color: #666; background: transparent;")
         desc.setWordWrap(True)
         layout.addWidget(desc)
 
         layout.addStretch()
 
-        # Badge open source
         badge = QLabel("Free & Open Source")
         badge.setStyleSheet("""
             background-color: #1a1a2e;
@@ -97,6 +111,7 @@ class AboutPanel(QWidget):
             padding: 4px 10px;
         """)
         badge.setFixedHeight(26)
+        badge.setFixedWidth(140)
         layout.addWidget(badge)
 
         return widget
@@ -108,7 +123,6 @@ class AboutPanel(QWidget):
         layout.setSpacing(0)
         layout.setAlignment(Qt.AlignTop)
 
-        # Seção Info
         layout.addWidget(self._section_label("Info"))
         layout.addSpacing(12)
         layout.addWidget(self._info_row("Created by", AUTHOR))
@@ -117,32 +131,30 @@ class AboutPanel(QWidget):
         layout.addWidget(self._divider())
         layout.addWidget(self._info_row("License", LICENSE))
         layout.addWidget(self._divider())
-        layout.addWidget(self._info_row("Platform", "Windows"))
+        layout.addWidget(self._info_row("Platform", get_os_name()))
 
         layout.addSpacing(40)
 
-        # Seção Links
         layout.addWidget(self._section_label("Links"))
         layout.addSpacing(16)
 
         links = [
-            ("github-link", "GitHub", "View source code and releases", LINKS["github"]),
-            ("bug-link",    "Report a bug", "Open an issue on GitHub", LINKS["issues"]),
-            ("docs-link",   "Documentation", "Guides and wiki", LINKS["docs"]),
-            ("donate-link", "Support / Donate", "Support the project on Ko-fi", LINKS["donate"]),
+            ("GitHub",          "View source code and releases", LINKS["github"]),
+            ("Report a bug",    "Open an issue on GitHub",       LINKS["issues"]),
+            ("Documentation",   "Guides and wiki",               LINKS["docs"]),
+            ("Support / Donate","Support the project on Ko-fi",  LINKS["donate"]),
         ]
 
-        for _, title, subtitle, url in links:
+        for title, subtitle, url in links:
             layout.addWidget(self._link_card(title, subtitle, url))
             layout.addSpacing(8)
 
         layout.addStretch()
-
         return widget
 
     def _section_label(self, text):
         lbl = QLabel(text.upper())
-        lbl.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1.5px;")
+        lbl.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1.5px; background: transparent;")
         return lbl
 
     def _divider(self):
@@ -153,15 +165,16 @@ class AboutPanel(QWidget):
 
     def _info_row(self, key, value):
         widget = QWidget()
+        widget.setStyleSheet("background: transparent;")
         layout = QHBoxLayout(widget)
         layout.setContentsMargins(0, 10, 0, 10)
 
         k = QLabel(key)
-        k.setStyleSheet("font-size: 13px; color: #555;")
+        k.setStyleSheet("font-size: 13px; color: #555; background: transparent;")
         k.setFixedWidth(110)
 
         v = QLabel(value)
-        v.setStyleSheet("font-size: 13px; color: #e0e0e0;")
+        v.setStyleSheet("font-size: 13px; color: #e0e0e0; background: transparent;")
 
         layout.addWidget(k)
         layout.addWidget(v)
@@ -171,14 +184,12 @@ class AboutPanel(QWidget):
     def _link_card(self, title, subtitle, url):
         btn = QPushButton()
         btn.setCursor(Qt.PointingHandCursor)
-        btn.setFixedHeight(52)
+        btn.setFixedHeight(58)
         btn.setStyleSheet("""
             QPushButton {
                 background-color: #181818;
                 border: 1px solid #242424;
                 border-radius: 8px;
-                text-align: left;
-                padding: 0px 16px;
             }
             QPushButton:hover {
                 background-color: #1e1a2e;
@@ -191,19 +202,23 @@ class AboutPanel(QWidget):
         inner.setSpacing(0)
 
         text_col = QVBoxLayout()
-        text_col.setSpacing(2)
+        text_col.setSpacing(3)
+        text_col.setAlignment(Qt.AlignVCenter)
 
         t = QLabel(title)
         t.setStyleSheet("font-size: 13px; color: #e0e0e0; background: transparent;")
+        t.setAlignment(Qt.AlignVCenter)
 
         s = QLabel(subtitle)
         s.setStyleSheet("font-size: 11px; color: #555; background: transparent;")
+        s.setAlignment(Qt.AlignVCenter)
 
         text_col.addWidget(t)
         text_col.addWidget(s)
 
         arrow = QLabel("→")
         arrow.setStyleSheet("font-size: 14px; color: #444; background: transparent;")
+        arrow.setAlignment(Qt.AlignVCenter)
 
         inner.addLayout(text_col)
         inner.addStretch()
