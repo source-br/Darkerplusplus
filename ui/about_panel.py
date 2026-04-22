@@ -1,17 +1,21 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, 
+                                QLabel, QPushButton, QFrame)
+from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QPixmap, QDesktopServices
-from PySide6.QtCore import QUrl
 from pathlib import Path
 from utils import translator
 
 
 LINKS = {
-    "github":    "https://github.com/kenned-candido/darkerplusplus",
-    "issues":    "https://github.com/kenned-candido/darkerplusplus/issues",
-    "donate":    "https://ko-fi.com/",        # atualizar com link real
-    "docs":      "https://github.com/kenned-candido/darkerplusplus/wiki",
+    "github":  "https://github.com/kenned-candido/darkerplusplus",
+    "issues":  "https://github.com/kenned-candido/darkerplusplus/issues",
+    "donate":  "https://ko-fi.com/",
+    "docs":    "https://github.com/kenned-candido/darkerplusplus/wiki",
 }
+
+VERSION = "0.1.0"
+AUTHOR  = "kenned-candido"
+LICENSE = "GPL-3.0"
 
 
 class AboutPanel(QWidget):
@@ -20,8 +24,32 @@ class AboutPanel(QWidget):
         self._build_ui()
 
     def _build_ui(self):
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(48, 48, 48, 48)
+        root = QHBoxLayout(self)
+        root.setContentsMargins(0, 0, 0, 0)
+        root.setSpacing(0)
+
+        # Coluna esquerda — hero
+        left = self._build_left()
+        root.addWidget(left)
+
+        # Divisória vertical
+        line = QFrame()
+        line.setFrameShape(QFrame.VLine)
+        line.setStyleSheet("background-color: #242424; max-width: 1px;")
+        root.addWidget(line)
+
+        # Coluna direita — info e links
+        right = self._build_right()
+        root.addWidget(right)
+
+    def _build_left(self):
+        widget = QWidget()
+        widget.setObjectName("about_left")
+        widget.setStyleSheet("QWidget#about_left { background-color: #141414; }")
+        widget.setFixedWidth(340)
+
+        layout = QVBoxLayout(widget)
+        layout.setContentsMargins(48, 64, 48, 48)
         layout.setSpacing(0)
         layout.setAlignment(Qt.AlignTop)
 
@@ -30,62 +58,107 @@ class AboutPanel(QWidget):
         if logo_path.exists():
             logo = QLabel()
             pixmap = QPixmap(str(logo_path)).scaled(
-                220, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation
+                200, 46, Qt.KeepAspectRatio, Qt.SmoothTransformation
             )
             logo.setPixmap(pixmap)
-            logo.setAlignment(Qt.AlignLeft)
             layout.addWidget(logo)
+        else:
+            name = QLabel("Hammerfy")
+            name.setStyleSheet("font-size: 22px; font-weight: 700; color: #f0f0f0;")
+            layout.addWidget(name)
 
-        layout.addSpacing(8)
+        layout.addSpacing(12)
 
-        # Versão
-        version = QLabel("v0.1")
-        version.setStyleSheet("font-size: 13px; color: #555;")
+        version = QLabel(f"v{VERSION}")
+        version.setStyleSheet("font-size: 12px; color: #555;")
         layout.addWidget(version)
 
         layout.addSpacing(32)
 
-        # Descrição
         desc = QLabel(
-            "Hammerfy is a free and open-source manager for Hammer++,\n"
-            "the map editor for Valve's Source Engine games."
+            "A free and open-source manager\n"
+            "for Hammer++, the map editor\n"
+            "for Valve's Source Engine games."
         )
-        desc.setStyleSheet("font-size: 13px; color: #aaa; line-height: 1.6;")
+        desc.setStyleSheet("font-size: 13px; color: #666; line-height: 1.8;")
         desc.setWordWrap(True)
         layout.addWidget(desc)
 
-        layout.addSpacing(32)
+        layout.addStretch()
 
-        # Criador
-        layout.addWidget(self._info_row("Created by", "kenned-candido"))
-        layout.addWidget(self._info_row("License", "GLP-3.0"))
-        layout.addWidget(self._info_row("Version", "0.1.0"))
+        # Badge open source
+        badge = QLabel("Free & Open Source")
+        badge.setStyleSheet("""
+            background-color: #1a1a2e;
+            color: #7c6be0;
+            border: 1px solid #2a2a4a;
+            border-radius: 4px;
+            font-size: 11px;
+            padding: 4px 10px;
+        """)
+        badge.setFixedHeight(26)
+        layout.addWidget(badge)
 
-        layout.addSpacing(32)
+        return widget
 
-        # Links
+    def _build_right(self):
+        widget = QWidget()
+        layout = QVBoxLayout(widget)
+        layout.setContentsMargins(48, 48, 48, 48)
+        layout.setSpacing(0)
+        layout.setAlignment(Qt.AlignTop)
+
+        # Seção Info
+        layout.addWidget(self._section_label("Info"))
+        layout.addSpacing(12)
+        layout.addWidget(self._info_row("Created by", AUTHOR))
+        layout.addWidget(self._divider())
+        layout.addWidget(self._info_row("Version", VERSION))
+        layout.addWidget(self._divider())
+        layout.addWidget(self._info_row("License", LICENSE))
+        layout.addWidget(self._divider())
+        layout.addWidget(self._info_row("Platform", "Windows"))
+
+        layout.addSpacing(40)
+
+        # Seção Links
         layout.addWidget(self._section_label("Links"))
-        layout.addSpacing(8)
-        layout.addWidget(self._link_btn("GitHub", LINKS["github"]))
-        layout.addWidget(self._link_btn("Report a bug", LINKS["issues"]))
-        layout.addWidget(self._link_btn("Documentation", LINKS["docs"]))
-        layout.addWidget(self._link_btn("Support / Donate", LINKS["donate"]))
+        layout.addSpacing(16)
+
+        links = [
+            ("github-link", "GitHub", "View source code and releases", LINKS["github"]),
+            ("bug-link",    "Report a bug", "Open an issue on GitHub", LINKS["issues"]),
+            ("docs-link",   "Documentation", "Guides and wiki", LINKS["docs"]),
+            ("donate-link", "Support / Donate", "Support the project on Ko-fi", LINKS["donate"]),
+        ]
+
+        for _, title, subtitle, url in links:
+            layout.addWidget(self._link_card(title, subtitle, url))
+            layout.addSpacing(8)
 
         layout.addStretch()
 
+        return widget
+
     def _section_label(self, text):
         lbl = QLabel(text.upper())
-        lbl.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1px;")
+        lbl.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1.5px;")
         return lbl
+
+    def _divider(self):
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine)
+        line.setStyleSheet("background-color: #1e1e1e; max-height: 1px; margin: 0px;")
+        return line
 
     def _info_row(self, key, value):
         widget = QWidget()
         layout = QHBoxLayout(widget)
-        layout.setContentsMargins(0, 4, 0, 4)
+        layout.setContentsMargins(0, 10, 0, 10)
 
         k = QLabel(key)
-        k.setStyleSheet("font-size: 13px; color: #666;")
-        k.setFixedWidth(120)
+        k.setStyleSheet("font-size: 13px; color: #555;")
+        k.setFixedWidth(110)
 
         v = QLabel(value)
         v.setStyleSheet("font-size: 13px; color: #e0e0e0;")
@@ -95,19 +168,46 @@ class AboutPanel(QWidget):
         layout.addStretch()
         return widget
 
-    def _link_btn(self, text, url):
-        btn = QPushButton(text)
+    def _link_card(self, title, subtitle, url):
+        btn = QPushButton()
         btn.setCursor(Qt.PointingHandCursor)
+        btn.setFixedHeight(52)
         btn.setStyleSheet("""
             QPushButton {
-                background: transparent;
-                border: none;
-                color: #7c6be0;
-                font-size: 13px;
+                background-color: #181818;
+                border: 1px solid #242424;
+                border-radius: 8px;
                 text-align: left;
-                padding: 4px 0;
+                padding: 0px 16px;
             }
-            QPushButton:hover { color: #9d8fe8; }
+            QPushButton:hover {
+                background-color: #1e1a2e;
+                border-color: #7c6be0;
+            }
         """)
+
+        inner = QHBoxLayout(btn)
+        inner.setContentsMargins(16, 0, 16, 0)
+        inner.setSpacing(0)
+
+        text_col = QVBoxLayout()
+        text_col.setSpacing(2)
+
+        t = QLabel(title)
+        t.setStyleSheet("font-size: 13px; color: #e0e0e0; background: transparent;")
+
+        s = QLabel(subtitle)
+        s.setStyleSheet("font-size: 11px; color: #555; background: transparent;")
+
+        text_col.addWidget(t)
+        text_col.addWidget(s)
+
+        arrow = QLabel("→")
+        arrow.setStyleSheet("font-size: 14px; color: #444; background: transparent;")
+
+        inner.addLayout(text_col)
+        inner.addStretch()
+        inner.addWidget(arrow)
+
         btn.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(url)))
         return btn
