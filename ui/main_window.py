@@ -5,6 +5,7 @@ from ui.topbar import Topbar
 from ui.tool_grid import ToolGrid
 from ui.detail_panel import DetailPanel
 from ui.sidebar import Sidebar, SidebarLogo
+from ui.settings_panel import SettingsPanel
 from ui.about_panel import AboutPanel
 from models.tool import Tool, ToolStatus
 from core.steam import scan_tools
@@ -101,6 +102,9 @@ class MainWindow(QMainWindow):
         self.grid.action_install.connect(self._on_install)
         self.grid.action_update.connect(self._on_update)
 
+        self.settings_panel = SettingsPanel()
+        self.settings_panel.setVisible(False)
+
         self.about_panel = AboutPanel()
         self.about_panel.setVisible(False)
 
@@ -123,6 +127,7 @@ class MainWindow(QMainWindow):
         content_layout.addWidget(self._vline())
         content_layout.addWidget(self.grid)
         content_layout.addWidget(self.about_panel)
+        content_layout.addWidget(self.settings_panel)
         content_layout.addWidget(self._detail_divider)
         content_layout.addWidget(self.detail)
 
@@ -162,7 +167,7 @@ class MainWindow(QMainWindow):
         if filter_id == "about":
             self.grid.setVisible(False)
             self.about_panel.setVisible(True)
-            self._detail_divider.setVisible(True)
+            self._detail_divider.setVisible(False)
             self.detail._header.setVisible(False)
             self.detail._body.setVisible(False)
             self.detail._footer.setVisible(False)
@@ -170,10 +175,16 @@ class MainWindow(QMainWindow):
         elif filter_id == "settings":
             self.grid.setVisible(False)
             self.about_panel.setVisible(False)
+            self.settings_panel.setVisible(True)
+            self._detail_divider.setVisible(False)
+            self.detail._header.setVisible(False)
+            self.detail._body.setVisible(False)
+            self.detail._footer.setVisible(False)
             self.topbar.set_title("settings", None)
         else:
             self.grid.setVisible(True)
             self.about_panel.setVisible(False)
+            self.settings_panel.setVisible(False)
             self._load_tools()
 
     def _on_search(self, query):
