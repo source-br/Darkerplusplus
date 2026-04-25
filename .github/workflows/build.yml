@@ -1,0 +1,38 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:    # só roda quando você clicar manualmente no GitHub
+    inputs:
+      version:
+        description: 'Version tag (ex: v0.1.0-beta)'
+        required: true
+        default: 'v0.1.0-beta'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: hammerfy-dev
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build EXE
+        run: pyinstaller hammerfy.spec
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hammerfy-${{ github.event.inputs.version }}-windows
+          path: dist/Hammerfy.exe
