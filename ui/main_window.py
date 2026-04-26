@@ -333,8 +333,10 @@ class MainWindow(QMainWindow):
         self.detail.refresh_text()
         self._load_tools()
 
-    def _on_customize(self, tool: Tool):
-        pass  # implementar na fase 3
+    def _on_customize(self, tool):
+        from ui.customize_panel import CustomizeDialog
+        dialog = CustomizeDialog(tool, self)
+        dialog.exec()
 
     def _start_steam_watcher(self):
         steam_path = find_steam_path()
