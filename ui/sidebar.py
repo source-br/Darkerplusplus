@@ -7,7 +7,6 @@ from PySide6.QtCore import QSize
 
 
 class SidebarLogo(QWidget):
-    """Apenas o logo — fica na topbar area."""
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFixedWidth(210)
@@ -45,7 +44,6 @@ class SidebarLogo(QWidget):
 
 
 class Sidebar(QWidget):
-    """Apenas a navegação — fica na área de conteúdo."""
     filter_changed = Signal(str)
 
     def __init__(self, parent=None):

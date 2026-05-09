@@ -1,5 +1,4 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
-                                QLabel, QPushButton, QFrame)
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame)
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QPixmap, QDesktopServices
 from pathlib import Path
@@ -9,7 +8,7 @@ import platform
 LINKS = {
     "github":  "https://github.com/kenned-candido/darkerplusplus",
     "issues":  "https://github.com/kenned-candido/darkerplusplus/issues",
-    "donate":  "https://ko-fi.com/",
+    "donate":  "",
     "docs":    "https://github.com/kenned-candido/darkerplusplus/wiki",
 }
 
@@ -131,7 +130,7 @@ class AboutPanel(QWidget):
             ("GitHub",          "View source code and releases", LINKS["github"]),
             ("Report a bug",    "Open an issue on GitHub",       LINKS["issues"]),
             ("Documentation",   "Guides and wiki",               LINKS["docs"]),
-            ("Support / Donate","Support the project on Ko-fi",  LINKS["donate"]),
+            ("Support / Donate","Support the project",           LINKS["donate"]),
         ]
 
         for title, subtitle, url in links:
