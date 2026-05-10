@@ -118,7 +118,7 @@ class ToolCard(QWidget):
             btn_settings = self._btn("", icon=True, icon_name="settings")
             layout.addWidget(btn_main)
             layout.addWidget(btn_folder)
-            layout.addWidget(btn_settings)
+            # layout.addWidget(btn_settings)
 
         elif self.tool.status == ToolStatus.UPDATE_AVAILABLE:
             btn_main = self._btn(translator.t("card", "update"), accent="#8a6200")

@@ -89,18 +89,18 @@ class DetailPanel(QWidget):
 
         self.btn_open      = self._action_btn(translator.t("detail", "open"),        icon_name="play",        accent=True)
         self.btn_folder    = self._action_btn(translator.t("detail", "open_folder"), icon_name="folder-open")
-        self.btn_customize = self._action_btn(translator.t("detail", "customize"),   icon_name="settings")
+        # self.btn_customize = self._action_btn(translator.t("detail", "customize"),   icon_name="settings")
         self.btn_install   = self._action_btn(translator.t("detail", "install"),     icon_name="download",    accent=True)
         self.btn_update    = self._action_btn(translator.t("detail", "update"),      icon_name="refresh-cw",  accent=True)
         self.btn_uninstall = self._action_btn(translator.t("detail", "uninstall"),   icon_name="trash-2",     danger=True)
 
-        for btn in [self.btn_open, self.btn_folder, self.btn_customize,
+        for btn in [self.btn_open, self.btn_folder, # self.btn_customize,
                     self.btn_install, self.btn_update, self.btn_uninstall]:
             layout.addWidget(btn)
 
         self.btn_open.clicked.connect(lambda: self.action_open.emit(self._tool))
         self.btn_folder.clicked.connect(lambda: self.action_folder.emit(self._tool))
-        self.btn_customize.clicked.connect(lambda: self.action_customize.emit(self._tool))
+        # self.btn_customize.clicked.connect(lambda: self.action_customize.emit(self._tool))
         self.btn_install.clicked.connect(lambda: self.action_install.emit(self._tool))
         self.btn_update.clicked.connect(lambda: self.action_update.emit(self._tool))
         self.btn_uninstall.clicked.connect(lambda: self.action_uninstall.emit(self._tool))
@@ -170,7 +170,7 @@ class DetailPanel(QWidget):
 
         self.btn_open.setVisible(is_installed)
         self.btn_folder.setVisible(is_installed or has_update)
-        self.btn_customize.setVisible(is_installed)
+        # self.btn_customize.setVisible(is_installed)
         self.btn_install.setVisible(is_available)
         self.btn_update.setVisible(has_update)
         self.btn_uninstall.setVisible(is_installed or has_update)
