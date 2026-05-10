@@ -106,7 +106,7 @@ class HammerfyApp(QApplication):
             self._quit()
 
     def _on_tray_activated(self, reason):
-        if reason == QSystemTrayIcon.DoubleClick:
+        if reason in (QSystemTrayIcon.DoubleClick, QSystemTrayIcon.Trigger):
             self._show_window()
 
     def _show_window(self):
