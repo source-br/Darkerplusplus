@@ -82,26 +82,28 @@ class ToolsPlusPlusWorker(QThread):
         self._tools = tools  # lista de Tool instalados
 
     def run(self):
+        from pathlib import Path
+
+        TOOLS_SENTINEL = "vbspplusplus.exe"  # arquivo chave para verificar se tools estão instaladas
+
         latest_date = get_tools_latest_date()
         if not latest_date:
             return
 
         saved_date = get_tools_date()
-        if saved_date == latest_date:
-            return  # já está atualizado
 
-        # Instala em todos os jogos com Hammer++ instalado
-        success_any = False
         for tool in self._tools:
             if not tool.install_path:
                 continue
-            install_dir = str(Path(tool.install_path).parent)
-            success, _ = download_and_install_tools(install_dir)
-            if success:
-                success_any = True
+            install_dir = Path(tool.install_path).parent
+            tools_present = (install_dir / TOOLS_SENTINEL).exists()
 
-        if success_any:
-            save_tools_date(latest_date)
+            if saved_date == latest_date and tools_present:
+                continue  # já atualizado e arquivos existem
+
+            success, _ = download_and_install_tools(str(install_dir))
+            if success and latest_date:
+                save_tools_date(latest_date)
 
 class MainWindow(QMainWindow):
     def __init__(self):
