@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QFrame
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QThread, Qt, Signal as QSignal
 from ui.sidebar import Sidebar
 from ui.topbar import Topbar
 from ui.tool_grid import ToolGrid
@@ -14,7 +14,7 @@ from core.updater import get_latest_build, download_and_install, uninstall
 from utils.versions import get_version
 from utils import translator
 from core.steam import SteamWatcher, find_steam_path, find_library_folders
-from PySide6.QtCore import QThread, Qt, Signal as QSignal
+from core.updater import CSGO_BUILD
 
 import sys
 
@@ -27,6 +27,7 @@ def _build_tools_from_scan() -> list[Tool]:
             status = ToolStatus.NOT_AVAILABLE
         elif t["is_installed"]:
             installed_build = t["version"]
+            effective_latest = CSGO_BUILD if t["id"] == "csgo" else latest
             if latest and installed_build and installed_build != "unknown" and installed_build != latest:
                 status = ToolStatus.UPDATE_AVAILABLE
             else:

@@ -60,11 +60,6 @@ def download_and_install(
     install_path: str,
     progress_callback=None
 ) -> tuple[bool, str]:
-    """
-    Baixa e instala o Hammer++ para um jogo.
-    install_path: caminho completo até a pasta bin do jogo
-                  ex: C:/Steam/steamapps/common/GarrysMod/bin/win64
-    """
     url = get_download_url(game_id, build)
     if not url:
         return False, f"Jogo '{game_id}' não suportado."
@@ -144,7 +139,8 @@ def download_and_install(
         return False, f"Erro ao extrair: {e}"
 
     zip_path.unlink(missing_ok=True)
-    save_version(game_id, build)
+    actual_build = CSGO_BUILD if game_id == "csgo" else build
+    save_version(game_id, actual_build)
     return True, f"Hammer++ instalado em {dest_folder}"
 
 
