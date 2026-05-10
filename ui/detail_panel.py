@@ -149,31 +149,19 @@ class DetailPanel(QWidget):
         layout = self._info_section.layout()
         self._clear_layout(layout)
 
-        version_text = tool.version_installed or "—"  # adiciona essa linha
+        version_text = "—" if tool.version_installed in (None, "unknown") else tool.version_installed
 
-        rows = [
-            (translator.t("detail", "version"), version_text),
-            (translator.t("detail", "engine"),  tool.engine),
-            (translator.t("detail", "game"),    tool.game),
-            (translator.t("detail", "hammer"),   tool.hammer_type),
-        ]
+        row_version = self._row(translator.t("detail", "version"), version_text)
+        if tool.version_installed == "unknown":
+            row_version.setToolTip("Versão desconhecida — reinstale via Hammerfy para rastrear atualizações")
 
-        # Popula seção PATH
-        path_layout = self._path_section.layout()
-        self._clear_layout(path_layout)
-        if tool.install_path:
-            lbl = QLabel()
-            lbl.setStyleSheet("font-size: 10px; color: #555;")
-            lbl.setWordWrap(True)
-            lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
-            # Quebra apenas nas barras do path
-            path_display = tool.install_path.replace("\\", "\\\u200b")
-            lbl.setText(path_display)
-            lbl.setToolTip(tool.install_path)
-            path_layout.addWidget(lbl)
-
-        for key, val in rows:
-            layout.addWidget(self._row(key, val))
+        for w in [
+            row_version,
+            self._row(translator.t("detail", "engine"),  tool.engine),
+            self._row(translator.t("detail", "game"),    tool.game),
+            self._row(translator.t("detail", "hammer"),  tool.hammer_type),
+        ]:
+            layout.addWidget(w)
 
     def _refresh_buttons(self, tool: Tool):
         is_installed = tool.status == ToolStatus.INSTALLED

@@ -26,7 +26,7 @@ def _build_tools_from_scan() -> list[Tool]:
             status = ToolStatus.NOT_AVAILABLE
         elif t["is_installed"]:
             installed_build = t["version"]
-            if latest and installed_build and installed_build != latest:
+            if latest and installed_build and installed_build != "unknown" and installed_build != latest:
                 status = ToolStatus.UPDATE_AVAILABLE
             else:
                 status = ToolStatus.INSTALLED

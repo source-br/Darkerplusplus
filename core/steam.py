@@ -2,8 +2,9 @@ import os
 import struct
 import re
 from pathlib import Path
-from utils.versions import get_version
+from utils.versions import get_version, save_version
 from PySide6.QtCore import QFileSystemWatcher, QObject, Signal
+from utils.versions import get_version, save_version
 
 HAMMER_GAMES = {
     "GarrysMod": {
@@ -166,12 +167,7 @@ def get_hammer_version(exe_path: Path) -> str | None:
     except Exception:
         return None
 
-
 def scan_tools() -> list[dict]:
-    """
-    Função principal — escaneia o sistema e retorna lista de dicts
-    com todas as ferramentas disponíveis e seu status.
-    """
     steam_path = find_steam_path()
     libraries = find_library_folders(steam_path) if steam_path else []
     installed_games = find_installed_games(libraries) if libraries else {}
@@ -189,21 +185,24 @@ def scan_tools() -> list[dict]:
                 is_installed = True
                 hammer_exe = str(exe_path)
                 version = get_version(game_info["id"])
-        
+                if version is None:
+                    version = "unknown"
+                    save_version(game_info["id"], "unknown")
+
         game_installed = game_folder_name in installed_games
 
         tools.append({
-            "id":           game_info["id"],
-            "name":         game_info["name"],
-            "game":         game_folder_name,
-            "engine":       game_info["engine"],
-            "hammer_type": game_info["hammer_type"],
-            "is_installed": is_installed,
+            "id":            game_info["id"],
+            "name":          game_info["name"],
+            "game":          game_folder_name,
+            "engine":        game_info["engine"],
+            "hammer_type":   game_info["hammer_type"],
+            "is_installed":  is_installed,
             "game_installed": game_installed,
-            "install_path": hammer_exe,
-            "version":      version,
-            "banner_color": game_info["banner_color"],
-            "bin_missing":  game_info["bin"] is None,
+            "install_path":  hammer_exe,
+            "version":       version,
+            "banner_color":  game_info["banner_color"],
+            "bin_missing":   game_info["bin"] is None,
         })
 
     return tools
