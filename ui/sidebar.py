@@ -19,12 +19,12 @@ class SidebarLogo(QWidget):
         layout.setContentsMargins(12, 0, 12, 0)
         layout.setSpacing(0)
 
-        logo_path = Path(__file__).parent.parent / "assets" / "icons" / "hammerfy-logo.png"
+        logo_path = Path(__file__).parent.parent / "assets" / "icons" / "hammerfy-logo.svg"
         if logo_path.exists():
             from PySide6.QtGui import QPixmap
             img = QLabel()
             pixmap = QPixmap(str(logo_path)).scaled(
-                160, 36,
+                130, 36,
                 Qt.KeepAspectRatio,
                 Qt.SmoothTransformation
             )

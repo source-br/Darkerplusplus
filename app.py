@@ -36,7 +36,7 @@ class HammerfyApp(QApplication):
                 self.setStyleSheet(f.read())
 
     def _load_icon(self):
-        icon_path = Path(__file__).parent / "assets" / "icons" / "hammerfy-icon.png"
+        icon_path = Path(__file__).parent / "assets" / "icons" / "hammerfy-icon.svg"
         if icon_path.exists():
             self._icon = QIcon(str(icon_path))
             self.setWindowIcon(self._icon)

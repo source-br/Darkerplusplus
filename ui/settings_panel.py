@@ -1,5 +1,4 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
-                                QLabel, QFrame)
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame)
 from PySide6.QtCore import Qt, Signal, QPropertyAnimation, QEasingCurve, Property
 from PySide6.QtGui import QColor, QPainter, QPen
 from utils import translator

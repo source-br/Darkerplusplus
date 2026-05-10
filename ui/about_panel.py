@@ -75,7 +75,7 @@ class AboutPanel(QWidget):
         layout.setAlignment(Qt.AlignTop)
 
         # Logo
-        logo_path = Path(__file__).parent.parent / "assets" / "icons" / "hammerfy-logo.png"
+        logo_path = Path(__file__).parent.parent / "assets" / "icons" / "hammerfy-logo.svg"
         if logo_path.exists():
             logo = QLabel()
             pixmap = QPixmap(str(logo_path)).scaled(
