@@ -14,7 +14,7 @@ from core.updater import get_latest_build, download_and_install, uninstall
 from utils.versions import get_version
 from utils import translator
 from core.steam import SteamWatcher, find_steam_path, find_library_folders
-from PySide6.QtCore import QThread, Signal as QSignal
+from PySide6.QtCore import QThread, Qt, Signal as QSignal
 
 import sys
 
@@ -382,7 +382,7 @@ class MainWindow(QMainWindow):
             return
 
         self._silent_worker = SilentUpdateWorker(unknown_tools, self)
-        self._silent_worker.finished.connect(self._on_silent_update_done)
+        self._silent_worker.finished.connect(self._on_silent_update_done, Qt.QueuedConnection)
         self._silent_worker.start()
 
     def _on_silent_update_done(self):

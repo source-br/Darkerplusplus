@@ -141,10 +141,6 @@ def find_library_folders(steam_path: Path) -> list[Path]:
 
 
 def find_installed_games(libraries: list[Path]) -> dict[str, Path]:
-    """
-    Varre as bibliotecas e retorna um dict com
-    nome_do_jogo -> pasta steamapps/common/jogo
-    """
     installed = {}
     for lib in libraries:
         common = lib / "common"
@@ -153,6 +149,7 @@ def find_installed_games(libraries: list[Path]) -> dict[str, Path]:
         for folder in common.iterdir():
             if folder.is_dir():
                 installed[folder.name] = folder
+                installed[folder.name.lower()] = folder
     return installed
 
 
@@ -174,7 +171,7 @@ def scan_tools() -> list[dict]:
 
     tools = []
     for game_folder_name, game_info in HAMMER_GAMES.items():
-        game_path = installed_games.get(game_folder_name)
+        game_path = installed_games.get(game_folder_name) or installed_games.get(game_folder_name.lower())
         hammer_exe = None
         is_installed = False
         version = None
