@@ -5,6 +5,10 @@ QMainWindow, QWidget {
     font-size: 13px;
 }
 
+QPushButton QLabel {
+    background-color: transparent;
+}
+
 QScrollBar:vertical {
     background: #1a1a1a;
     width: 6px;

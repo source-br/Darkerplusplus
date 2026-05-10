@@ -83,7 +83,7 @@ class Sidebar(QWidget):
 
     def _nav_label(self, text):
         label = QLabel(text.upper())
-        label.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1px; padding: 4px 8px; background: transparent;")
+        label.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1px; padding: 4px 8px;")
         self._section_labels.append(label)
         return label
 
@@ -130,10 +130,6 @@ class Sidebar(QWidget):
             }
             QPushButton:hover { background: #222; color: #ccc; }
             QPushButton:checked { background: #2a2a2a; color: #f0f0f0; }
-            QPushButton QLabel {
-                background: transparent;
-                color: inherit;
-            }
         """)
 
         btn.clicked.connect(lambda: self._on_filter(filter_id))
