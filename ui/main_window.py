@@ -14,6 +14,7 @@ from core.updater import get_latest_build, download_and_install, uninstall
 from utils.versions import get_version
 from utils import translator
 from core.steam import SteamWatcher, find_steam_path, find_library_folders
+from PySide6.QtCore import QThread, Signal as QSignal
 
 import sys
 
@@ -47,6 +48,31 @@ def _build_tools_from_scan() -> list[Tool]:
         ))
     return tools
 
+class SilentUpdateWorker(QThread):
+    finished = QSignal()
+
+    def __init__(self, tools, parent=None):
+        super().__init__(parent)
+        self._tools = tools
+
+    def run(self):
+        from core.updater import get_latest_build, download_and_install
+        from pathlib import Path
+
+        build = get_latest_build()
+        if not build:
+            return
+
+        for tool in self._tools:
+            if tool.version_installed != "unknown":
+                continue
+            if not tool.install_path:
+                continue
+            install_dir = str(Path(tool.install_path).parent)
+            success, _ = download_and_install(tool.id, build, install_dir)
+            # falhou — silencioso, tenta na próxima vez
+
+        self.finished.emit()
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -62,6 +88,7 @@ class MainWindow(QMainWindow):
         self._detail_divider.setVisible(False)
         self._detail_divider.setMaximumWidth(0)
         self._load_tools()
+        self._start_silent_update()
         self._start_steam_watcher()
 
     from ui.sidebar import Sidebar, SidebarLogo
@@ -346,5 +373,18 @@ class MainWindow(QMainWindow):
         self._steam_watcher.games_changed.connect(self._on_steam_changed)
 
     def _on_steam_changed(self):
+        self._all_tools = _build_tools_from_scan()
+        self._load_tools()
+
+    def _start_silent_update(self):
+        unknown_tools = [t for t in self._all_tools if t.version_installed == "unknown"]
+        if not unknown_tools:
+            return
+
+        self._silent_worker = SilentUpdateWorker(unknown_tools, self)
+        self._silent_worker.finished.connect(self._on_silent_update_done)
+        self._silent_worker.start()
+
+    def _on_silent_update_done(self):
         self._all_tools = _build_tools_from_scan()
         self._load_tools()
