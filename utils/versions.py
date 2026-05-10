@@ -33,3 +33,13 @@ def _save(data: dict):
         json.dumps(data, indent=2),
         encoding="utf-8"
     )
+
+def get_tools_date() -> str | None:
+    """Retorna a data de instalação das Tools++."""
+    return _load().get("_tools_date")
+
+def save_tools_date(date: str):
+    """Salva a data de atualização das Tools++."""
+    data = _load()
+    data["_tools_date"] = date
+    _save(data)

@@ -191,3 +191,80 @@ def uninstall(install_path: str, game_id: str) -> tuple[bool, str]:
     # Descobre o game_id pelo install_path — passa como parâmetro
     remove_version(game_id)
     return True, f"{removed} itens removidos com sucesso."
+
+
+TOOLS_GITHUB_API = "https://api.github.com/repos/ficool2/misc_tools/releases/latest"
+TOOLS_DOWNLOAD_URL = "https://github.com/ficool2/misc_tools/releases/download/v1/tools_plusplus.zip"
+
+def get_tools_latest_date() -> str | None:
+    """Busca a data de atualização do tools_plusplus.zip via GitHub API."""
+    try:
+        req = urllib.request.Request(
+            TOOLS_GITHUB_API,
+            headers={
+                "User-Agent": "Hammerfy/0.1",
+                "Accept": "application/vnd.github+json"
+            }
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            for asset in data.get("assets", []):
+                if asset.get("name") == "tools_plusplus.zip":
+                    return asset.get("updated_at")
+    except Exception:
+        return None
+
+def download_and_install_tools(install_path: str) -> tuple[bool, str]:
+    """
+    Baixa e instala as Tools++ na pasta do Hammer++.
+    install_path: pasta onde está o hammerplusplus.exe
+    """
+    dest_folder = Path(install_path)
+    if not dest_folder.exists():
+        return False, f"Pasta não encontrada: {dest_folder}"
+
+    zip_path = dest_folder / "tools_plusplus_temp.zip"
+
+    try:
+        req = urllib.request.Request(TOOLS_DOWNLOAD_URL, headers={"User-Agent": "Hammerfy/0.1"})
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            with open(zip_path, "wb") as f:
+                while True:
+                    chunk = resp.read(8192)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+    except urllib.error.URLError as e:
+        zip_path.unlink(missing_ok=True)
+        return False, f"Erro de conexão: {e}"
+    except Exception as e:
+        zip_path.unlink(missing_ok=True)
+        return False, f"Erro ao baixar: {e}"
+
+    try:
+        with zipfile.ZipFile(zip_path, "r") as z:
+            for member in z.namelist():
+                norm = member.replace("\\", "/")
+                # Extrai tools/ e compatibility/ direto para dest_folder
+                for prefix in ("tools_plusplus/tools/", "tools_plusplus/compatibility/"):
+                    if norm.startswith(prefix):
+                        relative = norm[len(prefix):]
+                        if not relative:
+                            continue
+                        target = dest_folder / relative
+                        if norm.endswith("/"):
+                            target.mkdir(parents=True, exist_ok=True)
+                        else:
+                            target.parent.mkdir(parents=True, exist_ok=True)
+                            with z.open(member) as src, open(target, "wb") as dst:
+                                shutil.copyfileobj(src, dst)
+                        break
+    except zipfile.BadZipFile:
+        zip_path.unlink(missing_ok=True)
+        return False, "Arquivo corrompido."
+    except Exception as e:
+        zip_path.unlink(missing_ok=True)
+        return False, f"Erro ao extrair: {e}"
+
+    zip_path.unlink(missing_ok=True)
+    return True, "Tools++ instaladas com sucesso."

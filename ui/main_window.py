@@ -11,11 +11,10 @@ from models.tool import Tool, ToolStatus
 from core.steam import scan_tools
 from core.hammer import open_hammer, open_folder
 from core.updater import get_latest_build, download_and_install, uninstall
-from utils.versions import get_version
+from utils.versions import get_version, get_tools_date, save_tools_date
 from utils import translator
 from core.steam import SteamWatcher, find_steam_path, find_library_folders
-from core.updater import CSGO_BUILD
-
+from core.updater import CSGO_BUILD, get_tools_latest_date, download_and_install_tools
 import sys
 
 def _build_tools_from_scan() -> list[Tool]:
@@ -76,6 +75,33 @@ class SilentUpdateWorker(QThread):
 
         self.finished.emit()
 
+class ToolsPlusPlusWorker(QThread):
+    def __init__(self, tools, parent=None):
+        super().__init__(parent)
+        self._tools = tools  # lista de Tool instalados
+
+    def run(self):
+        latest_date = get_tools_latest_date()
+        if not latest_date:
+            return
+
+        saved_date = get_tools_date()
+        if saved_date == latest_date:
+            return  # já está atualizado
+
+        # Instala em todos os jogos com Hammer++ instalado
+        success_any = False
+        for tool in self._tools:
+            if not tool.install_path:
+                continue
+            install_dir = str(Path(tool.install_path).parent)
+            success, _ = download_and_install_tools(install_dir)
+            if success:
+                success_any = True
+
+        if success_any:
+            save_tools_date(latest_date)
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -91,6 +117,7 @@ class MainWindow(QMainWindow):
         self._detail_divider.setMaximumWidth(0)
         self._load_tools()
         self._start_silent_update()
+        self._start_tools_update()
         self._start_steam_watcher()
 
     from ui.sidebar import Sidebar, SidebarLogo
@@ -390,3 +417,10 @@ class MainWindow(QMainWindow):
     def _on_silent_update_done(self):
         self._all_tools = _build_tools_from_scan()
         self._load_tools()
+
+    def _start_tools_update(self):
+        installed = [t for t in self._all_tools if t.install_path]
+        if not installed:
+            return
+        self._tools_worker = ToolsPlusPlusWorker(installed, self)
+        self._tools_worker.start()
