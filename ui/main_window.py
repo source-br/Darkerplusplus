@@ -15,6 +15,7 @@ from utils.versions import get_version, get_tools_date, save_tools_date
 from utils import translator
 from core.steam import SteamWatcher, find_steam_path, find_library_folders
 from core.updater import CSGO_BUILD, get_tools_latest_date, download_and_install_tools
+from pathlib import Path
 import sys
 
 def _build_tools_from_scan() -> list[Tool]:
