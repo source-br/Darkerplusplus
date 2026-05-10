@@ -28,7 +28,8 @@ def _build_tools_from_scan() -> list[Tool]:
         elif t["is_installed"]:
             installed_build = t["version"]
             effective_latest = CSGO_BUILD if t["id"] == "csgo" else latest
-            if latest and installed_build and installed_build != "unknown" and installed_build != latest:
+            is_csgo = t["id"] == "csgo"
+            if not is_csgo and effective_latest and installed_build and installed_build != "unknown" and installed_build != effective_latest:
                 status = ToolStatus.UPDATE_AVAILABLE
             else:
                 status = ToolStatus.INSTALLED
