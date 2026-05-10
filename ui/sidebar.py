@@ -130,6 +130,10 @@ class Sidebar(QWidget):
             }
             QPushButton:hover { background: #222; color: #ccc; }
             QPushButton:checked { background: #2a2a2a; color: #f0f0f0; }
+            QPushButton QLabel {
+                background: transparent;
+                color: inherit;
+            }
         """)
 
         btn.clicked.connect(lambda: self._on_filter(filter_id))

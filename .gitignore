@@ -25,3 +25,6 @@ env/
 # Windows
 Thumbs.db
 Desktop.ini
+
+# Json
+hammerfy_settings.json

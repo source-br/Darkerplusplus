@@ -1,9 +1,89 @@
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
-                                QLabel, QCheckBox, QFrame)
-from PySide6.QtCore import Qt, Signal
+                                QLabel, QFrame)
+from PySide6.QtCore import Qt, Signal, QPropertyAnimation, QEasingCurve, Property
+from PySide6.QtGui import QColor, QPainter, QPen
 from utils import translator
 from core.autostart import is_autostart_enabled, set_autostart
 from core import tray_settings
+
+
+class ToggleSwitch(QWidget):
+    toggled = Signal(bool)
+
+    def __init__(self, checked=False, parent=None):
+        super().__init__(parent)
+        self.setFixedSize(40, 22)
+        self.setCursor(Qt.PointingHandCursor)
+        self._checked = checked
+        self._offset = 18 if checked else 4
+
+    def isChecked(self):
+        return self._checked
+
+    def setChecked(self, val):
+        self._checked = val
+        self._offset = 18 if val else 4
+        self.update()
+
+    def setEnabled(self, val):
+        super().setEnabled(val)
+        self.update()
+
+    def mousePressEvent(self, event):
+        if not self.isEnabled():
+            return
+        self._checked = not self._checked
+        self._offset = 18 if self._checked else 4
+        self.update()
+        self.toggled.emit(self._checked)
+
+    def paintEvent(self, event):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing)
+
+        if not self.isEnabled():
+            track_color = QColor("#2a2a2a")
+            thumb_color = QColor("#444")
+        elif self._checked:
+            track_color = QColor("#7c6be0")
+            thumb_color = QColor("#ffffff")
+        else:
+            track_color = QColor("#3a3a3a")
+            thumb_color = QColor("#888888")
+
+        p.setPen(Qt.NoPen)
+        p.setBrush(track_color)
+        p.drawRoundedRect(0, 3, 40, 16, 8, 8)
+
+        p.setBrush(thumb_color)
+        p.drawEllipse(self._offset, 1, 20, 20)
+
+
+class SettingRow(QWidget):
+    def __init__(self, label: str, description: str, checked: bool, enabled: bool = True, parent=None):
+        super().__init__(parent)
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(0, 4, 0, 4)
+        layout.setSpacing(12)
+
+        text_col = QVBoxLayout()
+        text_col.setSpacing(2)
+
+        lbl = QLabel(label)
+        lbl.setStyleSheet("font-size: 13px; color: #c0c0c0; background: transparent;")
+
+        desc = QLabel(description)
+        desc.setStyleSheet("font-size: 10px; color: #555; background: transparent;")
+
+        text_col.addWidget(lbl)
+        text_col.addWidget(desc)
+
+        self.toggle = ToggleSwitch(checked=checked)
+        self.toggle.setEnabled(enabled)
+
+        layout.addLayout(text_col)
+        layout.addStretch()
+        layout.addWidget(self.toggle)
 
 
 class SettingsPanel(QWidget):
@@ -41,90 +121,67 @@ class SettingsPanel(QWidget):
         widget = QWidget()
         layout = QVBoxLayout(widget)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(8)
+        layout.setSpacing(4)
 
         settings = tray_settings.load()
         autostart = is_autostart_enabled()
-        minimize_to_tray = settings["minimize_to_tray"]
-        start_minimized = settings["start_minimized"]
+        minimize_to_tray = settings.get("minimize_to_tray", True)
+        start_minimized = settings.get("start_minimized", False)
 
-        self.chk_autostart = self._checkbox(
+        self.row_autostart = SettingRow(
             "Iniciar com o Windows",
             "O Hammerfy será iniciado automaticamente com o Windows.",
-            autostart,
+            checked=autostart,
         )
-        self.chk_tray = self._checkbox(
-            "Minimizar para a tray",
-            "Fechar a janela mantém o Hammerfy aberto em segundo plano.",
-            minimize_to_tray or autostart,
+        self.row_tray = SettingRow(
+            "Ficar aberto em segundo plano",
+            "Fechar a janela mantém o Hammerfy ativo na tray do sistema.",
+            checked=minimize_to_tray or autostart,
+            enabled=not autostart,
         )
-        self.chk_start_minimized = self._checkbox(
+        self.row_start_minimized = SettingRow(
             "Iniciar minimizado",
-            "O Hammerfy inicia sem abrir a janela.",
-            start_minimized,
+            "O Hammerfy inicia sem abrir a janela, direto na tray.",
+            checked=start_minimized,
         )
 
-        # Se autostart ativo, tray é obrigatório
-        if autostart:
-            self.chk_tray.setEnabled(False)
+        self.row_autostart.toggle.toggled.connect(self._on_autostart_changed)
+        self.row_tray.toggle.toggled.connect(self._on_tray_changed)
+        self.row_start_minimized.toggle.toggled.connect(self._on_start_minimized_changed)
 
-        self.chk_autostart.stateChanged.connect(self._on_autostart_changed)
-        self.chk_tray.stateChanged.connect(self._on_tray_changed)
-        self.chk_start_minimized.stateChanged.connect(self._on_start_minimized_changed)
-
-        layout.addWidget(self.chk_autostart)
-        layout.addWidget(self.chk_tray)
-        layout.addWidget(self.chk_start_minimized)
+        layout.addWidget(self.row_autostart)
+        layout.addWidget(self._divider())
+        layout.addWidget(self.row_tray)
+        layout.addWidget(self._divider())
+        layout.addWidget(self.row_start_minimized)
 
         return widget
 
-    def _checkbox(self, label: str, description: str, checked: bool) -> QCheckBox:
-        chk = QCheckBox(label)
-        chk.setChecked(checked)
-        chk.setToolTip(description)
-        chk.setStyleSheet("""
-            QCheckBox {
-                font-size: 12px;
-                color: #c0c0c0;
-                spacing: 8px;
-            }
-            QCheckBox::indicator {
-                width: 16px;
-                height: 16px;
-                border-radius: 4px;
-                border: 1px solid #444;
-                background: #1a1a1a;
-            }
-            QCheckBox::indicator:checked {
-                background: #7c6be0;
-                border-color: #7c6be0;
-            }
-            QCheckBox::indicator:hover {
-                border-color: #7c6be0;
-            }
-        """)
-        return chk
+    def _divider(self):
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine)
+        line.setStyleSheet("background-color: #222; max-height: 1px;")
+        return line
 
-    def _on_autostart_changed(self, state):
+    def _on_autostart_changed(self, enabled):
         if self._building:
             return
-        enabled = state == Qt.Checked
         set_autostart(enabled)
         if enabled:
-            self.chk_tray.setChecked(True)
-            self.chk_tray.setEnabled(False)
+            self.row_tray.toggle.setChecked(True)
+            self.row_tray.toggle.setEnabled(False)
             tray_settings.set_value("minimize_to_tray", True)
         else:
-            self.chk_tray.setEnabled(True)
+            self.row_tray.toggle.setEnabled(True)
         self.tray_setting_changed.emit()
 
-    def _on_tray_changed(self, state):
+    def _on_tray_changed(self, enabled):
         if self._building:
             return
-        tray_settings.set_value("minimize_to_tray", state == Qt.Checked)
+        tray_settings.set_value("minimize_to_tray", enabled)
         self.tray_setting_changed.emit()
 
-    def _on_start_minimized_changed(self, state):
+    def _on_start_minimized_changed(self, enabled):
         if self._building:
             return
-        tray_settings.set_value("start_minimized", state == Qt.Checked)
+        tray_settings.set_value("start_minimized", enabled)

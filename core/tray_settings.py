@@ -4,7 +4,7 @@ from pathlib import Path
 SETTINGS_FILE = Path(__file__).parent.parent / "hammerfy_settings.json"
 
 DEFAULTS = {
-    "minimize_to_tray": False,
+    "minimize_to_tray": True,
     "start_minimized": False,
 }
 

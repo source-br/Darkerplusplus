@@ -69,10 +69,7 @@ class HammerfyApp(QApplication):
 
         self._tray.setContextMenu(menu)
         self._tray.activated.connect(self._on_tray_activated)
-
-        # Conecta settings panel para atualizar comportamento ao mudar
-        self.window.settings_panel.tray_setting_changed.connect(self._update_tray_visibility)
-        self._update_tray_visibility()
+        self._tray.show()
 
         # Intercepta o closeEvent da janela
         self.window.closeEvent = self._on_window_close
