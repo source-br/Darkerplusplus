@@ -15,11 +15,13 @@ def open_hammer(tool: Tool) -> tuple[bool, str]:
         return False, f"Executável não encontrado: {exe}"
 
     try:
-        subprocess.Popen(
-            [str(exe)],
-            cwd=str(exe.parent),
-            creationflags=subprocess.DETACHED_PROCESS if sys.platform == "win32" else 0,
-        )
+        kwargs = {"cwd": str(exe.parent)}
+
+        if sys.platform == "win32":
+            kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
+            kwargs["close_fds"] = True
+
+        subprocess.Popen([str(exe)], **kwargs)
         return True, "Hammer++ aberto com sucesso."
     except Exception as e:
         return False, f"Erro ao abrir: {e}"
