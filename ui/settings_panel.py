@@ -15,14 +15,18 @@ class ToggleSwitch(QWidget):
         self.setFixedSize(40, 22)
         self.setCursor(Qt.PointingHandCursor)
         self._checked = checked
-        self._offset = 18 if checked else 4
+        self._offset = 18.0 if checked else 4.0
+
+        self._anim = QPropertyAnimation(self, b"offset", self)
+        self._anim.setDuration(150)
+        self._anim.setEasingCurve(QEasingCurve.InOutQuad)
 
     def isChecked(self):
         return self._checked
 
     def setChecked(self, val):
         self._checked = val
-        self._offset = 18 if val else 4
+        self._offset = 18.0 if val else 4.0
         self.update()
 
     def setEnabled(self, val):
@@ -33,9 +37,20 @@ class ToggleSwitch(QWidget):
         if not self.isEnabled():
             return
         self._checked = not self._checked
-        self._offset = 18 if self._checked else 4
-        self.update()
+        self._anim.stop()
+        self._anim.setStartValue(self._offset)
+        self._anim.setEndValue(18.0 if self._checked else 4.0)
+        self._anim.start()
         self.toggled.emit(self._checked)
+
+    def get_offset(self):
+        return self._offset
+
+    def set_offset(self, val):
+        self._offset = val
+        self.update()
+
+    offset = Property(float, get_offset, set_offset)
 
     def paintEvent(self, event):
         p = QPainter(self)
@@ -56,7 +71,7 @@ class ToggleSwitch(QWidget):
         p.drawRoundedRect(0, 3, 40, 16, 8, 8)
 
         p.setBrush(thumb_color)
-        p.drawEllipse(self._offset, 1, 20, 20)
+        p.drawEllipse(int(self._offset), 1, 20, 20)
 
 
 class SettingRow(QWidget):

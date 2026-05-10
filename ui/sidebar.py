@@ -83,7 +83,7 @@ class Sidebar(QWidget):
 
     def _nav_label(self, text):
         label = QLabel(text.upper())
-        label.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1px; padding: 4px 8px;")
+        label.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1px; padding: 4px 8px; background: transparent;")
         self._section_labels.append(label)
         return label
 
