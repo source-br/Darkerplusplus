@@ -1,19 +1,18 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QColor
-from models.tool import Tool, ToolStatus
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
+from PySide6.QtCore import Qt, Signal, QSize
+from PySide6.QtGui import QPixmap
 from pathlib import Path
+from models.tool import Tool, ToolStatus
 from utils.icons import load_icon
-from PySide6.QtCore import QSize
 from utils import translator
 
 
 class ToolCard(QWidget):
-    selected = Signal(object)
-    action_open = Signal(object)
-    action_folder = Signal(object)
+    selected       = Signal(object)
+    action_open    = Signal(object)
+    action_folder  = Signal(object)
     action_install = Signal(object)
-    action_update = Signal(object)
+    action_update  = Signal(object)
 
     def __init__(self, tool: Tool, parent=None):
         super().__init__(parent)
@@ -24,22 +23,22 @@ class ToolCard(QWidget):
         self._build_ui()
         self._apply_style()
 
+    # ─── UI Construction ──────────────────────────────────────────────────────
+
     def _build_ui(self):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 8)
         layout.setSpacing(6)
 
         self._banner_container = self._build_banner()
-        layout.addWidget(self._banner_container)
+
+        version_text = "—" if self.tool.version_installed in (None, "unknown") else self.tool.version_installed
 
         self.lbl_name = QLabel(self.tool.name)
-        self.lbl_name.setObjectName("card_name")
         self.lbl_name.setWordWrap(True)
         self.lbl_name.setStyleSheet("font-size: 11px; font-weight: 600; color: #e0e0e0;")
 
-        version_text = "—" if self.tool.version_installed in (None, "unknown") else self.tool.version_installed
         self.lbl_version = QLabel(f"{version_text} · {self.tool.engine}")
-        self.lbl_version.setObjectName("card_version")
         self.lbl_version.setStyleSheet("font-size: 10px; color: #555;")
 
         layout.addWidget(self._banner_container)
@@ -47,7 +46,7 @@ class ToolCard(QWidget):
         layout.addWidget(self.lbl_version)
         layout.addWidget(self._build_actions())
 
-    def _build_banner(self):
+    def _build_banner(self) -> QWidget:
         outer = QWidget()
         outer.setFixedHeight(95)
         self._banner_widget = outer
@@ -55,7 +54,6 @@ class ToolCard(QWidget):
         banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
 
         if banner_path.exists():
-            from PySide6.QtGui import QPixmap
             self._banner_pixmap_orig = QPixmap(str(banner_path))
             self._banner_img = QLabel(outer)
             self._banner_img.setScaledContents(True)
@@ -68,31 +66,35 @@ class ToolCard(QWidget):
             outer.setStyleSheet(f"background-color: {self.tool.banner_color}; border-radius: 8px;")
             text = self.tool.id.upper()
             font_size = 14 if len(text) > 4 else 20
-            label = QLabel(text, outer)
-            label.setStyleSheet(f"font-size: {font_size}px; font-weight: 700; color: rgba(255,255,255,0.85);")
-            label.move(8, 30)
+            lbl = QLabel(text, outer)
+            lbl.setStyleSheet(f"font-size: {font_size}px; font-weight: 700; color: rgba(255,255,255,0.85);")
+            lbl.move(8, 30)
 
+        # Status badge overlaid on the top-right of the banner
         badge = self._build_status_badge()
         badge.setParent(outer)
         badge.move(0, 6)
         self._status_badge = badge
 
         return outer
-    
-    def _build_status_badge(self):
-        badge = QLabel()
-        badge.setFixedHeight(16)
 
-        status_keys = {
-            ToolStatus.INSTALLED:       ("status", "installed",        "#1a3a1a", "#5ae87a", "#2a5a2a"),
-            ToolStatus.UPDATE_AVAILABLE:("status", "update_available", "#3a2a0a", "#e8b84a", "#5a4a1a"),
-            ToolStatus.AVAILABLE:       ("status", "available",        "#1a1a2a", "#666",    "#2a2a3a"),
-            ToolStatus.NOT_AVAILABLE: ("status", "not_available", "#1a1a1a", "#444", "#222"),
+    def _build_status_badge(self) -> QLabel:
+        # (bg, fg, border) per status
+        status_style = {
+            ToolStatus.INSTALLED:        ("#1a3a1a", "#5ae87a", "#2a5a2a"),
+            ToolStatus.UPDATE_AVAILABLE: ("#3a2a0a", "#e8b84a", "#5a4a1a"),
+            ToolStatus.AVAILABLE:        ("#1a1a2a", "#666",    "#2a2a3a"),
+            ToolStatus.NOT_AVAILABLE:    ("#1a1a1a", "#444",    "#222"),
         }
-
-        section, key, bg, fg, border = status_keys[self.tool.status]
-        text = translator.t(section, key)
-        badge.setText(text)
+        status_key = {
+            ToolStatus.INSTALLED:        "installed",
+            ToolStatus.UPDATE_AVAILABLE: "update_available",
+            ToolStatus.AVAILABLE:        "available",
+            ToolStatus.NOT_AVAILABLE:    "not_available",
+        }
+        bg, fg, border = status_style[self.tool.status]
+        badge = QLabel(translator.t("status", status_key[self.tool.status]))
+        badge.setFixedHeight(16)
         badge.setStyleSheet(f"""
             background-color: {bg};
             color: {fg};
@@ -104,28 +106,27 @@ class ToolCard(QWidget):
         """)
         return badge
 
-    def _build_actions(self):
+    def _build_actions(self) -> QWidget:
         widget = QWidget()
         layout = QHBoxLayout(widget)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(4)
 
         if self.tool.status == ToolStatus.INSTALLED:
-            btn_main = self._btn(translator.t("card", "open"), primary=True)
-            btn_main.clicked.connect(lambda: self.action_open.emit(self.tool))
-            btn_folder = self._btn("", icon=True, icon_name="folder-open")
+            btn_open = self._btn(translator.t("card", "open"), primary=True)
+            btn_open.clicked.connect(lambda: self.action_open.emit(self.tool))
+            btn_folder = self._icon_btn("folder-open")
             btn_folder.clicked.connect(lambda: self.action_folder.emit(self.tool))
-            btn_settings = self._btn("", icon=True, icon_name="settings")
-            layout.addWidget(btn_main)
+            # btn_settings hidden until phase 3
+            layout.addWidget(btn_open)
             layout.addWidget(btn_folder)
-            # layout.addWidget(btn_settings)
 
         elif self.tool.status == ToolStatus.UPDATE_AVAILABLE:
-            btn_main = self._btn(translator.t("card", "update"), accent="#8a6200")
-            btn_main.clicked.connect(lambda: self.action_update.emit(self.tool))
-            btn_folder = self._btn("", icon=True, icon_name="folder-open")
+            btn_update = self._btn(translator.t("card", "update"), accent="#8a6200")
+            btn_update.clicked.connect(lambda: self.action_update.emit(self.tool))
+            btn_folder = self._icon_btn("folder-open")
             btn_folder.clicked.connect(lambda: self.action_folder.emit(self.tool))
-            layout.addWidget(btn_main)
+            layout.addWidget(btn_update)
             layout.addWidget(btn_folder)
 
         elif self.tool.status == ToolStatus.NOT_AVAILABLE:
@@ -133,86 +134,63 @@ class ToolCard(QWidget):
             btn.setEnabled(False)
             layout.addWidget(btn)
 
-        else:
-            btn_main = self._btn(translator.t("card", "install"), muted=True)
-            btn_main.clicked.connect(lambda: self.action_install.emit(self.tool))
-            layout.addWidget(btn_main)
+        else:  # AVAILABLE
+            btn_install = self._btn(translator.t("card", "install"), muted=True)
+            btn_install.clicked.connect(lambda: self.action_install.emit(self.tool))
+            layout.addWidget(btn_install)
 
         return widget
 
-    def _btn(self, text, primary=False, icon=False, muted=False, accent=None, icon_name=None):
+    # ─── Button Helpers ────────────────────────────────────────────────────────
+
+    def _btn(self, text: str, primary=False, muted=False, accent: str | None = None) -> QPushButton:
         btn = QPushButton(text)
+        btn.setFixedHeight(24)
         btn.setCursor(Qt.PointingHandCursor)
 
-        if icon_name:
-            color = "white" if primary else "#666"
-            btn.setIcon(load_icon(icon_name, color=color, size=14))
-            btn.setIconSize(QSize(14, 14))
-
-        if icon:
-            btn.setFixedSize(36, 24)
+        if primary:
             btn.setStyleSheet("""
                 QPushButton {
-                    background: transparent;
-                    border: 1px solid #333;
-                    border-radius: 5px;
-                    font-size: 10px;
-                    color: #666;
-                }
-                QPushButton:hover { background: #222; color: #aaa; }
-            """)
-            btn.setStyleSheet("""
-                QPushButton {
-                    background: transparent;
-                    border: 1px solid #333;
-                    border-radius: 5px;
-                    font-size: 11px;
-                    color: #666;
-                }
-                QPushButton:hover { background: #222; color: #aaa; }
-            """)
-        elif primary:
-            btn.setFixedHeight(24)
-            btn.setSizePolicy(btn.sizePolicy().horizontalPolicy(), btn.sizePolicy().verticalPolicy())
-            btn.setStyleSheet("""
-                QPushButton {
-                    background: #7c6be0;
-                    border: none;
-                    border-radius: 5px;
-                    font-size: 11px;
-                    color: white;
-                    padding: 0 8px;
+                    background: #7c6be0; border: none; border-radius: 5px;
+                    font-size: 11px; color: white; padding: 0 8px;
                 }
                 QPushButton:hover { background: #6559c4; }
             """)
         elif muted:
-            btn.setFixedHeight(24)
             btn.setStyleSheet("""
                 QPushButton {
-                    background: #2a2a2a;
-                    border: 1px solid #444;
-                    border-radius: 5px;
-                    font-size: 11px;
-                    color: #aaa;
-                    padding: 0 8px;
+                    background: #2a2a2a; border: 1px solid #444; border-radius: 5px;
+                    font-size: 11px; color: #aaa; padding: 0 8px;
                 }
                 QPushButton:hover { background: #333; }
             """)
         elif accent:
-            btn.setFixedHeight(24)
             btn.setStyleSheet(f"""
                 QPushButton {{
-                    background: {accent};
-                    border: none;
-                    border-radius: 5px;
-                    font-size: 11px;
-                    color: white;
-                    padding: 0 8px;
+                    background: {accent}; border: none; border-radius: 5px;
+                    font-size: 11px; color: white; padding: 0 8px;
                 }}
                 QPushButton:hover {{ background: #6a4a00; }}
             """)
-
         return btn
+
+    def _icon_btn(self, icon_name: str) -> QPushButton:
+        """Small square icon-only button."""
+        btn = QPushButton()
+        btn.setFixedSize(36, 24)
+        btn.setCursor(Qt.PointingHandCursor)
+        btn.setIcon(load_icon(icon_name, color="#666", size=14))
+        btn.setIconSize(QSize(14, 14))
+        btn.setStyleSheet("""
+            QPushButton {
+                background: transparent; border: 1px solid #333;
+                border-radius: 5px; color: #666;
+            }
+            QPushButton:hover { background: #222; color: #aaa; }
+        """)
+        return btn
+
+    # ─── State & Style ─────────────────────────────────────────────────────────
 
     def set_selected(self, selected: bool):
         self._is_selected = selected
@@ -244,6 +222,8 @@ class ToolCard(QWidget):
         self.selected.emit(self.tool)
         super().mousePressEvent(event)
 
+    # ─── Layout Updates ────────────────────────────────────────────────────────
+
     def update_banner_size(self, card_width: int, banner_height: int):
         self._banner_widget.setFixedHeight(banner_height)
         self._banner_widget.setFixedWidth(card_width)
@@ -251,6 +231,6 @@ class ToolCard(QWidget):
         if self._banner_img:
             self._banner_img.setGeometry(0, 0, card_width, banner_height)
 
-        if hasattr(self, '_status_badge'):
+        if hasattr(self, "_status_badge"):
             badge_w = self._status_badge.sizeHint().width()
             self._status_badge.move(card_width - badge_w - 6, 6)
