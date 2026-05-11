@@ -1,10 +1,12 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame
-from PySide6.QtCore import Qt, Signal
-from utils import translator
+from PySide6.QtCore import Qt, Signal, QSize
+from PySide6.QtGui import QPixmap
 from pathlib import Path
 from utils.icons import load_icon
-from PySide6.QtCore import QSize
+from utils import translator
 
+
+# ─── Sidebar Logo ──────────────────────────────────────────────────────────────
 
 class SidebarLogo(QWidget):
     def __init__(self, parent=None):
@@ -21,10 +23,10 @@ class SidebarLogo(QWidget):
 
         logo_path = Path(__file__).parent.parent / "assets" / "icons" / "hammerfy-logo.svg"
         if logo_path.exists():
-            from PySide6.QtGui import QPixmap
             img = QLabel()
+            # SVG — scale to fit the 48px bar height with vertical padding
             pixmap = QPixmap(str(logo_path)).scaled(
-                130, 36,
+                150, 28,
                 Qt.KeepAspectRatio,
                 Qt.SmoothTransformation
             )
@@ -42,6 +44,8 @@ class SidebarLogo(QWidget):
         version.setStyleSheet("font-size: 10px; color: #555;")
         layout.addWidget(version)
 
+
+# ─── Sidebar ───────────────────────────────────────────────────────────────────
 
 class Sidebar(QWidget):
     filter_changed = Signal(str)
@@ -75,9 +79,10 @@ class Sidebar(QWidget):
         layout.addWidget(self._nav_btn("updates",   translator.t("sidebar", "updates"),    "#e8b84a"))
 
         layout.addSpacing(8)
+
         layout.addWidget(self._nav_label(translator.t("sidebar", "system")))
-        layout.addWidget(self._nav_btn("settings",  translator.t("sidebar", "settings"),   "#444"))
-        layout.addWidget(self._nav_btn("about", translator.t("sidebar", "about"), "#444"))
+        layout.addWidget(self._nav_btn("settings", translator.t("sidebar", "settings"), "#444"))
+        layout.addWidget(self._nav_btn("about",    translator.t("sidebar", "about"),    "#444"))
 
         return nav
 
@@ -97,7 +102,7 @@ class Sidebar(QWidget):
         layout.setContentsMargins(8, 6, 8, 6)
         layout.setSpacing(8)
 
-        # Ícone SVG com cor do dot
+        # Icon name per filter
         icon_map = {
             "all":       ("grid-2x2",        dot_color),
             "installed": ("package-check",   dot_color),
@@ -107,11 +112,10 @@ class Sidebar(QWidget):
             "about":     ("info",            dot_color),
         }
         icon_name, color = icon_map.get(filter_id, ("circle", dot_color))
+
         icon_lbl = QLabel()
         icon_lbl.setFixedSize(16, 16)
         icon_lbl.setPixmap(load_icon(icon_name, color=color, size=16).pixmap(16, 16))
-        self._icon_labels = getattr(self, '_icon_labels', {})
-        self._icon_labels[filter_id] = (icon_lbl, icon_name, color)
 
         label = QLabel(text)
         label.setStyleSheet("font-size: 13px;")
@@ -130,6 +134,7 @@ class Sidebar(QWidget):
             }
             QPushButton:hover { background: #222; color: #ccc; }
             QPushButton:checked { background: #2a2a2a; color: #f0f0f0; }
+            QPushButton QLabel { background-color: transparent; }
         """)
 
         btn.clicked.connect(lambda: self._on_filter(filter_id))
@@ -148,12 +153,13 @@ class Sidebar(QWidget):
         self.filter_changed.emit(filter_id)
 
     def refresh_text(self):
-        keys = ["library", "system"]
+        """Called when the UI language changes."""
+        section_keys = ["library", "system"]
         for i, label in enumerate(self._section_labels):
-            if i < len(keys):
-                label.setText(translator.t("sidebar", keys[i]).upper())
+            if i < len(section_keys):
+                label.setText(translator.t("sidebar", section_keys[i]).upper())
 
-        labels = {
+        label_map = {
             "all":       translator.t("sidebar", "all_tools"),
             "installed": translator.t("sidebar", "installed"),
             "available": translator.t("sidebar", "available"),
@@ -161,6 +167,6 @@ class Sidebar(QWidget):
             "settings":  translator.t("sidebar", "settings"),
         }
         for filter_id, btn in self._buttons.items():
-            if filter_id in labels:
+            if filter_id in label_map:
                 for child in btn.findChildren(QLabel):
-                    child.setText(labels[filter_id])
+                    child.setText(label_map[filter_id])
