@@ -1,48 +1,54 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame)
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
+                                QLabel, QPushButton, QFrame)
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QPixmap, QDesktopServices
 from pathlib import Path
 import platform
 
 
-LINKS = {
-    "github":  "https://github.com/kenned-candido/darkerplusplus",
-    "issues":  "https://github.com/kenned-candido/darkerplusplus/issues",
-    "donate":  "",
-    "docs":    "https://github.com/kenned-candido/darkerplusplus/wiki",
-}
+# ─── Constants ─────────────────────────────────────────────────────────────────
 
 VERSION = "0.1.0"
 AUTHOR  = "kenned-candido"
 LICENSE = "GPL-3.0"
 
+LINKS = {
+    "github":  "https://github.com/kenned-candido/darkerplusplus",
+    "issues":  "https://github.com/kenned-candido/darkerplusplus/issues",
+    "docs":    "https://github.com/kenned-candido/darkerplusplus/wiki",
+    "donate":  "",
+}
 
-def get_os_name() -> str:
+
+# ─── Helpers ───────────────────────────────────────────────────────────────────
+
+def _get_os_name() -> str:
+    """Returns a human-readable OS name for the About panel."""
     system = platform.system()
     if system == "Windows":
-        release = platform.release()
         build = platform.version()
-        if build.startswith("10.0.2"):  # build 20000+ = Windows 11
-            return "Windows 11"
-        return f"Windows {release}"
+        # Build numbers starting with 10.0.2 indicate Windows 11
+        return "Windows 11" if build.startswith("10.0.2") else f"Windows {platform.release()}"
     elif system == "Linux":
         try:
             import distro
             return distro.name(pretty=True)
         except ImportError:
-            # fallback lendo /etc/os-release diretamente
-            try:
-                with open("/etc/os-release") as f:
-                    for line in f:
-                        if line.startswith("PRETTY_NAME="):
-                            return line.split("=")[1].strip().strip('"')
-            except Exception:
-                pass
-            return "Linux"
+            pass
+        try:
+            with open("/etc/os-release") as f:
+                for line in f:
+                    if line.startswith("PRETTY_NAME="):
+                        return line.split("=")[1].strip().strip('"')
+        except Exception:
+            pass
+        return "Linux"
     elif system == "Darwin":
         return f"macOS {platform.mac_ver()[0]}"
     return system
 
+
+# ─── Panel ─────────────────────────────────────────────────────────────────────
 
 class AboutPanel(QWidget):
     def __init__(self, parent=None):
@@ -55,15 +61,12 @@ class AboutPanel(QWidget):
         root.setSpacing(0)
 
         root.addWidget(self._build_left())
-
-        line = QFrame()
-        line.setFrameShape(QFrame.VLine)
-        line.setStyleSheet("background-color: #242424; max-width: 1px;")
-        root.addWidget(line)
-
+        root.addWidget(self._vline())
         root.addWidget(self._build_right())
 
-    def _build_left(self):
+    # ─── Left Column ───────────────────────────────────────────────────────────
+
+    def _build_left(self) -> QWidget:
         widget = QWidget()
         widget.setObjectName("about_left")
         widget.setStyleSheet("QWidget#about_left { background-color: #141414; }")
@@ -74,13 +77,10 @@ class AboutPanel(QWidget):
         layout.setSpacing(0)
         layout.setAlignment(Qt.AlignTop)
 
-        # Logo
         logo_path = Path(__file__).parent.parent / "assets" / "icons" / "hammerfy-logo.svg"
         if logo_path.exists():
             logo = QLabel()
-            pixmap = QPixmap(str(logo_path)).scaled(
-                200, 46, Qt.KeepAspectRatio, Qt.SmoothTransformation
-            )
+            pixmap = QPixmap(str(logo_path)).scaled(200, 46, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             logo.setPixmap(pixmap)
             logo.setStyleSheet("background: transparent;")
             layout.addWidget(logo)
@@ -99,59 +99,56 @@ class AboutPanel(QWidget):
         desc.setStyleSheet("font-size: 13px; color: #666; background: transparent;")
         desc.setWordWrap(True)
         layout.addWidget(desc)
-
         layout.addStretch()
 
         return widget
 
-    def _build_right(self):
+    # ─── Right Column ──────────────────────────────────────────────────────────
+
+    def _build_right(self) -> QWidget:
         widget = QWidget()
         layout = QVBoxLayout(widget)
         layout.setContentsMargins(48, 48, 48, 48)
         layout.setSpacing(0)
         layout.setAlignment(Qt.AlignTop)
 
+        # Info section
         layout.addWidget(self._section_label("Info"))
         layout.addSpacing(12)
-        layout.addWidget(self._info_row("Created by", AUTHOR))
-        layout.addWidget(self._divider())
-        layout.addWidget(self._info_row("Version", VERSION))
-        layout.addWidget(self._divider())
-        layout.addWidget(self._info_row("License", LICENSE))
-        layout.addWidget(self._divider())
-        layout.addWidget(self._info_row("Platform", get_os_name()))
+        for key, val in [
+            ("Created by", AUTHOR),
+            ("Version",    VERSION),
+            ("License",    LICENSE),
+            ("Platform",   _get_os_name()),
+        ]:
+            layout.addWidget(self._info_row(key, val))
+            layout.addWidget(self._hline())
 
         layout.addSpacing(40)
 
+        # Links section
         layout.addWidget(self._section_label("Links"))
         layout.addSpacing(16)
-
-        links = [
-            ("GitHub",          "View source code and releases", LINKS["github"]),
-            ("Report a bug",    "Open an issue on GitHub",       LINKS["issues"]),
-            ("Documentation",   "Guides and wiki",               LINKS["docs"]),
-            ("Support / Donate","Support the project",           LINKS["donate"]),
-        ]
-
-        for title, subtitle, url in links:
+        for title, subtitle, url in [
+            ("GitHub",           "View source code and releases", LINKS["github"]),
+            ("Report a bug",     "Open an issue on GitHub",       LINKS["issues"]),
+            ("Documentation",    "Guides and wiki",               LINKS["docs"]),
+            ("Support / Donate", "Support the project",           LINKS["donate"]),
+        ]:
             layout.addWidget(self._link_card(title, subtitle, url))
             layout.addSpacing(8)
 
         layout.addStretch()
         return widget
 
-    def _section_label(self, text):
+    # ─── Widget Builders ───────────────────────────────────────────────────────
+
+    def _section_label(self, text: str) -> QLabel:
         lbl = QLabel(text.upper())
         lbl.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1.5px; background: transparent;")
         return lbl
 
-    def _divider(self):
-        line = QFrame()
-        line.setFrameShape(QFrame.HLine)
-        line.setStyleSheet("background-color: #1e1e1e; max-height: 1px; margin: 0px;")
-        return line
-
-    def _info_row(self, key, value):
+    def _info_row(self, key: str, value: str) -> QWidget:
         widget = QWidget()
         widget.setStyleSheet("background: transparent;")
         layout = QHBoxLayout(widget)
@@ -169,7 +166,7 @@ class AboutPanel(QWidget):
         layout.addStretch()
         return widget
 
-    def _link_card(self, title, subtitle, url):
+    def _link_card(self, title: str, subtitle: str, url: str) -> QPushButton:
         btn = QPushButton()
         btn.setCursor(Qt.PointingHandCursor)
         btn.setFixedHeight(58)
@@ -214,3 +211,15 @@ class AboutPanel(QWidget):
 
         btn.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(url)))
         return btn
+
+    def _vline(self) -> QFrame:
+        line = QFrame()
+        line.setFrameShape(QFrame.VLine)
+        line.setStyleSheet("background-color: #242424; max-width: 1px;")
+        return line
+
+    def _hline(self) -> QFrame:
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine)
+        line.setStyleSheet("background-color: #1e1e1e; max-height: 1px; margin: 0px;")
+        return line
