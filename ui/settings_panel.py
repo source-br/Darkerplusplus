@@ -1,12 +1,15 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame)
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame
 from PySide6.QtCore import Qt, Signal, QPropertyAnimation, QEasingCurve, Property
-from PySide6.QtGui import QColor, QPainter, QPen
+from PySide6.QtGui import QColor, QPainter
 from utils import translator
 from core.autostart import is_autostart_enabled, set_autostart
 from core import tray_settings
 
 
+# ─── Toggle Switch ─────────────────────────────────────────────────────────────
+
 class ToggleSwitch(QWidget):
+    """Animated toggle switch with smooth thumb sliding."""
     toggled = Signal(bool)
 
     def __init__(self, checked=False, parent=None):
@@ -14,21 +17,21 @@ class ToggleSwitch(QWidget):
         self.setFixedSize(40, 22)
         self.setCursor(Qt.PointingHandCursor)
         self._checked = checked
-        self._offset = 18.0 if checked else 4.0
+        self._offset  = 18.0 if checked else 4.0
 
         self._anim = QPropertyAnimation(self, b"offset", self)
         self._anim.setDuration(150)
         self._anim.setEasingCurve(QEasingCurve.InOutQuad)
 
-    def isChecked(self):
+    def isChecked(self) -> bool:
         return self._checked
 
-    def setChecked(self, val):
+    def setChecked(self, val: bool):
         self._checked = val
-        self._offset = 18.0 if val else 4.0
+        self._offset  = 18.0 if val else 4.0
         self.update()
 
-    def setEnabled(self, val):
+    def setEnabled(self, val: bool):
         super().setEnabled(val)
         self.update()
 
@@ -42,10 +45,11 @@ class ToggleSwitch(QWidget):
         self._anim.start()
         self.toggled.emit(self._checked)
 
-    def get_offset(self):
+    # Property allows QPropertyAnimation to drive the thumb position
+    def get_offset(self) -> float:
         return self._offset
 
-    def set_offset(self, val):
+    def set_offset(self, val: float):
         self._offset = val
         self.update()
 
@@ -73,7 +77,11 @@ class ToggleSwitch(QWidget):
         p.drawEllipse(int(self._offset), 1, 20, 20)
 
 
+# ─── Setting Row ───────────────────────────────────────────────────────────────
+
 class SettingRow(QWidget):
+    """A labeled row with a description and a toggle switch."""
+
     def __init__(self, label: str, description: str, checked: bool, enabled: bool = True, parent=None):
         super().__init__(parent)
         layout = QHBoxLayout(self)
@@ -100,6 +108,8 @@ class SettingRow(QWidget):
         layout.addWidget(self.toggle)
 
 
+# ─── Settings Panel ────────────────────────────────────────────────────────────
+
 class SettingsPanel(QWidget):
     tray_setting_changed = Signal()
 
@@ -120,27 +130,27 @@ class SettingsPanel(QWidget):
         layout.addWidget(title)
 
         layout.addSpacing(24)
-        layout.addWidget(self._section("Sistema"))
+        layout.addWidget(self._section_label("Sistema"))
         layout.addSpacing(12)
         layout.addWidget(self._build_system_options())
         layout.addStretch()
         self._building = False
 
-    def _section(self, title):
-        lbl = QLabel(title.upper())
+    def _section_label(self, text: str) -> QLabel:
+        lbl = QLabel(text.upper())
         lbl.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1px;")
         return lbl
 
-    def _build_system_options(self):
+    def _build_system_options(self) -> QWidget:
         widget = QWidget()
         layout = QVBoxLayout(widget)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(4)
 
-        settings = tray_settings.load()
-        autostart = is_autostart_enabled()
-        minimize_to_tray = settings.get("minimize_to_tray", True)
-        start_minimized = settings.get("start_minimized", False)
+        settings      = tray_settings.load()
+        autostart     = is_autostart_enabled()
+        tray_enabled  = settings.get("minimize_to_tray", True)
+        start_min     = settings.get("start_minimized", False)
 
         self.row_autostart = SettingRow(
             "Iniciar com o Windows",
@@ -150,13 +160,13 @@ class SettingsPanel(QWidget):
         self.row_tray = SettingRow(
             "Ficar aberto em segundo plano",
             "Fechar a janela mantém o Hammerfy ativo na tray do sistema.",
-            checked=minimize_to_tray or autostart,
-            enabled=not autostart,
+            checked=tray_enabled or autostart,
+            enabled=not autostart,  # locked when autostart is on
         )
         self.row_start_minimized = SettingRow(
             "Iniciar minimizado",
             "O Hammerfy inicia sem abrir a janela, direto na tray.",
-            checked=start_minimized,
+            checked=start_min,
         )
 
         self.row_autostart.toggle.toggled.connect(self._on_autostart_changed)
@@ -171,17 +181,20 @@ class SettingsPanel(QWidget):
 
         return widget
 
-    def _divider(self):
+    def _divider(self) -> QFrame:
         line = QFrame()
         line.setFrameShape(QFrame.HLine)
         line.setStyleSheet("background-color: #222; max-height: 1px;")
         return line
 
-    def _on_autostart_changed(self, enabled):
+    # ─── Event Handlers ────────────────────────────────────────────────────────
+
+    def _on_autostart_changed(self, enabled: bool):
         if self._building:
             return
         set_autostart(enabled)
         if enabled:
+            # Tray must stay active when autostart is on
             self.row_tray.toggle.setChecked(True)
             self.row_tray.toggle.setEnabled(False)
             tray_settings.set_value("minimize_to_tray", True)
@@ -189,13 +202,13 @@ class SettingsPanel(QWidget):
             self.row_tray.toggle.setEnabled(True)
         self.tray_setting_changed.emit()
 
-    def _on_tray_changed(self, enabled):
+    def _on_tray_changed(self, enabled: bool):
         if self._building:
             return
         tray_settings.set_value("minimize_to_tray", enabled)
         self.tray_setting_changed.emit()
 
-    def _on_start_minimized_changed(self, enabled):
+    def _on_start_minimized_changed(self, enabled: bool):
         if self._building:
             return
         tray_settings.set_value("start_minimized", enabled)

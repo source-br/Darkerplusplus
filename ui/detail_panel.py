@@ -1,5 +1,4 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,
-                                QLabel, QPushButton, QFrame)
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame)
 from PySide6.QtCore import Qt, Signal, QSize
 from PySide6.QtGui import QPixmap
 from pathlib import Path
