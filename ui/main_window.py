@@ -9,8 +9,7 @@ from ui.about_panel import AboutPanel
 from models.tool import Tool, ToolStatus
 from core.steam import (scan_tools, SteamWatcher, find_steam_path, find_library_folders, find_installed_games, HAMMER_GAMES)
 from core.hammer import open_hammer, open_folder
-from core.updater import (get_latest_build, download_and_install, uninstall, CSGO_BUILD, get_tools_latest_date, download_and_install_tools)
-from utils.versions import get_tools_date, save_tools_date
+from core.updater import get_latest_build, download_and_install, uninstall, CSGO_BUILD
 from utils import translator
 from pathlib import Path
 
@@ -18,7 +17,7 @@ from pathlib import Path
 # ─── Tool Builder ──────────────────────────────────────────────────────────────
 
 def _build_tools_from_scan() -> list[Tool]:
-    # Scan Steam libraries and return the full tool list with statuses.
+    """Scans Steam libraries and returns the full tool list with statuses."""
     raw    = scan_tools()
     latest = get_latest_build()
     tools  = []
@@ -60,7 +59,7 @@ def _build_tools_from_scan() -> list[Tool]:
 # ─── Background Workers ────────────────────────────────────────────────────────
 
 class SilentUpdateWorker(QThread):
-    # Resolves 'unknown' versions for manually installed Hammer++ instances.
+    """Resolves 'unknown' versions for manually installed Hammer++ instances."""
     finished = QSignal()
 
     def __init__(self, tools: list[Tool], parent=None):
@@ -82,38 +81,6 @@ class SilentUpdateWorker(QThread):
         self.finished.emit()
 
 
-class ToolsPlusPlusWorker(QThread):
-    # Keeps Tools++ up to date silently in the background.
-
-    # Sentinel file to verify tools are actually present on disk
-    SENTINEL = "vbspplusplus.exe"
-
-    def __init__(self, tools: list[Tool], parent=None):
-        super().__init__(parent)
-        self._tools = tools
-
-    def run(self):
-        latest_date = get_tools_latest_date()
-        if not latest_date:
-            return
-
-        saved_date = get_tools_date()
-
-        for tool in self._tools:
-            if not tool.install_path:
-                continue
-            install_dir   = Path(tool.install_path).parent
-            tools_present = (install_dir / self.SENTINEL).exists()
-
-            # Skip only if date matches AND files are actually present
-            if saved_date == latest_date and tools_present:
-                continue
-
-            success, _ = download_and_install_tools(str(install_dir))
-            if success:
-                save_tools_date(latest_date)
-
-
 # ─── Main Window ───────────────────────────────────────────────────────────────
 
 class MainWindow(QMainWindow):
@@ -130,7 +97,6 @@ class MainWindow(QMainWindow):
         self._hide_detail()
         self._load_tools()
         self._start_silent_update()
-        self._start_tools_update()
         self._start_steam_watcher()
 
     # ─── UI Construction ──────────────────────────────────────────────────────
@@ -366,16 +332,6 @@ class MainWindow(QMainWindow):
         self._silent_worker = SilentUpdateWorker(unknown, self)
         self._silent_worker.finished.connect(self._refresh_tools, Qt.QueuedConnection)
         self._silent_worker.start()
-
-    def _on_silent_update_done(self):
-        self._refresh_tools()
-
-    def _start_tools_update(self):
-        installed = [t for t in self._all_tools if t.install_path]
-        if not installed:
-            return
-        self._tools_worker = ToolsPlusPlusWorker(installed, self)
-        self._tools_worker.start()
 
     # ─── Steam Watcher ─────────────────────────────────────────────────────────
 
