@@ -26,7 +26,7 @@ class SidebarLogo(QWidget):
             img = QLabel()
             # SVG — scale to fit the 48px bar height with vertical padding
             pixmap = QPixmap(str(logo_path)).scaled(
-                150, 28,
+                100, 28,
                 Qt.KeepAspectRatio,
                 Qt.SmoothTransformation
             )

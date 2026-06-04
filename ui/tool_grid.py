@@ -1,24 +1,30 @@
 from PySide6.QtWidgets import QWidget, QScrollArea, QGridLayout, QVBoxLayout
 from PySide6.QtCore import Qt, Signal
-from models.tool import Tool, ToolStatus
+from models.tool import Tool
 from ui.tool_card import ToolCard
 
 
 class ToolGrid(QWidget):
-    tool_selected = Signal(object)
-    empty_clicked = Signal()
-    action_open = Signal(object)
-    action_folder = Signal(object)
+    tool_selected  = Signal(object)
+    empty_clicked  = Signal()
+    action_open    = Signal(object)
+    action_folder  = Signal(object)
     action_install = Signal(object)
-    action_update = Signal(object)
+    action_update  = Signal(object)
 
-    MAX_COLS = 6
+    MAX_COLS     = 6
+    MIN_CARD_W   = 160
+    MAX_CARD_W   = 220
+    GRID_PADDING = 16
+    GRID_SPACING = 10
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self._cards: list[ToolCard] = []
-        self._selected_id = None
+        self._selected_id: str | None = None
         self._build_ui()
+
+    # ─── UI Construction ──────────────────────────────────────────────────────
 
     def _build_ui(self):
         outer = QVBoxLayout(self)
@@ -31,21 +37,23 @@ class ToolGrid(QWidget):
 
         self._container = QWidget()
         self._container.mousePressEvent = self._on_container_click
+
         self._grid = QGridLayout(self._container)
-        self._grid.setContentsMargins(16, 16, 16, 16)
-        self._grid.setSpacing(10)
+        self._grid.setContentsMargins(
+            self.GRID_PADDING, self.GRID_PADDING,
+            self.GRID_PADDING, self.GRID_PADDING
+        )
+        self._grid.setSpacing(self.GRID_SPACING)
         self._grid.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         scroll.setWidget(self._container)
         outer.addWidget(scroll)
         self._scroll = scroll
 
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
-        if self._cards:
-            self._relayout()
+    # ─── Public API ────────────────────────────────────────────────────────────
 
     def load_tools(self, tools: list[Tool]):
+        # Destroy existing cards before rebuilding
         for card in self._cards:
             card.deleteLater()
         self._cards.clear()
@@ -61,26 +69,32 @@ class ToolGrid(QWidget):
 
         self._relayout()
 
+    # ─── Layout ────────────────────────────────────────────────────────────────
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        if self._cards:
+            self._relayout()
+
     def _relayout(self):
-        # Remove todos do grid sem deletar
+        # Detach cards from grid without destroying them
         for card in self._cards:
             self._grid.removeWidget(card)
 
-        available_width = self._scroll.viewport().width() - 32
-        min_card_width = 160
-        max_card_width = 220
-
-        cols = max(1, min(self.MAX_COLS, available_width // min_card_width))
-        card_width = min(max_card_width, (available_width - (cols - 1) * 10) // cols)
-        banner_height = int(card_width / 2.14)
-        card_height = banner_height + 80
+        available  = self._scroll.viewport().width() - self.GRID_PADDING * 2
+        cols       = max(1, min(self.MAX_COLS, available // self.MIN_CARD_W))
+        card_w     = min(self.MAX_CARD_W, (available - (cols - 1) * self.GRID_SPACING) // cols)
+        banner_h   = int(card_w / 2.14)
+        card_h     = banner_h + 80
 
         for card in self._cards:
-            card.setFixedSize(card_width, card_height)
-            card.update_banner_size(card_width, banner_height)
+            card.setFixedSize(card_w, card_h)
+            card.update_banner_size(card_w, banner_h)
 
         for i, card in enumerate(self._cards):
             self._grid.addWidget(card, i // cols, i % cols)
+
+    # ─── Event Handlers ────────────────────────────────────────────────────────
 
     def _on_select(self, tool: Tool):
         for card in self._cards:
@@ -89,6 +103,6 @@ class ToolGrid(QWidget):
         self.tool_selected.emit(tool)
 
     def _on_container_click(self, event):
-        child = self._container.childAt(event.pos())
-        if child is None:
+        # Emit only when clicking the background, not a card
+        if self._container.childAt(event.pos()) is None:
             self.empty_clicked.emit()
