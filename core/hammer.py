@@ -6,7 +6,7 @@ from models.tool import Tool
 
 
 def open_hammer(tool: Tool) -> tuple[bool, str]:
-    """Abre o executável do Hammer++."""
+    """Opens the Hammer++ executable for the given tool."""
     if not tool.install_path:
         return False, "Hammer++ não está instalado."
 
@@ -18,8 +18,10 @@ def open_hammer(tool: Tool) -> tuple[bool, str]:
         kwargs = {"cwd": str(exe.parent)}
 
         if sys.platform == "win32":
+            # CREATE_NEW_PROCESS_GROUP allows Hammer++ to spawn child compiler
+            # processes (vbsp, vvis, vrad) correctly without inheriting our handles
             kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
-            kwargs["close_fds"] = True
+            kwargs["close_fds"]     = True
 
         subprocess.Popen([str(exe)], **kwargs)
         return True, "Hammer++ aberto com sucesso."
@@ -28,7 +30,7 @@ def open_hammer(tool: Tool) -> tuple[bool, str]:
 
 
 def open_folder(tool: Tool) -> tuple[bool, str]:
-    """Abre a pasta de instalação do Hammer++ no explorador de arquivos."""
+    """Opens the Hammer++ installation folder in the system file explorer."""
     if not tool.install_path:
         return False, "Hammer++ não está instalado."
 
