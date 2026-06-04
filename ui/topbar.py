@@ -1,11 +1,10 @@
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QLineEdit, QPushButton
-from PySide6.QtCore import Qt, Signal, QSize
-from utils.icons import load_icon
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel
+from PySide6.QtCore import Qt, Signal
 from utils import translator
 
 
 class Topbar(QWidget):
-    search_changed = Signal(str)
+    search_changed   = Signal(str)
     language_changed = Signal(str)
 
     def __init__(self, parent=None):
@@ -30,21 +29,13 @@ class Topbar(QWidget):
         layout.addWidget(self.count_label)
         layout.addStretch()
 
-    def set_title(self, title_key, count=None):
+    def set_title(self, title_key: str, count: int | None = None):
         self.title_label.setText(translator.t("sidebar", title_key))
         if count is not None:
             self.count_label.setText(translator.t("topbar", "available_count", count=count))
         else:
             self.count_label.setText("")
 
-    def _on_language(self):
-        self._current_lang = "ptbr" if self._current_lang == "en" else "en"
-        self.btn_lang.setText("PT" if self._current_lang == "ptbr" else "EN")
-        self.language_changed.emit(self._current_lang)
-
     def refresh_text(self):
-        self.search.setPlaceholderText(translator.t("topbar", "search_placeholder"))
-        if self._current_lang == "ptbr":
-            self.btn_lang.setText("PT")
-        else:
-            self.btn_lang.setText("EN")
+        """Called when the UI language changes."""
+        pass

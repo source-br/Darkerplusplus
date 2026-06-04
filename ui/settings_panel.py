@@ -125,10 +125,6 @@ class SettingsPanel(QWidget):
         layout.setSpacing(0)
         layout.setAlignment(Qt.AlignTop)
 
-        title = QLabel(translator.t("sidebar", "settings").upper())
-        title.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1px;")
-        layout.addWidget(title)
-
         layout.addSpacing(24)
         layout.addWidget(self._section_label("Sistema"))
         layout.addSpacing(12)
