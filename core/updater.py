@@ -1,4 +1,3 @@
-import re
 import urllib.request
 import urllib.error
 import zipfile
@@ -7,59 +6,88 @@ import shutil
 from pathlib import Path
 from utils.versions import save_version, remove_version
 
-GITHUB_API = "https://api.github.com/repos/ficool2/HammerPlusPlus-Website/releases/latest"
 
-DOWNLOAD_PAGE = "https://ficool2.github.io/HammerPlusPlus-Website/download.html"
-GITHUB_BASE   = "https://github.com/ficool2/HammerPlusPlus-Website/releases/download"
+# ─── Constants ─────────────────────────────────────────────────────────────────
 
+GITHUB_API  = "https://api.github.com/repos/ficool2/HammerPlusPlus-Website/releases/latest"
+GITHUB_BASE = "https://github.com/ficool2/HammerPlusPlus-Website/releases/download"
+
+# CS:GO build is frozen — no further updates will ever be released
 CSGO_BUILD = "8864"
 
+# Maps game_id to the zip name used in the GitHub release assets
 GAME_ZIP = {
     "gmod":      "hammerplusplus_gmod",
     "tf2":       "hammerplusplus_tf2",
-    "portal1":    "hammerplusplus_2013sp",
-    "portal2":   "hammerplusplus_portal2",
-    "l4d2":      "hammerplusplus_l4d2",
     "css":       "hammerplusplus_tf2",
     "dods":      "hammerplusplus_tf2",
     "hl2":       "hammerplusplus_2013sp",
+    "l4d2":      "hammerplusplus_l4d2",
+    "portal1":   "hammerplusplus_2013sp",
+    "portal2":   "hammerplusplus_portal2",
     "sdk2013sp": "hammerplusplus_2013sp",
     "sdk2013mp": "hammerplusplus_2013mp",
     "csgo":      "hammerplusplus_csgo",
 }
 
+# Known Hammer++ files — only these are removed on uninstall, never the full game folder
+HAMMER_FILES = [
+    "hammerplusplus.exe",
+    "hammerplusplus_dlls.dll",
+    "hammerplusplus_filesystem_steam.dll",
+    "hammerplusplus_settings.ini",
+    "hammerplusplus_sequences.txt",
+    "hammerplusplus_manifest.txt",
+    "hlmvplusplus.exe",
+    "hlmvplusplus.dll",
+]
+
+HAMMER_FOLDERS = [
+    "hammerplusplus",
+]
+
+_HEADERS = {
+    "User-Agent": "Hammerfy/0.1",
+    "Accept":     "application/vnd.github+json",
+}
+
+
+# ─── GitHub API ────────────────────────────────────────────────────────────────
 
 def get_latest_build() -> str | None:
-    """Busca o build mais recente via GitHub API."""
+    """Fetches the latest Hammer++ build tag from the GitHub releases API."""
     try:
-        req = urllib.request.Request(
-            GITHUB_API,
-            headers={
-                "User-Agent": "Hammerfy/0.1",
-                "Accept": "application/vnd.github+json"
-            }
-        )
+        req = urllib.request.Request(GITHUB_API, headers=_HEADERS)
         with urllib.request.urlopen(req, timeout=10) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             return data.get("tag_name")
     except Exception:
         return None
 
+
 def get_download_url(game_id: str, build: str) -> str | None:
-    """Monta a URL de download para um jogo e build específicos."""
+    """Builds the direct download URL for a given game and build."""
     zip_name = GAME_ZIP.get(game_id)
     if not zip_name:
         return None
+    # CS:GO always uses its frozen build regardless of the latest
     actual_build = CSGO_BUILD if game_id == "csgo" else build
     return f"{GITHUB_BASE}/{actual_build}/{zip_name}_build{actual_build}.zip"
 
+
+# ─── Install ───────────────────────────────────────────────────────────────────
 
 def download_and_install(
     game_id: str,
     build: str,
     install_path: str,
-    progress_callback=None
+    progress_callback=None,
 ) -> tuple[bool, str]:
+    """Downloads and extracts Hammer++ into the game's bin folder.
+
+    install_path: path to the game's bin folder (e.g. GarrysMod/bin)
+    progress_callback: optional callable(downloaded_bytes, total_bytes)
+    """
     url = get_download_url(game_id, build)
     if not url:
         return False, f"Jogo '{game_id}' não suportado."
@@ -73,23 +101,21 @@ def download_and_install(
 
     zip_path = dest_folder / "hammerplusplus_temp.zip"
 
-    # Download
+    # Download with optional progress reporting
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Hammerfy/0.1"})
         with urllib.request.urlopen(req, timeout=30) as resp:
-            total = int(resp.headers.get("Content-Length", 0))
+            total      = int(resp.headers.get("Content-Length", 0))
             downloaded = 0
-            chunk_size = 8192
             with open(zip_path, "wb") as f:
                 while True:
-                    chunk = resp.read(chunk_size)
+                    chunk = resp.read(8192)
                     if not chunk:
                         break
                     f.write(chunk)
                     downloaded += len(chunk)
                     if progress_callback:
                         progress_callback(downloaded, total)
-
     except urllib.error.URLError as e:
         zip_path.unlink(missing_ok=True)
         return False, f"Erro de conexão: {e}"
@@ -97,17 +123,17 @@ def download_and_install(
         zip_path.unlink(missing_ok=True)
         return False, f"Erro ao baixar: {e}"
 
-    # Extração — mescla conteúdo de bin/win64/ (ou bin/) com dest_folder
+    # Extract — find the bin/ prefix inside the zip and merge into dest_folder
     try:
         with zipfile.ZipFile(zip_path, "r") as z:
             members = z.namelist()
 
-            # Descobre o prefixo até bin/ dentro do zip
+            # Locate the bin/ prefix to strip it during extraction
             bin_prefix = None
             for m in members:
                 parts = Path(m.replace("\\", "/")).parts
                 if "bin" in parts:
-                    idx = list(parts).index("bin")
+                    idx        = list(parts).index("bin")
                     bin_prefix = "/".join(parts[:idx + 1]) + "/"
                     break
 
@@ -115,7 +141,6 @@ def download_and_install(
                 zip_path.unlink(missing_ok=True)
                 return False, "Estrutura do zip não reconhecida."
 
-            # Copia cada arquivo do zip para dest_folder mantendo subpastas
             for member in members:
                 norm = member.replace("\\", "/")
                 if not norm.startswith(bin_prefix):
@@ -139,44 +164,31 @@ def download_and_install(
         return False, f"Erro ao extrair: {e}"
 
     zip_path.unlink(missing_ok=True)
+
+    # Save the actual installed build (CS:GO uses its frozen build, not latest)
     actual_build = CSGO_BUILD if game_id == "csgo" else build
     save_version(game_id, actual_build)
+
     return True, f"Hammer++ instalado em {dest_folder}"
 
 
+# ─── Uninstall ─────────────────────────────────────────────────────────────────
+
 def uninstall(install_path: str, game_id: str) -> tuple[bool, str]:
-    """
-    Remove os arquivos do Hammer++ de uma instalação.
-    Remove apenas arquivos conhecidos, não a pasta inteira do jogo.
-    """
+    """Removes only known Hammer++ files — never touches the full game folder."""
     folder = Path(install_path).parent
     if not folder.exists():
         return False, "Pasta não encontrada."
 
-    hammer_files = [
-        "hammerplusplus.exe",
-        "hammerplusplus_dlls.dll",
-        "hammerplusplus_filesystem_steam.dll",
-        "hammerplusplus_settings.ini",
-        "hammerplusplus_sequences.txt",
-        "hammerplusplus_manifest.txt",
-        "hlmvplusplus.exe",
-        "hlmvplusplus.dll",
-    ]
-
-    hammer_folders = [
-        "hammerplusplus",
-    ]
-
     removed = 0
     try:
-        for fname in hammer_files:
+        for fname in HAMMER_FILES:
             fpath = folder / fname
             if fpath.exists():
                 fpath.unlink()
                 removed += 1
 
-        for fname in hammer_folders:
+        for fname in HAMMER_FOLDERS:
             fpath = folder / fname
             if fpath.exists() and fpath.is_dir():
                 shutil.rmtree(fpath)
@@ -188,83 +200,5 @@ def uninstall(install_path: str, game_id: str) -> tuple[bool, str]:
     if removed == 0:
         return False, "Nenhum arquivo do Hammer++ encontrado para remover."
 
-    # Descobre o game_id pelo install_path — passa como parâmetro
     remove_version(game_id)
     return True, f"{removed} itens removidos com sucesso."
-
-
-TOOLS_GITHUB_API = "https://api.github.com/repos/ficool2/misc_tools/releases/latest"
-TOOLS_DOWNLOAD_URL = "https://github.com/ficool2/misc_tools/releases/download/v1/tools_plusplus.zip"
-
-def get_tools_latest_date() -> str | None:
-    """Busca a data de atualização do tools_plusplus.zip via GitHub API."""
-    try:
-        req = urllib.request.Request(
-            TOOLS_GITHUB_API,
-            headers={
-                "User-Agent": "Hammerfy/0.1",
-                "Accept": "application/vnd.github+json"
-            }
-        )
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-            for asset in data.get("assets", []):
-                if asset.get("name") == "tools_plusplus.zip":
-                    return asset.get("updated_at")
-    except Exception:
-        return None
-
-def download_and_install_tools(install_path: str) -> tuple[bool, str]:
-    """
-    Baixa e instala as Tools++ na pasta do Hammer++.
-    install_path: pasta onde está o hammerplusplus.exe
-    """
-    dest_folder = Path(install_path)
-    if not dest_folder.exists():
-        return False, f"Pasta não encontrada: {dest_folder}"
-
-    zip_path = dest_folder / "tools_plusplus_temp.zip"
-
-    try:
-        req = urllib.request.Request(TOOLS_DOWNLOAD_URL, headers={"User-Agent": "Hammerfy/0.1"})
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            with open(zip_path, "wb") as f:
-                while True:
-                    chunk = resp.read(8192)
-                    if not chunk:
-                        break
-                    f.write(chunk)
-    except urllib.error.URLError as e:
-        zip_path.unlink(missing_ok=True)
-        return False, f"Erro de conexão: {e}"
-    except Exception as e:
-        zip_path.unlink(missing_ok=True)
-        return False, f"Erro ao baixar: {e}"
-
-    try:
-        with zipfile.ZipFile(zip_path, "r") as z:
-            for member in z.namelist():
-                norm = member.replace("\\", "/")
-                # Extrai tools/ e compatibility/ direto para dest_folder
-                for prefix in ("tools_plusplus/tools/", "tools_plusplus/compatibility/"):
-                    if norm.startswith(prefix):
-                        relative = norm[len(prefix):]
-                        if not relative:
-                            continue
-                        target = dest_folder / relative
-                        if norm.endswith("/"):
-                            target.mkdir(parents=True, exist_ok=True)
-                        else:
-                            target.parent.mkdir(parents=True, exist_ok=True)
-                            with z.open(member) as src, open(target, "wb") as dst:
-                                shutil.copyfileobj(src, dst)
-                        break
-    except zipfile.BadZipFile:
-        zip_path.unlink(missing_ok=True)
-        return False, "Arquivo corrompido."
-    except Exception as e:
-        zip_path.unlink(missing_ok=True)
-        return False, f"Erro ao extrair: {e}"
-
-    zip_path.unlink(missing_ok=True)
-    return True, "Tools++ instaladas com sucesso."
