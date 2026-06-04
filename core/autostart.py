@@ -1,5 +1,4 @@
 import sys
-import winreg
 from pathlib import Path
 from utils.registry import read_value, write_value, delete_value
 
@@ -22,6 +21,7 @@ def is_autostart_enabled() -> bool:
     """Returns True if Hammerfy is registered to run on Windows startup."""
     if sys.platform != "win32":
         return False
+    import winreg
     val = read_value(winreg.HKEY_CURRENT_USER, AUTOSTART_KEY, APP_NAME)
     return val is not None
 
@@ -30,6 +30,7 @@ def set_autostart(enabled: bool) -> bool:
     """Adds or removes Hammerfy from the Windows startup registry key."""
     if sys.platform != "win32":
         return False
+    import winreg
     if enabled:
         return write_value(winreg.HKEY_CURRENT_USER, AUTOSTART_KEY, APP_NAME, _get_exe_path())
     else:
