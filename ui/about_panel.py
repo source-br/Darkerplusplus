@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt, QUrl
 from PySide6.QtGui import QPixmap, QDesktopServices
 from pathlib import Path
 import platform
+from utils import translator
 
 
 # ─── Constants ─────────────────────────────────────────────────────────────────
@@ -27,7 +28,6 @@ def _get_os_name() -> str:
     system = platform.system()
     if system == "Windows":
         build = platform.version()
-        # Build numbers starting with 10.0.2 indicate Windows 11
         return "Windows 11" if build.startswith("10.0.2") else f"Windows {platform.release()}"
     elif system == "Linux":
         try:
@@ -91,14 +91,10 @@ class AboutPanel(QWidget):
 
         layout.addSpacing(28)
 
-        desc = QLabel(
-            "A free and open-source manager\n"
-            "for Hammer++, the map editor\n"
-            "for Valve's Source Engine games."
-        )
-        desc.setStyleSheet("font-size: 13px; color: #666; background: transparent;")
-        desc.setWordWrap(True)
-        layout.addWidget(desc)
+        self._desc_lbl = QLabel(translator.t("about", "description"))
+        self._desc_lbl.setStyleSheet("font-size: 13px; color: #666; background: transparent;")
+        self._desc_lbl.setWordWrap(True)
+        layout.addWidget(self._desc_lbl)
         layout.addStretch()
 
         return widget
@@ -113,33 +109,56 @@ class AboutPanel(QWidget):
         layout.setAlignment(Qt.AlignTop)
 
         # Info section
-        layout.addWidget(self._section_label("Info"))
+        self._section_info_lbl = self._section_label(translator.t("about", "section_info"))
+        layout.addWidget(self._section_info_lbl)
         layout.addSpacing(12)
-        for key, val in [
-            ("Created by", AUTHOR),
-            ("Version",    VERSION),
-            ("License",    LICENSE),
-            ("Platform",   _get_os_name()),
+
+        # Store info row label widgets for refresh_text
+        self._info_created_key, self._info_created_val = self._info_row(translator.t("about", "created_by"), AUTHOR)
+        self._info_version_key, _                      = self._info_row(translator.t("about", "version"),    VERSION)
+        self._info_license_key, _                      = self._info_row(translator.t("about", "license"),    LICENSE)
+        self._info_platform_key, _                     = self._info_row(translator.t("about", "platform"),   _get_os_name())
+
+        for key_lbl, val_lbl in [
+            (self._info_created_key,  self._info_created_val),
+            (self._info_version_key,  None),
+            (self._info_license_key,  None),
+            (self._info_platform_key, None),
         ]:
-            layout.addWidget(self._info_row(key, val))
+            row = self._make_row_widget(key_lbl, self._get_val_for_key(key_lbl))
+            layout.addWidget(row)
             layout.addWidget(self._hline())
 
         layout.addSpacing(40)
 
         # Links section
-        layout.addWidget(self._section_label("Links"))
+        self._section_links_lbl = self._section_label(translator.t("about", "section_links"))
+        layout.addWidget(self._section_links_lbl)
         layout.addSpacing(16)
-        for title, subtitle, url in [
-            ("GitHub",           "View source code and releases", LINKS["github"]),
-            ("Report a bug",     "Open an issue on GitHub",       LINKS["issues"]),
-            ("Documentation",    "Guides and wiki",               LINKS["docs"]),
-            ("Support / Donate", "Support the project",           LINKS["donate"]),
+
+        for title_key, url in [
+            ("github_title",  LINKS["github"]),
+            ("bug_title",     LINKS["issues"]),
+            ("docs_title",    LINKS["docs"]),
+            ("donate_title",  LINKS["donate"]),
         ]:
-            layout.addWidget(self._link_card(title, subtitle, url))
+            layout.addWidget(self._link_card(translator.t("about", title_key), url))
             layout.addSpacing(8)
 
         layout.addStretch()
         return widget
+
+    # ─── Public API ────────────────────────────────────────────────────────────
+
+    def refresh_text(self):
+        """Called when the UI language changes."""
+        self._desc_lbl.setText(translator.t("about", "description"))
+        self._section_info_lbl.setText(translator.t("about", "section_info").upper())
+        self._section_links_lbl.setText(translator.t("about", "section_links").upper())
+        self._info_created_key.setText(translator.t("about", "created_by"))
+        self._info_version_key.setText(translator.t("about", "version"))
+        self._info_license_key.setText(translator.t("about", "license"))
+        self._info_platform_key.setText(translator.t("about", "platform"))
 
     # ─── Widget Builders ───────────────────────────────────────────────────────
 
@@ -148,12 +167,8 @@ class AboutPanel(QWidget):
         lbl.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1.5px; background: transparent;")
         return lbl
 
-    def _info_row(self, key: str, value: str) -> QWidget:
-        widget = QWidget()
-        widget.setStyleSheet("background: transparent;")
-        layout = QHBoxLayout(widget)
-        layout.setContentsMargins(0, 10, 0, 10)
-
+    def _info_row(self, key: str, value: str) -> tuple[QLabel, QLabel]:
+        """Returns (key_label, value_label) for external refresh access."""
         k = QLabel(key)
         k.setStyleSheet("font-size: 13px; color: #555; background: transparent;")
         k.setFixedWidth(110)
@@ -161,15 +176,35 @@ class AboutPanel(QWidget):
         v = QLabel(value)
         v.setStyleSheet("font-size: 13px; color: #e0e0e0; background: transparent;")
 
-        layout.addWidget(k)
-        layout.addWidget(v)
+        return k, v
+
+    def _get_val_for_key(self, key_lbl: QLabel) -> QLabel:
+        """Helper to retrieve the matching value label for a key label."""
+        mapping = {
+            self._info_created_key:  QLabel(AUTHOR),
+            self._info_version_key:  QLabel(VERSION),
+            self._info_license_key:  QLabel(LICENSE),
+            self._info_platform_key: QLabel(_get_os_name()),
+        }
+        lbl = mapping.get(key_lbl, QLabel(""))
+        lbl.setStyleSheet("font-size: 13px; color: #e0e0e0; background: transparent;")
+        return lbl
+
+    def _make_row_widget(self, key_lbl: QLabel, val_lbl: QLabel) -> QWidget:
+        widget = QWidget()
+        widget.setStyleSheet("background: transparent;")
+        layout = QHBoxLayout(widget)
+        layout.setContentsMargins(0, 10, 0, 10)
+        layout.addWidget(key_lbl)
+        layout.addWidget(val_lbl)
         layout.addStretch()
         return widget
 
-    def _link_card(self, title: str, subtitle: str, url: str) -> QPushButton:
+    def _link_card(self, title: str, url: str) -> QPushButton:
+        """Link card without subtitle — cleaner look."""
         btn = QPushButton()
         btn.setCursor(Qt.PointingHandCursor)
-        btn.setFixedHeight(58)
+        btn.setFixedHeight(48)
         btn.setStyleSheet("""
             QPushButton {
                 background-color: #181818;
@@ -184,28 +219,16 @@ class AboutPanel(QWidget):
 
         inner = QHBoxLayout(btn)
         inner.setContentsMargins(16, 0, 16, 0)
-        inner.setSpacing(0)
-
-        text_col = QVBoxLayout()
-        text_col.setSpacing(3)
-        text_col.setAlignment(Qt.AlignVCenter)
 
         t = QLabel(title)
         t.setStyleSheet("font-size: 13px; color: #e0e0e0; background: transparent;")
         t.setAlignment(Qt.AlignVCenter)
 
-        s = QLabel(subtitle)
-        s.setStyleSheet("font-size: 11px; color: #555; background: transparent;")
-        s.setAlignment(Qt.AlignVCenter)
-
-        text_col.addWidget(t)
-        text_col.addWidget(s)
-
         arrow = QLabel("→")
         arrow.setStyleSheet("font-size: 14px; color: #444; background: transparent;")
         arrow.setAlignment(Qt.AlignVCenter)
 
-        inner.addLayout(text_col)
+        inner.addWidget(t)
         inner.addStretch()
         inner.addWidget(arrow)
 

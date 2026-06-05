@@ -59,13 +59,9 @@
         "license": "Licença",
         "platform": "Plataforma",
         "github_title": "GitHub",
-        "github_subtitle": "Ver código-fonte e releases",
         "bug_title": "Reportar bug",
-        "bug_subtitle": "Abrir uma issue no GitHub",
         "docs_title": "Documentação",
-        "docs_subtitle": "Guias e wiki",
-        "donate_title": "Apoiar / Doar",
-        "donate_subtitle": "Apoie o projeto"
+        "donate_title": "Apoiar / Doar"
     },
     "messages": {
         "install_success": "Hammer++ instalado com sucesso!",
