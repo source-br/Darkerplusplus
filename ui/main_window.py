@@ -139,6 +139,7 @@ class MainWindow(QMainWindow):
 
         self.settings_panel = SettingsPanel()
         self.settings_panel.setVisible(False)
+        self.settings_panel.language_changed.connect(self._on_language)
 
         self.about_panel = AboutPanel()
         self.about_panel.setVisible(False)

@@ -48,7 +48,9 @@
         "tray_label": "Ficar aberto em segundo plano",
         "tray_desc": "Fechar a janela mantém o Hammerfy ativo na tray do sistema.",
         "start_minimized_label": "Iniciar minimizado",
-        "start_minimized_desc": "O Hammerfy inicia sem abrir a janela, direto na tray."
+        "start_minimized_desc": "O Hammerfy inicia sem abrir a janela, direto na tray.",
+        "section_language": "Idioma",
+        "language_label": "Idioma da interface"
     },
     "about": {
         "description": "Um manager gratuito e open-source\npara o Hammer++, o editor de mapas\npara os jogos da Source Engine da Valve.",
@@ -61,7 +63,7 @@
         "github_title": "GitHub",
         "bug_title": "Reportar bug",
         "docs_title": "Documentação",
-        "donate_title": "Apoiar / Doar"
+        "donate_title": "Doar"
     },
     "messages": {
         "install_success": "Hammer++ instalado com sucesso!",

@@ -48,7 +48,9 @@
         "tray_label": "Stay open in background",
         "tray_desc": "Closing the window keeps Hammerfy active in the system tray.",
         "start_minimized_label": "Start minimized",
-        "start_minimized_desc": "Hammerfy starts without opening the window, directly to the tray."
+        "start_minimized_desc": "Hammerfy starts without opening the window, directly to the tray.",
+        "section_language": "Language",
+        "language_label": "Interface language"
     },
     "about": {
         "description": "A free and open-source manager\nfor Hammer++, the map editor\nfor Valve's Source Engine games.",

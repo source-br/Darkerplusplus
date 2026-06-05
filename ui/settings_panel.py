@@ -1,7 +1,8 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QComboBox
 from PySide6.QtCore import Qt, Signal, QPropertyAnimation, QEasingCurve, Property
 from PySide6.QtGui import QColor, QPainter
 from utils import translator
+from utils.translator import available_languages, current_lang
 from core.autostart import is_autostart_enabled, set_autostart
 from core import tray_settings
 
@@ -112,10 +113,12 @@ class SettingRow(QWidget):
 
 class SettingsPanel(QWidget):
     tray_setting_changed = Signal()
+    language_changed     = Signal(str)  # emits language code e.g. "en", "ptbr"
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._building = False
+        self._building   = False
+        self._lang_codes: list[str] = []
         self._build_ui()
 
     def _build_ui(self):
@@ -127,10 +130,20 @@ class SettingsPanel(QWidget):
 
         layout.addSpacing(24)
 
-        self._section_lbl = self._section_label(translator.t("settings", "section_system"))
-        layout.addWidget(self._section_lbl)
+        # System section
+        self._section_system_lbl = self._section_label(translator.t("settings", "section_system"))
+        layout.addWidget(self._section_system_lbl)
         layout.addSpacing(12)
         layout.addWidget(self._build_system_options())
+
+        layout.addSpacing(32)
+
+        # Language section
+        self._section_lang_lbl = self._section_label(translator.t("settings", "section_language"))
+        layout.addWidget(self._section_lang_lbl)
+        layout.addSpacing(12)
+        layout.addWidget(self._build_language_options())
+
         layout.addStretch()
         self._building = False
 
@@ -138,6 +151,8 @@ class SettingsPanel(QWidget):
         lbl = QLabel(text.upper())
         lbl.setStyleSheet("font-size: 10px; color: #555; letter-spacing: 1px;")
         return lbl
+
+    # ─── System Options ────────────────────────────────────────────────────────
 
     def _build_system_options(self) -> QWidget:
         widget = QWidget()
@@ -179,21 +194,88 @@ class SettingsPanel(QWidget):
 
         return widget
 
-    def _divider(self) -> QFrame:
-        line = QFrame()
-        line.setFrameShape(QFrame.HLine)
-        line.setStyleSheet("background-color: #222; max-height: 1px;")
-        return line
+    # ─── Language Options ──────────────────────────────────────────────────────
+
+    def _build_language_options(self) -> QWidget:
+        widget = QWidget()
+        layout = QHBoxLayout(widget)
+        layout.setContentsMargins(0, 4, 0, 4)
+        layout.setSpacing(12)
+
+        self._lang_lbl = QLabel(translator.t("settings", "language_label"))
+        self._lang_lbl.setStyleSheet("font-size: 13px; color: #c0c0c0; background: transparent;")
+
+        self._lang_combo = QComboBox()
+        self._lang_combo.setFixedWidth(160)
+        self._lang_combo.setCursor(Qt.PointingHandCursor)
+        self._lang_combo.setStyleSheet("""
+            QComboBox {
+                background: #2a2a2a;
+                border: 1px solid #444;
+                border-radius: 6px;
+                padding: 4px 10px;
+                font-size: 12px;
+                color: #c0c0c0;
+            }
+            QComboBox:hover { border-color: #7c6be0; }
+            QComboBox::drop-down { border: none; width: 20px; }
+            QComboBox QAbstractItemView {
+                background: #2a2a2a;
+                border: 1px solid #444;
+                color: #c0c0c0;
+                selection-background-color: #7c6be0;
+            }
+        """)
+
+        self._populate_lang_combo()
+        self._lang_combo.currentIndexChanged.connect(self._on_language_changed)
+
+        layout.addWidget(self._lang_lbl)
+        layout.addStretch()
+        layout.addWidget(self._lang_combo)
+        return widget
+
+    def _populate_lang_combo(self):
+        """Fills the combo with available languages, selecting the current one."""
+        self._lang_combo.blockSignals(True)
+        self._lang_combo.clear()
+        self._lang_codes = []
+
+        for code, name in available_languages():
+            self._lang_combo.addItem(name)
+            self._lang_codes.append(code)
+
+        current = current_lang()
+        if current in self._lang_codes:
+            self._lang_combo.setCurrentIndex(self._lang_codes.index(current))
+
+        self._lang_combo.blockSignals(False)
+
+    # ─── Public API ────────────────────────────────────────────────────────────
 
     def refresh_text(self):
         """Called when the UI language changes."""
-        self._section_lbl.setText(translator.t("settings", "section_system").upper())
+        self._section_system_lbl.setText(translator.t("settings", "section_system").upper())
+        self._section_lang_lbl.setText(translator.t("settings", "section_language").upper())
+        self._lang_lbl.setText(translator.t("settings", "language_label"))
+
         self.row_autostart.lbl.setText(translator.t("settings", "autostart_label"))
         self.row_autostart.desc.setText(translator.t("settings", "autostart_desc"))
         self.row_tray.lbl.setText(translator.t("settings", "tray_label"))
         self.row_tray.desc.setText(translator.t("settings", "tray_desc"))
         self.row_start_minimized.lbl.setText(translator.t("settings", "start_minimized_label"))
         self.row_start_minimized.desc.setText(translator.t("settings", "start_minimized_desc"))
+
+        # Repopulate combo to reflect current selection without triggering signal
+        self._populate_lang_combo()
+
+    # ─── Divider ───────────────────────────────────────────────────────────────
+
+    def _divider(self) -> QFrame:
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine)
+        line.setStyleSheet("background-color: #222; max-height: 1px;")
+        return line
 
     # ─── Event Handlers ────────────────────────────────────────────────────────
 
@@ -219,3 +301,9 @@ class SettingsPanel(QWidget):
         if self._building:
             return
         tray_settings.set_value("start_minimized", enabled)
+
+    def _on_language_changed(self, index: int):
+        if self._building:
+            return
+        if 0 <= index < len(self._lang_codes):
+            self.language_changed.emit(self._lang_codes[index])
