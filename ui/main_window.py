@@ -254,12 +254,12 @@ class MainWindow(QMainWindow):
     def _on_install(self, tool: Tool):
         build = get_latest_build()
         if not build:
-            QMessageBox.warning(self, "Hammerfy", "Não foi possível verificar a versão mais recente. Verifique sua conexão.")
+            QMessageBox.warning(self, "Hammerfy", translator.t("messages", "no_connection"))
             return
 
         steam_path = find_steam_path()
         if not steam_path:
-            QMessageBox.warning(self, "Hammerfy", "Steam não encontrada.")
+            QMessageBox.warning(self, "Hammerfy", translator.t("messages", "steam_not_found"))
             return
 
         libs             = find_library_folders(steam_path)
@@ -268,7 +268,7 @@ class MainWindow(QMainWindow):
         game_folder_name = next((k for k, v in HAMMER_GAMES.items() if v["id"] == tool.id), None)
 
         if not game_folder_name or game_folder_name not in games:
-            QMessageBox.warning(self, "Hammerfy", f"Jogo não encontrado.\nInstale {tool.game} primeiro.")
+            QMessageBox.warning(self, "Hammerfy", translator.t("messages", "game_not_found", game=tool.game))
             return
 
         game_path    = games[game_folder_name]
@@ -288,15 +288,16 @@ class MainWindow(QMainWindow):
         progress.close()
 
         if success:
-            QMessageBox.information(self, "Hammerfy", "Hammer++ instalado com sucesso!")
+            QMessageBox.information(self, "Hammerfy", translator.t("messages", "install_success"))
             self._refresh_tools()
         else:
-            QMessageBox.warning(self, "Hammerfy", f"Erro: {msg}")
+            QMessageBox.warning(self, "Hammerfy", translator.t("messages", "install_error", msg=msg))
+
 
     def _on_uninstall(self, tool: Tool):
         reply = QMessageBox.question(
             self, "Hammerfy",
-            f"Desinstalar {tool.name}?\nEssa ação não pode ser desfeita.",
+            translator.t("messages", "uninstall_confirm", name=tool.name),
             QMessageBox.Yes | QMessageBox.No
         )
         if reply != QMessageBox.Yes:
@@ -304,11 +305,11 @@ class MainWindow(QMainWindow):
 
         success, msg = uninstall(tool.install_path, tool.id)
         if success:
-            QMessageBox.information(self, "Hammerfy", "Hammer++ desinstalado com sucesso.")
+            QMessageBox.information(self, "Hammerfy", translator.t("messages", "uninstall_success"))
             self._hide_detail()
             self._refresh_tools()
         else:
-            QMessageBox.warning(self, "Hammerfy", f"Erro: {msg}")
+            QMessageBox.warning(self, "Hammerfy", translator.t("messages", "uninstall_error", msg=msg))
 
     def _on_update(self, tool: Tool):
         self._on_install(tool)
@@ -318,6 +319,8 @@ class MainWindow(QMainWindow):
         self.sidebar.refresh_text()
         self.topbar.refresh_text()
         self.detail.refresh_text()
+        self.settings_panel.refresh_text()
+        self.about_panel.refresh_text()
         self._load_tools()
 
     def _on_customize(self, tool: Tool):
