@@ -151,10 +151,10 @@ class DetailPanel(QWidget):
 
     def _refresh_status(self, tool: Tool):
         status_map = {
-            ToolStatus.INSTALLED:        ("● Installed",          "#5ae87a"),
-            ToolStatus.UPDATE_AVAILABLE: ("● Update available",   "#e8b84a"),
-            ToolStatus.AVAILABLE:        ("○ Not installed",      "#555"),
-            ToolStatus.NOT_AVAILABLE:    ("○ Game not installed", "#444"),
+            ToolStatus.INSTALLED:        ("● " + translator.t("status", "installed"),        "#5ae87a"),
+            ToolStatus.UPDATE_AVAILABLE: ("● " + translator.t("status", "update_available"), "#e8b84a"),
+            ToolStatus.AVAILABLE:        ("○ " + translator.t("status", "available"),        "#555"),
+            ToolStatus.NOT_AVAILABLE:    ("○ " + translator.t("status", "not_available"),    "#444"),
         }
         text, color = status_map[tool.status]
         self.lbl_status.setText(f'<span style="color:{color};">{text}</span> · {tool.engine}')
@@ -167,7 +167,7 @@ class DetailPanel(QWidget):
         version_text = "—" if tool.version_installed in (None, "unknown") else tool.version_installed
         row_version  = self._row(translator.t("detail", "version"), version_text)
         if tool.version_installed == "unknown":
-            row_version.setToolTip("Unknown version — reinstall via Hammerfy to track updates")
+            row_version.setToolTip(translator.t("detail", "unknown_version_tooltip"))
 
         for w in [
             row_version,
