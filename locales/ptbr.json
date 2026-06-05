@@ -4,7 +4,6 @@
         "all_tools": "Todas as ferramentas",
         "installed": "Instalados",
         "available": "Disponíveis",
-        "not_available": "Jogo não instalado",
         "updates": "Atualizações",
         "system": "Sistema",
         "settings": "Configurações",
@@ -28,7 +27,8 @@
         "customize": "Personalizar",
         "install": "Instalar",
         "update": "Atualizar",
-        "uninstall": "Desinstalar"
+        "uninstall": "Desinstalar",
+        "unknown_version_tooltip": "Versão desconhecida — reinstale via Hammerfy para rastrear atualizações"
     },
     "card": {
         "open": "Abrir",
@@ -40,6 +40,32 @@
         "available": "Disponível",
         "update_available": "Atualizar",
         "not_available": "Jogo não instalado"
+    },
+    "settings": {
+        "section_system": "Sistema",
+        "autostart_label": "Iniciar com o Windows",
+        "autostart_desc": "O Hammerfy será iniciado automaticamente com o Windows.",
+        "tray_label": "Ficar aberto em segundo plano",
+        "tray_desc": "Fechar a janela mantém o Hammerfy ativo na tray do sistema.",
+        "start_minimized_label": "Iniciar minimizado",
+        "start_minimized_desc": "O Hammerfy inicia sem abrir a janela, direto na tray."
+    },
+    "about": {
+        "description": "Um manager gratuito e open-source\npara o Hammer++, o editor de mapas\npara os jogos da Source Engine da Valve.",
+        "section_info": "Info",
+        "section_links": "Links",
+        "created_by": "Criado por",
+        "version": "Versão",
+        "license": "Licença",
+        "platform": "Plataforma",
+        "github_title": "GitHub",
+        "github_subtitle": "Ver código-fonte e releases",
+        "bug_title": "Reportar bug",
+        "bug_subtitle": "Abrir uma issue no GitHub",
+        "docs_title": "Documentação",
+        "docs_subtitle": "Guias e wiki",
+        "donate_title": "Apoiar / Doar",
+        "donate_subtitle": "Apoie o projeto"
     },
     "messages": {
         "install_success": "Hammer++ instalado com sucesso!",

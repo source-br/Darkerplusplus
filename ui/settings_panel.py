@@ -45,7 +45,6 @@ class ToggleSwitch(QWidget):
         self._anim.start()
         self.toggled.emit(self._checked)
 
-    # Property allows QPropertyAnimation to drive the thumb position
     def get_offset(self) -> float:
         return self._offset
 
@@ -80,7 +79,8 @@ class ToggleSwitch(QWidget):
 # ─── Setting Row ───────────────────────────────────────────────────────────────
 
 class SettingRow(QWidget):
-    """A labeled row with a description and a toggle switch."""
+    """A labeled row with a description and a toggle switch.
+    Exposes lbl and desc so the parent can update text on language change."""
 
     def __init__(self, label: str, description: str, checked: bool, enabled: bool = True, parent=None):
         super().__init__(parent)
@@ -91,14 +91,14 @@ class SettingRow(QWidget):
         text_col = QVBoxLayout()
         text_col.setSpacing(2)
 
-        lbl = QLabel(label)
-        lbl.setStyleSheet("font-size: 13px; color: #c0c0c0; background: transparent;")
+        self.lbl = QLabel(label)
+        self.lbl.setStyleSheet("font-size: 13px; color: #c0c0c0; background: transparent;")
 
-        desc = QLabel(description)
-        desc.setStyleSheet("font-size: 10px; color: #555; background: transparent;")
+        self.desc = QLabel(description)
+        self.desc.setStyleSheet("font-size: 10px; color: #555; background: transparent;")
 
-        text_col.addWidget(lbl)
-        text_col.addWidget(desc)
+        text_col.addWidget(self.lbl)
+        text_col.addWidget(self.desc)
 
         self.toggle = ToggleSwitch(checked=checked)
         self.toggle.setEnabled(enabled)
@@ -126,7 +126,9 @@ class SettingsPanel(QWidget):
         layout.setAlignment(Qt.AlignTop)
 
         layout.addSpacing(24)
-        layout.addWidget(self._section_label("Sistema"))
+
+        self._section_lbl = self._section_label(translator.t("settings", "section_system"))
+        layout.addWidget(self._section_lbl)
         layout.addSpacing(12)
         layout.addWidget(self._build_system_options())
         layout.addStretch()
@@ -143,25 +145,25 @@ class SettingsPanel(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(4)
 
-        settings      = tray_settings.load()
-        autostart     = is_autostart_enabled()
-        tray_enabled  = settings.get("minimize_to_tray", True)
-        start_min     = settings.get("start_minimized", False)
+        settings     = tray_settings.load()
+        autostart    = is_autostart_enabled()
+        tray_enabled = settings.get("minimize_to_tray", True)
+        start_min    = settings.get("start_minimized", False)
 
         self.row_autostart = SettingRow(
-            "Iniciar com o Windows",
-            "O Hammerfy será iniciado automaticamente com o Windows.",
+            translator.t("settings", "autostart_label"),
+            translator.t("settings", "autostart_desc"),
             checked=autostart,
         )
         self.row_tray = SettingRow(
-            "Ficar aberto em segundo plano",
-            "Fechar a janela mantém o Hammerfy ativo na tray do sistema.",
+            translator.t("settings", "tray_label"),
+            translator.t("settings", "tray_desc"),
             checked=tray_enabled or autostart,
-            enabled=not autostart,  # locked when autostart is on
+            enabled=not autostart,
         )
         self.row_start_minimized = SettingRow(
-            "Iniciar minimizado",
-            "O Hammerfy inicia sem abrir a janela, direto na tray.",
+            translator.t("settings", "start_minimized_label"),
+            translator.t("settings", "start_minimized_desc"),
             checked=start_min,
         )
 
@@ -183,6 +185,16 @@ class SettingsPanel(QWidget):
         line.setStyleSheet("background-color: #222; max-height: 1px;")
         return line
 
+    def refresh_text(self):
+        """Called when the UI language changes."""
+        self._section_lbl.setText(translator.t("settings", "section_system").upper())
+        self.row_autostart.lbl.setText(translator.t("settings", "autostart_label"))
+        self.row_autostart.desc.setText(translator.t("settings", "autostart_desc"))
+        self.row_tray.lbl.setText(translator.t("settings", "tray_label"))
+        self.row_tray.desc.setText(translator.t("settings", "tray_desc"))
+        self.row_start_minimized.lbl.setText(translator.t("settings", "start_minimized_label"))
+        self.row_start_minimized.desc.setText(translator.t("settings", "start_minimized_desc"))
+
     # ─── Event Handlers ────────────────────────────────────────────────────────
 
     def _on_autostart_changed(self, enabled: bool):
@@ -190,7 +202,6 @@ class SettingsPanel(QWidget):
             return
         set_autostart(enabled)
         if enabled:
-            # Tray must stay active when autostart is on
             self.row_tray.toggle.setChecked(True)
             self.row_tray.toggle.setEnabled(False)
             tray_settings.set_value("minimize_to_tray", True)
