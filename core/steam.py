@@ -1,0 +1,233 @@
+import re
+from pathlib import Path
+from PySide6.QtCore import QFileSystemWatcher, QObject, Signal
+from utils.versions import get_version, save_version
+
+
+# ─── Game Definitions ──────────────────────────────────────────────────────────
+
+HAMMER_GAMES = {
+    "GarrysMod": {
+        "id":           "gmod",
+        "name":         "Garry's Mod",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ GMod",
+        "bin":          r"bin",
+        "exe_path":     r"bin\win64\hammerplusplus.exe",
+        "banner_color": "#1a2e1a",
+    },
+    "Team Fortress 2": {
+        "id":           "tf2",
+        "name":         "Team Fortress 2",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ TF2",
+        "bin":          r"bin",
+        "exe_path":     r"bin\x64\hammerplusplus.exe",
+        "banner_color": "#3d1a08",
+    },
+    "Counter-Strike Source": {
+        "id":           "css",
+        "name":         "Counter-Strike: Source",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ TF2",
+        "bin":          r"bin",
+        "exe_path":     r"bin\x64\hammerplusplus.exe",
+        "banner_color": "#0a1a2a",
+    },
+    "Day of Defeat Source": {
+        "id":           "dods",
+        "name":         "Day of Defeat: Source",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ TF2",
+        "bin":          r"bin",
+        "exe_path":     r"bin\x64\hammerplusplus.exe",
+        "banner_color": "#1a1a08",
+    },
+    "Half-Life 2": {
+        "id":           "hl2",
+        "name":         "Half-Life 2",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ SDK SP",
+        "bin":          r"bin",
+        "exe_path":     r"bin\hammerplusplus.exe",
+        "banner_color": "#0e2210",
+    },
+    "Left 4 Dead 2": {
+        "id":           "l4d2",
+        "name":         "Left 4 Dead 2",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ L4D2",
+        "bin":          r"bin",
+        "exe_path":     r"bin\hammerplusplus.exe",
+        "banner_color": "#2a0808",
+    },
+    "Portal": {
+        "id":           "portal1",
+        "name":         "Portal",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ SDK SP",
+        "bin":          r"bin",
+        "exe_path":     r"bin\hammerplusplus.exe",
+        "banner_color": "#0d1a2e",
+    },
+    "Portal 2": {
+        "id":           "portal2",
+        "name":         "Portal 2",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ Portal 2",
+        "bin":          r"bin",
+        "exe_path":     r"bin\hammerplusplus.exe",
+        "banner_color": "#1a0e35",
+    },
+    "Source SDK Base 2013 Singleplayer": {
+        "id":           "sdk2013sp",
+        "name":         "SDK 2013 Singleplayer",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ SDK SP",
+        "bin":          r"bin",
+        "exe_path":     r"bin\hammerplusplus.exe",
+        "banner_color": "#252508",
+    },
+    "Source SDK Base 2013 Multiplayer": {
+        "id":           "sdk2013mp",
+        "name":         "SDK 2013 Multiplayer",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ SDK MP",
+        "bin":          r"bin",
+        "exe_path":     r"bin\hammerplusplus.exe",
+        "banner_color": "#1a1408",
+    },
+    "Counter-Strike Global Offensive": {
+        "id":           "csgo",
+        "name":         "CS: Global Offensive",
+        "engine":       "Source",
+        "hammer_type":  "Hammer++ CS:GO",
+        "bin":          r"bin",
+        "exe_path":     r"bin\hammerplusplus.exe",
+        "banner_color": "#0a1f2a",
+    },
+}
+
+
+# ─── Steam Detection ───────────────────────────────────────────────────────────
+
+def find_steam_path() -> Path | None:
+    """Locates the Steam root folder via the Windows registry."""
+    try:
+        import winreg
+        key  = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam")
+        path, _ = winreg.QueryValueEx(key, "InstallPath")
+        winreg.CloseKey(key)
+        return Path(path)
+    except Exception:
+        return None
+
+
+def find_library_folders(steam_path: Path) -> list[Path]:
+    """Parses libraryfolders.vdf to find all Steam library paths."""
+    vdf_path = steam_path / "steamapps" / "libraryfolders.vdf"
+    if not vdf_path.exists():
+        return [steam_path / "steamapps"]
+
+    libraries = [steam_path / "steamapps"]
+    try:
+        content = vdf_path.read_text(encoding="utf-8")
+        for match in re.finditer(r'"path"\s+"([^"]+)"', content):
+            lib = Path(match.group(1)) / "steamapps"
+            if lib.exists() and lib not in libraries:
+                libraries.append(lib)
+    except Exception:
+        pass
+
+    return libraries
+
+
+def find_installed_games(libraries: list[Path]) -> dict[str, Path]:
+    """Scans all Steam library common folders and returns a name -> path dict.
+    Keys are stored both in original case and lowercase for case-insensitive matching
+    (e.g. Steam stores Portal's folder as 'portal' not 'Portal')."""
+    installed = {}
+    for lib in libraries:
+        common = lib / "common"
+        if not common.exists():
+            continue
+        for folder in common.iterdir():
+            if folder.is_dir():
+                installed[folder.name]        = folder
+                installed[folder.name.lower()] = folder
+    return installed
+
+
+# ─── Tool Scanner ──────────────────────────────────────────────────────────────
+
+def scan_tools() -> list[dict]:
+    """Main scan — returns a list of dicts describing each supported game
+    and its Hammer++ installation status."""
+    steam_path      = find_steam_path()
+    libraries       = find_library_folders(steam_path) if steam_path else []
+    installed_games = find_installed_games(libraries) if libraries else {}
+
+    tools = []
+    for game_folder_name, game_info in HAMMER_GAMES.items():
+        # Case-insensitive folder lookup to handle Steam inconsistencies
+        game_path    = installed_games.get(game_folder_name) or installed_games.get(game_folder_name.lower())
+        hammer_exe   = None
+        is_installed = False
+        version      = None
+
+        if game_path and game_info["exe_path"]:
+            exe_path = game_path / game_info["exe_path"]
+            if exe_path.exists():
+                is_installed = True
+                hammer_exe   = str(exe_path)
+                version      = get_version(game_info["id"])
+
+                # Manually installed Hammer++ — adopt it with unknown version.
+                # SilentUpdateWorker will resolve the real version on next launch.
+                if version is None:
+                    version = "unknown"
+                    save_version(game_info["id"], "unknown")
+
+        game_installed = game_folder_name in installed_games
+
+        tools.append({
+            "id":             game_info["id"],
+            "name":           game_info["name"],
+            "game":           game_folder_name,
+            "engine":         game_info["engine"],
+            "hammer_type":    game_info["hammer_type"],
+            "is_installed":   is_installed,
+            "game_installed": game_installed,
+            "install_path":   hammer_exe,
+            "version":        version,
+            "banner_color":   game_info["banner_color"],
+            "bin_missing":    game_info["bin"] is None,
+        })
+
+    return tools
+
+
+# ─── Steam Watcher ─────────────────────────────────────────────────────────────
+
+class SteamWatcher(QObject):
+    """Watches Steam library folders for changes and emits games_changed."""
+    games_changed = Signal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._watcher = QFileSystemWatcher()
+        self._watcher.directoryChanged.connect(self._on_change)
+        self._watcher.fileChanged.connect(self._on_change)
+
+    def watch(self, libraries: list[Path]):
+        """Start watching the common folder and libraryfolders.vdf of each library."""
+        for lib in libraries:
+            common = lib / "common"
+            vdf    = lib / "libraryfolders.vdf"
+            if common.exists():
+                self._watcher.addPath(str(common))
+            if vdf.exists():
+                self._watcher.addPath(str(vdf))
+
+    def _on_change(self):
+        self.games_changed.emit()

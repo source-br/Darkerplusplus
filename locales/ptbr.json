@@ -1,0 +1,78 @@
+{
+    "sidebar": {
+        "library": "Biblioteca",
+        "all_tools": "Todas as ferramentas",
+        "installed": "Instalados",
+        "available": "Disponíveis",
+        "updates": "Atualizações",
+        "system": "Sistema",
+        "settings": "Configurações",
+        "about": "Sobre"
+    },
+    "topbar": {
+        "search_placeholder": "Buscar ferramentas...",
+        "available_count": "{count} disponíveis"
+    },
+    "detail": {
+        "not_installed": "Não instalado",
+        "info": "Info",
+        "path": "Caminho",
+        "customization": "Personalização",
+        "version": "Versão",
+        "engine": "Engine",
+        "hammer": "Hammer",
+        "game": "Jogo",
+        "open": "Abrir",
+        "open_folder": "Abrir pasta",
+        "customize": "Personalizar",
+        "install": "Instalar",
+        "update": "Atualizar",
+        "uninstall": "Desinstalar",
+        "unknown_version_tooltip": "Versão desconhecida — reinstale via Hammerfy para rastrear atualizações"
+    },
+    "card": {
+        "open": "Abrir",
+        "install": "Instalar",
+        "update": "Atualizar"
+    },
+    "status": {
+        "installed": "Instalado",
+        "available": "Disponível",
+        "update_available": "Atualizar",
+        "not_available": "Jogo não instalado"
+    },
+    "settings": {
+        "section_system": "Sistema",
+        "autostart_label": "Iniciar com o Windows",
+        "autostart_desc": "O Hammerfy será iniciado automaticamente com o Windows.",
+        "tray_label": "Ficar aberto em segundo plano",
+        "tray_desc": "Fechar a janela mantém o Hammerfy ativo na tray do sistema.",
+        "start_minimized_label": "Iniciar minimizado",
+        "start_minimized_desc": "O Hammerfy inicia sem abrir a janela, direto na tray.",
+        "section_language": "Idioma",
+        "language_label": "Idioma da interface"
+    },
+    "about": {
+        "description": "Um manager gratuito e open-source\npara o Hammer++, o editor de mapas\npara os jogos da Source Engine da Valve.",
+        "section_info": "Info",
+        "section_links": "Links",
+        "created_by": "Criado por",
+        "version": "Versão",
+        "license": "Licença",
+        "platform": "Plataforma",
+        "github_title": "GitHub",
+        "bug_title": "Reportar bug",
+        "docs_title": "Documentação",
+        "donate_title": "Doar"
+    },
+    "messages": {
+        "install_success": "Hammer++ instalado com sucesso!",
+        "install_error": "Erro: {msg}",
+        "uninstall_confirm": "Desinstalar {name}?\nEssa ação não pode ser desfeita.",
+        "uninstall_success": "Hammer++ desinstalado com sucesso.",
+        "uninstall_error": "Erro: {msg}",
+        "no_connection": "Não foi possível verificar a versão mais recente. Verifique sua conexão.",
+        "steam_not_found": "Steam não encontrada.",
+        "game_not_found": "Jogo não encontrado na biblioteca Steam.\nInstale {game} primeiro."
+    }
+}

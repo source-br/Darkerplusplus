@@ -1,0 +1,78 @@
+{
+    "sidebar": {
+        "library": "Library",
+        "all_tools": "All tools",
+        "installed": "Installed",
+        "available": "Available",
+        "updates": "Updates",
+        "system": "System",
+        "settings": "Settings",
+        "about": "About"
+    },
+    "topbar": {
+        "search_placeholder": "Search tools...",
+        "available_count": "{count} available"
+    },
+    "detail": {
+        "not_installed": "Not installed",
+        "info": "Info",
+        "path": "Path",
+        "customization": "Customization",
+        "version": "Version",
+        "engine": "Engine",
+        "hammer": "Hammer",
+        "game": "Game",
+        "open": "Open",
+        "open_folder": "Open folder",
+        "customize": "Customize",
+        "install": "Install",
+        "update": "Update",
+        "uninstall": "Uninstall",
+        "unknown_version_tooltip": "Unknown version — reinstall via Hammerfy to track updates"
+    },
+    "card": {
+        "open": "Open",
+        "install": "Install",
+        "update": "Update"
+    },
+    "status": {
+        "installed": "Installed",
+        "available": "Available",
+        "update_available": "Update",
+        "not_available": "Game not installed"
+    },
+    "settings": {
+        "section_system": "System",
+        "autostart_label": "Start with Windows",
+        "autostart_desc": "Hammerfy will start automatically with Windows.",
+        "tray_label": "Stay open in background",
+        "tray_desc": "Closing the window keeps Hammerfy active in the system tray.",
+        "start_minimized_label": "Start minimized",
+        "start_minimized_desc": "Hammerfy starts without opening the window, directly to the tray.",
+        "section_language": "Language",
+        "language_label": "Interface language"
+    },
+    "about": {
+        "description": "A free and open-source manager\nfor Hammer++, the map editor\nfor Valve's Source Engine games.",
+        "section_info": "Info",
+        "section_links": "Links",
+        "created_by": "Created by",
+        "version": "Version",
+        "license": "License",
+        "platform": "Platform",
+        "github_title": "GitHub",
+        "bug_title": "Report a bug",
+        "docs_title": "Documentation",
+        "donate_title": "Support / Donate"
+    },
+    "messages": {
+        "install_success": "Hammer++ installed successfully!",
+        "install_error": "Error: {msg}",
+        "uninstall_confirm": "Uninstall {name}?\nThis action cannot be undone.",
+        "uninstall_success": "Hammer++ uninstalled successfully.",
+        "uninstall_error": "Error: {msg}",
+        "no_connection": "Could not check latest version. Check your connection.",
+        "steam_not_found": "Steam not found.",
+        "game_not_found": "Game not found in Steam library.\nInstall {game} first."
+    }
+}
