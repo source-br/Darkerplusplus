@@ -160,13 +160,18 @@ class Sidebar(QWidget):
                 label.setText(translator.t("sidebar", section_keys[i]).upper())
 
         label_map = {
-            "all":       translator.t("sidebar", "all_tools"),
-            "installed": translator.t("sidebar", "installed"),
-            "available": translator.t("sidebar", "available"),
-            "updates":   translator.t("sidebar", "updates"),
-            "settings":  translator.t("sidebar", "settings"),
+            "all":       "all_tools",
+            "installed": "installed",
+            "available": "available",
+            "updates":   "updates",
+            "settings":  "settings",
+            "about":     "about",
         }
         for filter_id, btn in self._buttons.items():
-            if filter_id in label_map:
-                for child in btn.findChildren(QLabel):
-                    child.setText(label_map[filter_id])
+            if filter_id not in label_map:
+                continue
+            for child in btn.findChildren(QLabel):
+                # Skip the icon label — identified by its fixed 16x16 size
+                if child.minimumWidth() == 16 and child.minimumHeight() == 16:
+                    continue
+                child.setText(translator.t("sidebar", label_map[filter_id]))
