@@ -51,7 +51,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='assets/icons/hammerfy-icon.png',
+    icon='assets/icons/hammerfy-icon.ico',
     onefile=True,
     # Version info makes the exe discoverable in Windows search
     version='version_info.txt',
