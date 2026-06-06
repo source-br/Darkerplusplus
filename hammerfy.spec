@@ -1,6 +1,6 @@
 from PyInstaller.building.build_main import Analysis, PYZ, EXE
 from PyInstaller.building.datastruct import TOC
-from PyInstaller.utils.win32 import VersionInfo
+from PyInstaller.utils.win32 import versioninfo
 
 # Ler e compilar o version_info.txt
 with open('version_info.txt', 'r') as f:
@@ -63,8 +63,8 @@ exe = EXE(
     version_info=version_info,
 )
 
-VSVersionInfo(
-  ffi=FixedFileInfo(
+version_info = versioninfo.VSVersionInfo(
+  ffi=versioninfo.FixedFileInfo(
     filevers=(0, 1, 0, 0),
     prodvers=(0, 1, 0, 0),
     mask=0x3f,
@@ -75,18 +75,18 @@ VSVersionInfo(
     date=(0, 0)
   ),
   kids=[
-    StringFileInfo([
-      StringTable(
+    versioninfo.StringFileInfo([
+      versioninfo.StringTable(
         u'040904B0',
-        [StringStruct(u'CompanyName', u'kenned-candido'),
-         StringStruct(u'FileDescription', u'Hammerfy — Hammer++ Manager'),
-         StringStruct(u'FileVersion', u'0.1.0.0'),
-         StringStruct(u'InternalName', u'Hammerfy'),
-         StringStruct(u'LegalCopyright', u'GPL-3.0'),
-         StringStruct(u'OriginalFilename', u'Hammerfy.exe'),
-         StringStruct(u'ProductName', u'Hammerfy'),
-         StringStruct(u'ProductVersion', u'0.1.0.0')])
-      ]),
-    VarFileInfo([VarStruct(u'Translation', [0x0409, 1200])])
+        [versioninfo.StringStruct(u'CompanyName', u'kenned-candido'),
+         versioninfo.StringStruct(u'FileDescription', u'Hammerfy — Gerenciador Hammer++'),
+         versioninfo.StringStruct(u'FileVersion', u'0.1.0.0'),
+         versioninfo.StringStruct(u'InternalName', u'Hammerfy'),
+         versioninfo.StringStruct(u'LegalCopyright', u'GPL-3.0'),
+         versioninfo.StringStruct(u'OriginalFilename', u'Hammerfy.exe'),
+         versioninfo.StringStruct(u'ProductName', u'Hammerfy'),
+         versioninfo.StringStruct(u'ProductVersion', u'0.1.0.0')])
+       ]),
+    versioninfo.VarFileInfo([versioninfo.VarStruct(u'Translation', [0x0409, 1200])])
   ]
 )
