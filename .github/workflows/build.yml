@@ -1,7 +1,7 @@
 name: Build Windows EXE
 
 on:
-  workflow_dispatch:    # só roda quando você clicar manualmente no GitHub
+  workflow_dispatch:
     inputs:
       version:
         description: 'Version tag (ex: v0.1.0-beta)'
@@ -31,8 +31,24 @@ jobs:
       - name: Build EXE
         run: pyinstaller hammerfy.spec
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+
+      - name: Update version in ISS
+        run: |
+          (Get-Content installer\hammerfy.iss) -replace '#define MyAppVersion ".*"', '#define MyAppVersion "${{ github.event.inputs.version }}"' | Set-Content installer\hammerfy.iss
+
+      - name: Compile installer
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\hammerfy.iss
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: Hammerfy-${{ github.event.inputs.version }}-windows
-          path: dist/Hammerfy.exe
+          tag_name: ${{ github.event.inputs.version }}
+          name: Hammerfy ${{ github.event.inputs.version }}
+          draft: true
+          files: |
+            installer/output/Hammerfy-Setup-${{ github.event.inputs.version }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

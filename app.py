@@ -1,19 +1,35 @@
-from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
-from PySide6.QtGui import QFontDatabase, QIcon
-from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMessageBox
+from PySide6.QtGui import QIcon
+from PySide6.QtCore import QTimer, QThread, Signal as QSignal
 from ui.main_window import MainWindow
 from utils import translator
 from core import tray_settings
+from core.autostart import is_autostart_enabled
 from pathlib import Path
 import locale
 import sys
 import os
 
 
+# ─── App Update Worker ─────────────────────────────────────────────────────────
+
+class AppUpdateWorker(QThread):
+    """Checks GitHub Releases for a new Hammerfy version in the background."""
+    update_available = QSignal(str, str)  # (latest_version, download_url)
+
+    def run(self):
+        from core.app_updater import check_for_update
+        has_update, version, url = check_for_update()
+        if has_update and url:
+            self.update_available.emit(version, url)
+
+
+# ─── Application ───────────────────────────────────────────────────────────────
+
 class HammerfyApp(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
-        self.setQuitOnLastWindowClosed(False)  # não sai ao fechar janela
+        self.setQuitOnLastWindowClosed(False)
         self._load_language()
         self._load_styles()
         self._load_icon()
@@ -22,7 +38,11 @@ class HammerfyApp(QApplication):
         self._apply_start_behavior()
         self._start_update_checker()
 
+    # ─── Initialization ────────────────────────────────────────────────────────
+
     def _load_language(self):
+        """Detects OS language and loads the appropriate locale.
+        Falls back to English if no matching locale file exists."""
         lang_code = locale.getdefaultlocale()[0] or "en"
         if lang_code.startswith("pt"):
             translator.load("ptbr")
@@ -42,6 +62,8 @@ class HammerfyApp(QApplication):
             self.setWindowIcon(self._icon)
         else:
             self._icon = QIcon()
+
+    # ─── System Tray ───────────────────────────────────────────────────────────
 
     def _setup_tray(self):
         self._tray = QSystemTrayIcon(self._icon, self)
@@ -71,36 +93,24 @@ class HammerfyApp(QApplication):
         self._tray.activated.connect(self._on_tray_activated)
         self._tray.show()
 
-        # Intercepta o closeEvent da janela
+        # Intercept window close to minimize to tray instead of quitting
         self.window.closeEvent = self._on_window_close
 
-    def _update_tray_visibility(self):
-        settings = tray_settings.load()
-        if settings["minimize_to_tray"] or tray_settings.get("minimize_to_tray"):
-            self._tray.show()
-        else:
-            # Tray fica visível apenas se minimize_to_tray estiver ativo
-            from core.autostart import is_autostart_enabled
-            if is_autostart_enabled():
-                self._tray.show()
-            else:
-                self._tray.hide()
+        # Connect settings panel language change signal
+        self.window.settings_panel.language_changed.connect(self.window._on_language)
 
     def _apply_start_behavior(self):
         settings = tray_settings.load()
         if settings.get("start_minimized") and settings.get("minimize_to_tray"):
-            self._tray.show()
-            # não mostra a janela
+            pass  # stay in tray, don't show window
         else:
             self.window.show()
 
     def _on_window_close(self, event):
         settings = tray_settings.load()
-        from core.autostart import is_autostart_enabled
         if settings.get("minimize_to_tray") or is_autostart_enabled():
             event.ignore()
             self.window.hide()
-            self._tray.show()
         else:
             event.accept()
             self._quit()
@@ -118,13 +128,40 @@ class HammerfyApp(QApplication):
         self._tray.hide()
         self.quit()
 
+    # ─── App Update Checker ────────────────────────────────────────────────────
+
     def _start_update_checker(self):
+        """Checks for a new Hammerfy version once at startup and every 24h."""
+        self._run_update_check()
+
         self._update_timer = QTimer()
         self._update_timer.setInterval(24 * 60 * 60 * 1000)
-        self._update_timer.timeout.connect(self._check_updates)
+        self._update_timer.timeout.connect(self._run_update_check)
         self._update_timer.start()
 
-    def _check_updates(self):
-        from ui.main_window import _build_tools_from_scan
-        self.window._all_tools = _build_tools_from_scan()
-        self.window._load_tools()
+    def _run_update_check(self):
+        self._app_update_worker = AppUpdateWorker()
+        self._app_update_worker.update_available.connect(self._on_update_available)
+        self._app_update_worker.start()
+
+    def _on_update_available(self, version: str, url: str):
+        reply = QMessageBox.question(
+            self.window,
+            "Atualização disponível",
+            f"Uma nova versão do Hammerfy está disponível: {version}\n\nDeseja baixar e instalar agora?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        if reply != QMessageBox.Yes:
+            return
+
+        from core.app_updater import download_and_run_installer
+        success = download_and_run_installer(url, version)
+        if success:
+            # Installer is running — quit the app so it can replace the exe
+            self._quit()
+        else:
+            QMessageBox.warning(
+                self.window,
+                "Hammerfy",
+                "Não foi possível baixar a atualização. Verifique sua conexão."
+            )
