@@ -1,9 +1,9 @@
 from PyInstaller.building.build_main import Analysis, PYZ, EXE
 from PyInstaller.building.datastruct import TOC
-from PyInstaller.utils.win32 import versioninfo
+from PyInstaller.utils.win32.versioninfo import VSVersionInfo, FixedFileInfo, StringFileInfo, StringTable, StringStruct, VarFileInfo, VarStruct
 
 # Ler e compilar o version_info.txt
-with open('version_info.txt', 'r') as f:
+with open('version_info.txt', 'r', encoding='utf-8') as f:
     version_info_str = f.read()
 
 version_info = eval(version_info_str)
