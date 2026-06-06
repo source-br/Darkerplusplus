@@ -1,5 +1,12 @@
 from PyInstaller.building.build_main import Analysis, PYZ, EXE
 from PyInstaller.building.datastruct import TOC
+from PyInstaller.utils.win32 import VersionInfo
+
+# Ler e compilar o version_info.txt
+with open('version_info.txt', 'r') as f:
+    version_info_str = f.read()
+
+version_info = eval(version_info_str)
 
 block_cipher = None
 
@@ -53,8 +60,7 @@ exe = EXE(
     entitlements_file=None,
     icon='assets/icons/hammerfy-icon.ico',
     onefile=True,
-    # Version info makes the exe discoverable in Windows search
-    version='version_info.txt',
+    version_info=version_info,
 )
 
 VSVersionInfo(
