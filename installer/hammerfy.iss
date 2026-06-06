@@ -1,7 +1,7 @@
 #define MyAppName "Hammerfy"
 #define MyAppVersion "0.1.0"
 #define MyAppPublisher "kenned-candido"
-#define MyAppURL "https://github.com/kenned-candido/darkerplusplus"
+#define MyAppURL "https://github.com/kenned-candido/hammerfy"
 #define MyAppExeName "Hammerfy.exe"
 
 [Setup]

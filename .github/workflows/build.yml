@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: hammerfy-dev
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -27,6 +27,9 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install pyinstaller
+
+      - name: Set version env
+        run: echo "HAMMERFY_VERSION=${{ github.event.inputs.version }}" >> $env:GITHUB_ENV
 
       - name: Build EXE
         run: pyinstaller hammerfy.spec

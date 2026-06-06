@@ -2,15 +2,15 @@ import urllib.request
 import json
 import sys
 import subprocess
+import os
 from pathlib import Path
 
 
-RELEASES_API = "https://api.github.com/repos/kenned-candido/darkerplusplus/releases/latest"
+RELEASES_API = "https://api.github.com/repos/kenned-candido/hammerfy/releases/latest"
 _HEADERS     = {"User-Agent": "Hammerfy/0.1", "Accept": "application/vnd.github+json"}
 
 # Version defined at build time by PyInstaller via hammerfy.spec
-CURRENT_VERSION = "v0.1.0-beta"
-
+CURRENT_VERSION = os.environ.get("HAMMERFY_VERSION", "dev")
 
 def get_latest_release() -> dict | None:
     """Fetches the latest release info from GitHub."""

@@ -14,9 +14,9 @@ AUTHOR  = "kenned-candido"
 LICENSE = "GPL-3.0"
 
 LINKS = {
-    "github":  "https://github.com/kenned-candido/darkerplusplus",
-    "issues":  "https://github.com/kenned-candido/darkerplusplus/issues",
-    "docs":    "https://github.com/kenned-candido/darkerplusplus/wiki",
+    "github":  "https://github.com/kenned-candido/hammerfy",
+    "issues":  "https://github.com/kenned-candido/hammerfy/issues",
+    "docs":    "https://github.com/kenned-candido/hammerfy/wiki",
     "donate":  "",
 }
 
