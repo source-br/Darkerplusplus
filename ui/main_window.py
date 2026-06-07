@@ -10,6 +10,7 @@ from models.tool import Tool, ToolStatus
 from core.steam import (scan_tools, SteamWatcher, find_steam_path, find_library_folders, find_installed_games, HAMMER_GAMES)
 from core.hammer import open_hammer, open_folder
 from core.updater import get_latest_build, download_and_install, uninstall, CSGO_BUILD
+from core import tray_settings
 from utils import translator
 from pathlib import Path
 
@@ -273,7 +274,9 @@ class MainWindow(QMainWindow):
             return
 
         game_path    = games[game_folder_name]
-        install_path = str(game_path / game_info["bin"])
+        # Use the exe_path to determine the correct bin subfolder
+        exe_rel      = Path(game_info["exe_path"].replace("\\", "/"))
+        install_path = str(game_path / exe_rel.parent)
 
         progress = QProgressDialog(f"Baixando Hammer++ {tool.name}...", "Cancelar", 0, 100, self)
         progress.setWindowTitle("Hammerfy")
@@ -317,6 +320,7 @@ class MainWindow(QMainWindow):
 
     def _on_language(self, lang: str):
         translator.load(lang)
+        tray_settings.set_value("language", lang)
         self.sidebar.refresh_text()
         self.topbar.refresh_text()
         self.detail.refresh_text()

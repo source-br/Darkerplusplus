@@ -19,6 +19,7 @@ def _settings_file() -> Path:
 DEFAULTS: dict = {
     "minimize_to_tray": True,
     "start_minimized":  False,
+    "language":         "",
 }
 
 

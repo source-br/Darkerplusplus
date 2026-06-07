@@ -41,8 +41,13 @@ class HammerfyApp(QApplication):
     # ─── Initialization ────────────────────────────────────────────────────────
 
     def _load_language(self):
-        """Detects OS language and loads the appropriate locale.
-        Falls back to English if no matching locale file exists."""
+        """Loads saved language preference, falls back to OS detection, then English."""
+        from core import tray_settings
+        saved_lang = tray_settings.get("language")
+        if saved_lang:
+            translator.load(saved_lang)
+            return
+        # Auto-detect from OS locale
         lang_code = locale.getdefaultlocale()[0] or "en"
         if lang_code.startswith("pt"):
             translator.load("ptbr")
