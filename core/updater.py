@@ -129,13 +129,22 @@ def download_and_install(
             members = z.namelist()
 
             # Locate the bin/ prefix to strip it during extraction
+            # For games with bin/x64/ structure, we need to strip up to and including x64/
             bin_prefix = None
             for m in members:
-                parts = Path(m.replace("\\", "/")).parts
-                if "bin" in parts:
-                    idx        = list(parts).index("bin")
-                    bin_prefix = "/".join(parts[:idx + 1]) + "/"
+                norm = m.replace("\\", "/")
+                if norm.endswith("hammerplusplus.exe"):
+                    bin_prefix = norm[: norm.rfind("/") + 1] if "/" in norm else ""
                     break
+
+            # Fallback: strip up to bin/ if exe not found
+            if bin_prefix is None:
+                for m in members:
+                    parts = Path(m.replace("\\", "/")).parts
+                    if "bin" in parts:
+                        idx        = list(parts).index("bin")
+                        bin_prefix = "/".join(parts[:idx + 1]) + "/"
+                        break
 
             if not bin_prefix:
                 zip_path.unlink(missing_ok=True)
