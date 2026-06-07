@@ -45,6 +45,9 @@ jobs:
         run: |
           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\hammerfy.iss
 
+      - name: List output files
+        run: Get-ChildItem -Recurse -Filter "*.exe" D:\a\hammerfy\hammerfy\installer
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
