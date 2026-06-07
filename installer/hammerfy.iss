@@ -34,9 +34,9 @@ Name: "startmenuicon"; Description: "Criar atalho no Menu Iniciar"; GroupDescrip
 Name: "quicklaunchicon"; Description: "Fixar na barra de tarefas"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "dist\Hammerfy.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "locales\*"; DestDir: "{app}\locales"; Flags: ignoreversion recursesubdirs
-Source: "assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs
+Source: "..\dist\Hammerfy.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\locales\*"; DestDir: "{app}\locales"; Flags: ignoreversion recursesubdirs
+Source: "..\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: startmenuicon
