@@ -51,7 +51,6 @@ jobs:
           tag_name: ${{ github.event.inputs.version }}
           name: Hammerfy ${{ github.event.inputs.version }}
           draft: true
-          files: |
-            installer/output/Hammerfy-Setup-${{ github.event.inputs.version }}.exe
+          files: installer/output/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
