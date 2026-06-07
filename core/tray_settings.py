@@ -1,10 +1,21 @@
 import json
+import sys
 from pathlib import Path
 
 
-SETTINGS_FILE = Path(__file__).parent.parent / "hammerfy_settings.json"
+def _get_data_dir() -> Path:
+    """Returns the directory where data files should be stored.
+    When frozen (PyInstaller), uses the exe's directory (Program Files\\Hammerfy).
+    When running from source, uses the project root."""
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).parent
+    return Path(__file__).parent.parent
 
-# Default values used when the settings file doesn't exist or is missing a key
+
+def _settings_file() -> Path:
+    return _get_data_dir() / "hammerfy_settings.json"
+
+
 DEFAULTS: dict = {
     "minimize_to_tray": True,
     "start_minimized":  False,
@@ -13,9 +24,10 @@ DEFAULTS: dict = {
 
 def load() -> dict:
     """Loads settings from disk, merging with defaults for any missing keys."""
-    if SETTINGS_FILE.exists():
+    f = _settings_file()
+    if f.exists():
         try:
-            saved = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
+            saved = json.loads(f.read_text(encoding="utf-8"))
             return {**DEFAULTS, **saved}
         except Exception:
             pass
@@ -24,7 +36,7 @@ def load() -> dict:
 
 def save(settings: dict):
     """Persists the full settings dict to disk."""
-    SETTINGS_FILE.write_text(json.dumps(settings, indent=2), encoding="utf-8")
+    _settings_file().write_text(json.dumps(settings, indent=2), encoding="utf-8")
 
 
 def get(key: str):
