@@ -25,6 +25,22 @@ def open_hammer(tool: Tool) -> tuple[bool, str]:
     try:
         kwargs = {"cwd": str(cwd)}
 
+        # Debugging aid: write a small pre-launch check file next to the exe
+        try:
+            dbg = exe.parent / "hammerfy_launch_debug.txt"
+            with open(dbg, "w", encoding="utf-8") as f:
+                f.write(f"exe={exe}\n")
+                f.write(f"cwd={cwd}\n")
+                f.write("exists_exe=" + str(exe.exists()) + "\n")
+                f.write("listing=\n")
+                for p in sorted([str(x) for x in exe.parent.iterdir()]):
+                    f.write(p + "\n")
+                # try to detect common hammer dlls
+                for dll in ("hammerplusplus_dlls.dll", "hammerplusplus_filesystem_steam.dll"):
+                    f.write(dll + ": " + str((exe.parent / dll).exists()) + "\n")
+        except Exception:
+            pass
+
         if sys.platform == "win32":
             # CREATE_NEW_PROCESS_GROUP allows Hammer++ to spawn child compiler
             # processes (vbsp, vvis, vrad) correctly without inheriting our handles
