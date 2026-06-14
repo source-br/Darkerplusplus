@@ -14,8 +14,12 @@ def open_hammer(tool: Tool) -> tuple[bool, str]:
     if not exe.exists():
         return False, f"Executável não encontrado: {exe}"
 
+    bin_dir = exe.parent
+    if bin_dir.name.lower() in ("x64", "win64"):
+        bin_dir = bin_dir.parent
+
     try:
-        kwargs = {"cwd": str(exe.parent)}
+        kwargs = {"cwd": str(bin_dir)}
 
         if sys.platform == "win32":
             # CREATE_NEW_PROCESS_GROUP allows Hammer++ to spawn child compiler
