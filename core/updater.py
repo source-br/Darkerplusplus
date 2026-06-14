@@ -150,6 +150,21 @@ def download_and_install(
                 zip_path.unlink(missing_ok=True)
                 return False, "Estrutura do zip não reconhecida."
 
+            # Write preliminary debug info so user can inspect zip layout if something
+            # goes wrong during extraction. This file is left next to the dest folder.
+            try:
+                debug_file = dest_folder / "hammerfy_install_debug.txt"
+                with open(debug_file, "w", encoding="utf-8") as dbg:
+                    dbg.write(f"Computed bin_prefix: {bin_prefix}\n")
+                    dbg.write("Sample members (first 100):\n")
+                    for m in members[:100]:
+                        dbg.write(m.replace('\\\\', '/') + "\n")
+                    dbg.write("\nMembers that start with bin_prefix:\n")
+                    for m in [x for x in members if x.replace('\\\\','/').startswith(bin_prefix)][:100]:
+                        dbg.write(m.replace('\\\\', '/') + "\n")
+            except Exception:
+                pass
+
             for member in members:
                 norm = member.replace("\\", "/")
                 if not norm.startswith(bin_prefix):
@@ -164,6 +179,24 @@ def download_and_install(
                     target.parent.mkdir(parents=True, exist_ok=True)
                     with z.open(member) as src, open(target, "wb") as dst:
                         shutil.copyfileobj(src, dst)
+
+            # After extraction, append a concise listing of what was created to the debug file
+            try:
+                with open(dest_folder / "hammerfy_install_debug.txt", "a", encoding="utf-8") as dbg:
+                    dbg.write("\nExtraction result (top-level in dest_folder):\n")
+                    for p in sorted([str(x) for x in dest_folder.iterdir()]):
+                        dbg.write(p + "\n")
+                    # also check common subfolders
+                    for check in (dest_folder / "x64", dest_folder / "hammerplusplus", dest_folder / "bin"):
+                        if check.exists():
+                            dbg.write(f"\nContents of {check}:\n")
+                            try:
+                                for p in sorted([str(x) for x in check.iterdir()]):
+                                    dbg.write(p + "\n")
+                            except Exception:
+                                dbg.write("  <unable to list>\n")
+            except Exception:
+                pass
 
     except zipfile.BadZipFile:
         zip_path.unlink(missing_ok=True)
