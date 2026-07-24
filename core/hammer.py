@@ -23,7 +23,32 @@ def open_hammer(tool: Tool) -> tuple[bool, str]:
         cwd = bin_dir
 
     try:
-        kwargs = {"cwd": str(cwd)}
+        # Prepare environment for the child process.
+        # When compiled with PyInstaller (onefile), sys._MEIPASS is prepended to PATH.
+        # 64-bit processes (like Hammer++ x64) attempt to load PyInstaller's 64-bit bundled DLLs
+        # from sys._MEIPASS instead of their own DLLs, causing "Failed to load libraries" error.
+        env = os.environ.copy()
+        if getattr(sys, "frozen", False):
+            meipass = getattr(sys, "_MEIPASS", None)
+            if meipass:
+                meipass_abs = os.path.abspath(meipass)
+                path_parts = env.get("PATH", "").split(os.pathsep)
+                cleaned_parts = [p for p in path_parts if os.path.abspath(p) != meipass_abs]
+                env["PATH"] = os.pathsep.join(cleaned_parts)
+
+                env.pop("_MEIPASS", None)
+                env.pop("_MEIPASS2", None)
+
+        # Prepend game's bin directory and cwd to PATH so DLL resolution finds the game's DLLs first
+        path_parts = env.get("PATH", "").split(os.pathsep)
+        bin_str = str(bin_dir)
+        cwd_str = str(cwd)
+        for p_add in (bin_str, cwd_str):
+            if p_add not in path_parts:
+                path_parts.insert(0, p_add)
+        env["PATH"] = os.pathsep.join(path_parts)
+
+        kwargs = {"cwd": str(cwd), "env": env}
 
         # Debugging aid: write a small pre-launch check file next to the exe
         try:
