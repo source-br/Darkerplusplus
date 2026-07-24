@@ -3,6 +3,8 @@ import urllib.error
 import zipfile
 import json
 import shutil
+import ssl
+import certifi
 from pathlib import Path
 from utils.versions import save_version, remove_version
 
@@ -57,6 +59,7 @@ _HEADERS = {
 def get_latest_build() -> str | None:
     """Fetches the latest Hammer++ build tag from the GitHub releases API."""
     try:
+        ctx = ssl.create_default_context(cafile=certifi.where())
         req = urllib.request.Request(GITHUB_API, headers=_HEADERS)
         with urllib.request.urlopen(req, timeout=10) as resp:
             data = json.loads(resp.read().decode("utf-8"))
@@ -103,6 +106,7 @@ def download_and_install(
 
     # Download with optional progress reporting
     try:
+        ctx = ssl.create_default_context(cafile=certifi.where())
         req = urllib.request.Request(url, headers={"User-Agent": "Hammerfy/0.1"})
         with urllib.request.urlopen(req, timeout=30) as resp:
             total      = int(resp.headers.get("Content-Length", 0))
