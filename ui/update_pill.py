@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QPainter, QColor, QBrush, QPen
 from utils.icons import load_icon
+from utils import translator
 
 
 class UpdatePillWidget(QWidget):
@@ -53,10 +54,7 @@ class UpdatePillWidget(QWidget):
         self._is_downloading = False
         self._progress = 0
         self._update_icon()
-
-        # Format version string gracefully
-        ver = version if version.startswith("v") or version.startswith("V") else f"v{version}"
-        self._text_lbl.setText(f"Atualizar para {ver}")
+        self.refresh_text()
         self.setVisible(True)
         self.update()
 
@@ -64,8 +62,18 @@ class UpdatePillWidget(QWidget):
         self._is_downloading = True
         self._progress = max(0, min(100, percentage))
         self._update_icon()
-        self._text_lbl.setText(f"Baixando... {self._progress}%")
+        self.refresh_text()
         self.update()
+
+    def refresh_text(self):
+        """Refreshes pill text on UI language change."""
+        if not self._version:
+            return
+        if self._is_downloading:
+            self._text_lbl.setText(translator.t("sidebar", "update_pill_downloading", pct=self._progress))
+        else:
+            ver = self._version if self._version.startswith("v") or self._version.startswith("V") else f"v{self._version}"
+            self._text_lbl.setText(translator.t("sidebar", "update_pill", version=ver))
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton and not self._is_downloading and self.isVisible():
@@ -78,8 +86,8 @@ class UpdatePillWidget(QWidget):
 
         rect = self.rect()
 
-        # Background color
-        bg_color = QColor("#1e1a2e")
+        # Background color — transparent to match sidebar background
+        bg_color = QColor(0, 0, 0, 0)
         painter.setBrush(QBrush(bg_color))
         painter.setPen(Qt.NoPen)
         painter.drawRoundedRect(rect, 10, 10)

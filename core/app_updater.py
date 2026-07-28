@@ -93,3 +93,17 @@ def download_and_run_installer(url: str, version: str, progress_callback=None) -
         return True
     except Exception:
         return False
+
+
+def cleanup_downloaded_installers():
+    """Removes leftover Hammerfy-Setup-*.exe installers from Downloads folder."""
+    try:
+        downloads = Path.home() / "Downloads"
+        if downloads.exists():
+            for installer in downloads.glob("Hammerfy-Setup-*.exe"):
+                try:
+                    installer.unlink()
+                except Exception:
+                    pass
+    except Exception:
+        pass

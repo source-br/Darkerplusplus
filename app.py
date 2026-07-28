@@ -133,6 +133,10 @@ class HammerfyApp(QApplication):
         else:
             self.window.show()
 
+        # Cleanup any leftover installer executables from Downloads folder
+        from core.app_updater import cleanup_downloaded_installers
+        cleanup_downloaded_installers()
+
         # Check if there is a pending changelog to display after updating
         self._check_pending_changelog()
 

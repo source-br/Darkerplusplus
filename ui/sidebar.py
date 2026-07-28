@@ -185,3 +185,5 @@ class Sidebar(QWidget):
                 if child.minimumWidth() == 16 and child.minimumHeight() == 16:
                     continue
                 child.setText(translator.t("sidebar", label_map[filter_id]))
+
+        self.update_pill.refresh_text()

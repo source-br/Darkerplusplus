@@ -7,7 +7,9 @@
         "updates": "Updates",
         "system": "System",
         "settings": "Settings",
-        "about": "About"
+        "about": "About",
+        "update_pill": "Update to {version}",
+        "update_pill_downloading": "Downloading... {pct}%"
     },
     "topbar": {
         "search_placeholder": "Search tools...",
