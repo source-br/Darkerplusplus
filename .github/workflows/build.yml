@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -55,6 +58,7 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.version }}
           name: Hammerfy ${{ github.event.inputs.version }}
+          target_commitish: ${{ github.sha }}
           draft: true
           files: installer/output/*.exe
         env:
