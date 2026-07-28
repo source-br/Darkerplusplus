@@ -17,21 +17,34 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=output
 OutputBaseFilename=Hammerfy-Setup-{#MyAppVersion}
-Compression=lzma
+SetupIconFile=..\assets\icons\hammerfy-icon.ico
+UninstallDisplayIcon={app}\{#MyAppExeName}
+UninstallDisplayName={#MyAppName}
+Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
-UninstallDisplayIcon={app}\{#MyAppExeName}
-; Preserva os .json de configuração ao desinstalar
-UninstallDisplayName={#MyAppName}
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
+CloseApplications=yes
+RestartApplications=yes
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
+Name: "english"; MessagesFile: "compiler:Default.isl"
+
+[CustomMessages]
+brazilianportuguese.TaskDesktopIcon=Criar atalho na Área de Trabalho
+brazilianportuguese.TaskStartMenuIcon=Criar atalho no Menu Iniciar
+brazilianportuguese.TaskQuickLaunchIcon=Fixar na barra de tarefas
+
+english.TaskDesktopIcon=Create a Desktop shortcut
+english.TaskStartMenuIcon=Create a Start Menu shortcut
+english.TaskQuickLaunchIcon=Pin to Taskbar
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-Name: "startmenuicon"; Description: "Criar atalho no Menu Iniciar"; GroupDescription: "{cm:AdditionalIcons}"
-Name: "quicklaunchicon"; Description: "Fixar na barra de tarefas"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "desktopicon"; Description: "{cm:TaskDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+Name: "startmenuicon"; Description: "{cm:TaskStartMenuIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+Name: "quicklaunchicon"; Description: "{cm:TaskQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "..\dist\Hammerfy.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -41,7 +54,7 @@ Source: "..\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubd
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: startmenuicon
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
-Name: "{userstartup}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall
