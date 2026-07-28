@@ -4,6 +4,7 @@ from PySide6.QtGui import QPixmap
 from pathlib import Path
 from utils.icons import load_icon
 from utils import translator
+from core.version import get_version
 
 
 # ─── Sidebar Logo ──────────────────────────────────────────────────────────────
@@ -40,7 +41,10 @@ class SidebarLogo(QWidget):
             layout.addWidget(name)
 
         layout.addStretch()
-        version = QLabel("v0.1")
+        ver_text = get_version()
+        if not ver_text.startswith("v") and not ver_text.startswith("V"):
+            ver_text = f"v{ver_text}"
+        version = QLabel(ver_text)
         version.setStyleSheet("font-size: 10px; color: #555;")
         layout.addWidget(version)
 

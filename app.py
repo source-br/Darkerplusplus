@@ -26,6 +26,21 @@ class AppUpdateWorker(QThread):
             self.update_available.emit(version, url)
 
 
+class DownloadInstallerWorker(QThread):
+    """Downloads installer executable in a background thread."""
+    download_finished = QSignal(bool)
+
+    def __init__(self, url: str, version: str, parent=None):
+        super().__init__(parent)
+        self.url = url
+        self.version = version
+
+    def run(self):
+        from core.app_updater import download_and_run_installer
+        success = download_and_run_installer(self.url, self.version)
+        self.download_finished.emit(success)
+
+
 # ─── Application ───────────────────────────────────────────────────────────────
 
 class HammerfyApp(QApplication):
@@ -137,6 +152,9 @@ class HammerfyApp(QApplication):
         if hasattr(self, "_app_update_worker") and self._app_update_worker.isRunning():
             self._app_update_worker.quit()
             self._app_update_worker.wait(1000)
+        if hasattr(self, "_download_worker") and self._download_worker.isRunning():
+            self._download_worker.quit()
+            self._download_worker.wait(1000)
         if hasattr(self, "_tray"):
             self._tray.hide()
         if hasattr(self, "window"):
@@ -172,12 +190,23 @@ class HammerfyApp(QApplication):
         if reply != QMessageBox.Yes:
             return
 
-        from core.app_updater import download_and_run_installer
-        success = download_and_run_installer(url, version)
+        # Hide window and tray icon immediately so user doesn't see UI freezing during download
+        if hasattr(self, "window"):
+            self.window.hide()
+        if hasattr(self, "_tray"):
+            self._tray.hide()
+
+        self._download_worker = DownloadInstallerWorker(url, version)
+        self._download_worker.download_finished.connect(self._on_download_finished)
+        self._download_worker.start()
+
+    def _on_download_finished(self, success: bool):
         if success:
-            # Installer is running — quit the app cleanly so installer can replace exe
             self._quit()
         else:
+            if hasattr(self, "_tray"):
+                self._tray.show()
+            self._show_window()
             QMessageBox.warning(
                 self.window,
                 "Hammerfy",
