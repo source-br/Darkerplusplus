@@ -140,8 +140,8 @@ class AboutPanel(QWidget):
         for title_key, url in [
             ("github_title",  LINKS["github"]),
             ("bug_title",     LINKS["issues"]),
-            ("docs_title",    LINKS["docs"]),
-            ("donate_title",  LINKS["donate"]),
+            # ("docs_title",    LINKS["docs"]),
+            # ("donate_title",  LINKS["donate"]),
         ]:
             layout.addWidget(self._link_card(translator.t("about", title_key), url))
             layout.addSpacing(8)
