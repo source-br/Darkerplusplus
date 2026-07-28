@@ -6,12 +6,12 @@ import os
 from pathlib import Path
 
 
+from core.version import get_version
+
 RELEASES_LATEST_API = "https://api.github.com/repos/kenned-candido/hammerfy/releases/latest"
 RELEASES_LIST_API   = "https://api.github.com/repos/kenned-candido/hammerfy/releases"
 _HEADERS            = {"User-Agent": "Hammerfy/0.1", "Accept": "application/vnd.github+json"}
 
-# Version defined at build time by PyInstaller via hammerfy.spec
-CURRENT_VERSION = os.environ.get("HAMMERFY_VERSION", "dev")
 
 def get_latest_release(include_beta: bool = True) -> dict | None:
     """Fetches the latest release info from GitHub.
@@ -35,8 +35,16 @@ def check_for_update(include_beta: bool = True) -> tuple[bool, str, str]:
     if not release:
         return False, "", ""
 
-    latest  = release.get("tag_name", "")
-    if latest == CURRENT_VERSION:
+    latest  = release.get("tag_name", "").strip()
+    current = get_version().strip()
+
+    if current.lower() == "dev":
+        return False, latest, ""
+
+    latest_norm  = latest.lstrip("vV").strip()
+    current_norm = current.lstrip("vV").strip()
+
+    if latest_norm == current_norm:
         return False, latest, ""
 
     # Find the Setup installer asset
