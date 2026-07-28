@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-LOCALES_DIR = Path(__file__).parent.parent / "locales"
+LOCALES_DIR = Path(__file__).parent.parent / "locales" / "hammerfy"
 
 _current: dict = {}
 _lang: str = "en"
