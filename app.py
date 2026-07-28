@@ -134,21 +134,25 @@ class HammerfyApp(QApplication):
     def _quit(self):
         if hasattr(self, "_update_timer"):
             self._update_timer.stop()
+        if hasattr(self, "_app_update_worker") and self._app_update_worker.isRunning():
+            self._app_update_worker.quit()
+            self._app_update_worker.wait(1000)
         if hasattr(self, "_tray"):
             self._tray.hide()
         if hasattr(self, "window"):
             self.window.closeEvent = lambda event: event.accept()
             self.window.close()
         self.quit()
+        os._exit(0)
 
     # ─── App Update Checker ────────────────────────────────────────────────────
 
     def _start_update_checker(self):
-        """Checks for a new Hammerfy version once at startup and every 24h."""
+        """Checks for a new Hammerfy version once at startup and every 1h."""
         self._run_update_check()
 
         self._update_timer = QTimer()
-        self._update_timer.setInterval(24 * 60 * 60 * 1000)
+        self._update_timer.setInterval(1 * 60 * 60 * 1000)
         self._update_timer.timeout.connect(self._run_update_check)
         self._update_timer.start()
 
@@ -158,6 +162,7 @@ class HammerfyApp(QApplication):
         self._app_update_worker.start()
 
     def _on_update_available(self, version: str, url: str):
+        self._show_window()
         reply = QMessageBox.question(
             self.window,
             "Atualização disponível",

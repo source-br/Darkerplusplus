@@ -179,7 +179,6 @@ class MainWindow(QMainWindow):
         status_map = {
             "installed": ToolStatus.INSTALLED,
             "available": ToolStatus.AVAILABLE,
-            "updates":   ToolStatus.UPDATE_AVAILABLE,
         }
         if self._current_filter in status_map:
             target = status_map[self._current_filter]
@@ -191,7 +190,6 @@ class MainWindow(QMainWindow):
             "all":       "all_tools",
             "installed": "installed",
             "available": "available",
-            "updates":   "updates",
         }.get(self._current_filter, "all_tools")
 
     def _refresh_tools(self):
