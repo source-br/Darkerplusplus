@@ -76,7 +76,6 @@ class Sidebar(QWidget):
         layout.addWidget(self._nav_btn("all",       translator.t("sidebar", "all_tools"),  "#7c6be0"))
         layout.addWidget(self._nav_btn("installed", translator.t("sidebar", "installed"),  "#3c9e3c"))
         layout.addWidget(self._nav_btn("available", translator.t("sidebar", "available"),  "#4a9eda"))
-        layout.addWidget(self._nav_btn("updates",   translator.t("sidebar", "updates"),    "#e8b84a"))
 
         layout.addSpacing(8)
 
@@ -107,7 +106,6 @@ class Sidebar(QWidget):
             "all":       ("grid-2x2",        dot_color),
             "installed": ("package-check",   dot_color),
             "available": ("package",         dot_color),
-            "updates":   ("circle-arrow-up", dot_color),
             "settings":  ("settings",        dot_color),
             "about":     ("info",            dot_color),
         }
@@ -163,7 +161,6 @@ class Sidebar(QWidget):
             "all":       "all_tools",
             "installed": "installed",
             "available": "available",
-            "updates":   "updates",
             "settings":  "settings",
             "about":     "about",
         }
