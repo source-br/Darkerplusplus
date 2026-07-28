@@ -65,7 +65,7 @@
         "github_title": "GitHub",
         "bug_title": "Report a bug",
         "docs_title": "Documentation",
-        "donate_title": "Support / Donate"
+        "donate_title": "Donate"
     },
     "messages": {
         "install_success": "Hammer++ installed successfully!",
