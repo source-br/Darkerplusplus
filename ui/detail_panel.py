@@ -5,6 +5,7 @@ from pathlib import Path
 from models.tool import Tool, ToolStatus
 from utils.icons import load_icon
 from utils import translator
+from ui.tool_card import _get_rounded_pixmap
 
 
 class DetailPanel(QWidget):
@@ -133,7 +134,8 @@ class DetailPanel(QWidget):
     def _refresh_banner(self, tool: Tool):
         banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{tool.id}.png"
         if banner_path.exists():
-            self.banner.setPixmap(QPixmap(str(banner_path)))
+            orig = QPixmap(str(banner_path))
+            self.banner.setPixmap(_get_rounded_pixmap(orig, radius=8))
             self.banner.setScaledContents(True)
             self.banner.setText("")
             self.banner.setStyleSheet("border-radius: 8px;")

@@ -1,10 +1,26 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
 from PySide6.QtCore import Qt, Signal, QSize
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QPainter, QPainterPath
 from pathlib import Path
 from models.tool import Tool, ToolStatus
 from utils.icons import load_icon
 from utils import translator
+
+
+def _get_rounded_pixmap(pixmap: QPixmap, radius: int = 8) -> QPixmap:
+    if pixmap.isNull():
+        return pixmap
+    out = QPixmap(pixmap.size())
+    out.fill(Qt.transparent)
+    painter = QPainter(out)
+    painter.setRenderHint(QPainter.Antialiasing)
+    painter.setRenderHint(QPainter.SmoothPixmapTransform)
+    path = QPainterPath()
+    path.addRoundedRect(0, 0, pixmap.width(), pixmap.height(), radius, radius)
+    painter.setClipPath(path)
+    painter.drawPixmap(0, 0, pixmap)
+    painter.end()
+    return out
 
 
 class ToolCard(QWidget):
@@ -49,16 +65,19 @@ class ToolCard(QWidget):
     def _build_banner(self) -> QWidget:
         outer = QWidget()
         outer.setFixedHeight(95)
+        outer.setStyleSheet("border-radius: 8px;")
         self._banner_widget = outer
 
         banner_path = Path(__file__).parent.parent / "assets" / "banners" / f"{self.tool.id}.png"
 
         if banner_path.exists():
-            self._banner_pixmap_orig = QPixmap(str(banner_path))
+            orig = QPixmap(str(banner_path))
+            self._banner_pixmap_orig = orig
             self._banner_img = QLabel(outer)
             self._banner_img.setScaledContents(True)
-            self._banner_img.setPixmap(self._banner_pixmap_orig)
+            self._banner_img.setPixmap(_get_rounded_pixmap(orig, radius=8))
             self._banner_img.setGeometry(0, 0, 165, 95)
+            self._banner_img.setStyleSheet("border-radius: 8px;")
             outer.setFixedWidth(165)
         else:
             self._banner_pixmap_orig = None
