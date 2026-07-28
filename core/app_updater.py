@@ -29,39 +29,52 @@ def get_latest_release(include_beta: bool = True) -> dict | None:
         return None
 
 
-def check_for_update(include_beta: bool = True) -> tuple[bool, str, str]:
-    """Returns (has_update, latest_version, download_url)."""
+def check_for_update(include_beta: bool = True) -> tuple[bool, str, str, str]:
+    """Returns (has_update, latest_version, download_url, release_body)."""
     release = get_latest_release(include_beta=include_beta)
     if not release:
-        return False, "", ""
+        return False, "", "", ""
 
     latest  = release.get("tag_name", "").strip()
+    body    = release.get("body", "").strip()
     current = get_version().strip()
 
     if current.lower() == "dev":
-        return False, latest, ""
+        return False, latest, "", body
 
     latest_norm  = latest.lstrip("vV").strip()
     current_norm = current.lstrip("vV").strip()
 
     if latest_norm == current_norm:
-        return False, latest, ""
+        return False, latest, "", body
 
     # Find the Setup installer asset
     for asset in release.get("assets", []):
         if "Setup" in asset["name"] and asset["name"].endswith(".exe"):
-            return True, latest, asset["browser_download_url"]
+            return True, latest, asset["browser_download_url"], body
 
-    return False, latest, ""
+    return False, latest, "", body
 
 
-def download_and_run_installer(url: str, version: str) -> bool:
-    """Downloads the installer and launches it with silent flags, allowing automatic installation."""
+def download_and_run_installer(url: str, version: str, progress_callback=None) -> bool:
+    """Downloads the installer with progress callback and launches it with silent flags."""
     try:
         dest = Path.home() / "Downloads" / f"Hammerfy-Setup-{version}.exe"
         req  = urllib.request.Request(url, headers={"User-Agent": "Hammerfy/0.1"})
         with urllib.request.urlopen(req, timeout=60) as resp:
-            dest.write_bytes(resp.read())
+            total = int(resp.headers.get("Content-Length", 0))
+            downloaded = 0
+            chunk_size = 64 * 1024
+            with open(dest, "wb") as f:
+                while True:
+                    chunk = resp.read(chunk_size)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+                    downloaded += len(chunk)
+                    if total > 0 and progress_callback:
+                        pct = int(downloaded / total * 100)
+                        progress_callback(pct)
 
         # Clean PyInstaller environment variables to prevent child installer / new app
         # from inheriting the old instance's temporary _MEIPASS folder and failing with 'Failed to load Python DLL'.

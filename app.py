@@ -15,19 +15,20 @@ import os
 
 class AppUpdateWorker(QThread):
     """Checks GitHub Releases for a new Hammerfy version in the background."""
-    update_available = QSignal(str, str)  # (latest_version, download_url)
+    update_available = QSignal(str, str, str)  # (latest_version, download_url, release_body)
 
     def run(self):
         from core.app_updater import check_for_update
         from core import tray_settings
         include_beta = tray_settings.get("beta_updates")
-        has_update, version, url = check_for_update(include_beta=include_beta)
+        has_update, version, url, body = check_for_update(include_beta=include_beta)
         if has_update and url:
-            self.update_available.emit(version, url)
+            self.update_available.emit(version, url, body)
 
 
 class DownloadInstallerWorker(QThread):
-    """Downloads installer executable in a background thread."""
+    """Downloads installer executable in a background thread with progress signals."""
+    download_progress = QSignal(int)
     download_finished = QSignal(bool)
 
     def __init__(self, url: str, version: str, parent=None):
@@ -37,7 +38,11 @@ class DownloadInstallerWorker(QThread):
 
     def run(self):
         from core.app_updater import download_and_run_installer
-        success = download_and_run_installer(self.url, self.version)
+
+        def progress_cb(pct: int):
+            self.download_progress.emit(pct)
+
+        success = download_and_run_installer(self.url, self.version, progress_callback=progress_cb)
         self.download_finished.emit(success)
 
 
@@ -128,6 +133,20 @@ class HammerfyApp(QApplication):
         else:
             self.window.show()
 
+        # Check if there is a pending changelog to display after updating
+        self._check_pending_changelog()
+
+    def _check_pending_changelog(self):
+        pending = tray_settings.get("pending_changelog")
+        if pending and isinstance(pending, dict):
+            # Clear pending setting immediately so it displays only once
+            tray_settings.set_value("pending_changelog", None)
+            version = pending.get("version", "")
+            body = pending.get("body", "")
+            from ui.changelog_dialog import ChangelogDialog
+            dlg = ChangelogDialog(version, body, self.window)
+            dlg.exec()
+
     def _on_window_close(self, event):
         settings = tray_settings.load()
         if settings.get("minimize_to_tray") or is_autostart_enabled():
@@ -179,34 +198,38 @@ class HammerfyApp(QApplication):
         self._app_update_worker.update_available.connect(self._on_update_available)
         self._app_update_worker.start()
 
-    def _on_update_available(self, version: str, url: str):
-        self._show_window()
-        reply = QMessageBox.question(
-            self.window,
-            "Atualização disponível",
-            f"Uma nova versão do Hammerfy está disponível: {version}\n\nDeseja baixar e instalar agora?",
-            QMessageBox.Yes | QMessageBox.No
-        )
-        if reply != QMessageBox.Yes:
+    def _on_update_available(self, version: str, url: str, body: str):
+        self._pending_update = (version, url, body)
+        pill = self.window.sidebar.update_pill
+        pill.set_update_info(version, url, body)
+
+        try:
+            pill.clicked.disconnect()
+        except Exception:
+            pass
+        pill.clicked.connect(self._start_update_download)
+
+    def _start_update_download(self):
+        if not hasattr(self, "_pending_update") or not self._pending_update:
             return
 
-        # Hide window and tray icon immediately so user doesn't see UI freezing during download
-        if hasattr(self, "window"):
-            self.window.hide()
-        if hasattr(self, "_tray"):
-            self._tray.hide()
+        version, url, body = self._pending_update
+        pill = self.window.sidebar.update_pill
+        pill.set_progress(0)
 
         self._download_worker = DownloadInstallerWorker(url, version)
+        self._download_worker.download_progress.connect(pill.set_progress)
         self._download_worker.download_finished.connect(self._on_download_finished)
         self._download_worker.start()
 
     def _on_download_finished(self, success: bool):
-        if success:
+        if success and hasattr(self, "_pending_update"):
+            version, url, body = self._pending_update
+            # Save changelog details to display on next launch after update
+            tray_settings.set_value("pending_changelog", {"version": version, "body": body})
             self._quit()
         else:
-            if hasattr(self, "_tray"):
-                self._tray.show()
-            self._show_window()
+            self.window.sidebar.update_pill.set_progress(0)
             QMessageBox.warning(
                 self.window,
                 "Hammerfy",

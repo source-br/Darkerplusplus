@@ -5,6 +5,7 @@ from pathlib import Path
 from utils.icons import load_icon
 from utils import translator
 from core.version import get_version
+from ui.update_pill import UpdatePillWidget
 
 
 # ─── Sidebar Logo ──────────────────────────────────────────────────────────────
@@ -65,10 +66,18 @@ class Sidebar(QWidget):
 
     def _build_ui(self):
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(0, 0, 0, 12)
         layout.setSpacing(0)
         layout.addWidget(self._build_nav())
         layout.addStretch()
+
+        pill_container = QWidget()
+        pill_layout = QHBoxLayout(pill_container)
+        pill_layout.setContentsMargins(8, 0, 8, 0)
+        self.update_pill = UpdatePillWidget()
+        pill_layout.addWidget(self.update_pill)
+
+        layout.addWidget(pill_container)
 
     def _build_nav(self):
         nav = QWidget()
