@@ -5,11 +5,12 @@ from PySide6.QtGui import QPixmap, QDesktopServices
 from pathlib import Path
 import platform
 from utils import translator
+from core.version import get_version
 
 
 # ─── Constants ─────────────────────────────────────────────────────────────────
 
-VERSION = "0.1.0"
+VERSION = get_version()
 AUTHOR  = "kenned-candido"
 LICENSE = "GPL-3.0"
 

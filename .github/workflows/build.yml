@@ -29,6 +29,10 @@ jobs:
       - name: Set version env
         run: echo "HAMMERFY_VERSION=${{ github.event.inputs.version }}" >> $env:GITHUB_ENV
 
+      - name: Update version in core/version.py
+        run: |
+          (Get-Content core\version.py) -replace '__version__ = ".*"', '__version__ = "${{ github.event.inputs.version }}"' | Set-Content core\version.py
+
       - name: Build EXE
         run: pyinstaller hammerfy.spec
 
