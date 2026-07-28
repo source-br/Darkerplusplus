@@ -16,7 +16,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.ref }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,6 +31,10 @@ jobs:
 
       - name: Set version env
         run: echo "HAMMERFY_VERSION=${{ github.event.inputs.version }}" >> $env:GITHUB_ENV
+
+      - name: Update version in core/version.py
+        run: |
+          (Get-Content core\version.py) -replace '__version__ = ".*"', '__version__ = "${{ github.event.inputs.version }}"' | Set-Content core\version.py
 
       - name: Build EXE
         run: pyinstaller hammerfy.spec
@@ -53,6 +58,7 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.version }}
           name: Hammerfy ${{ github.event.inputs.version }}
+          target_commitish: ${{ github.sha }}
           draft: true
           files: installer/output/*.exe
         env:
