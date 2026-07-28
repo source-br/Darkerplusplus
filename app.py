@@ -132,7 +132,13 @@ class HammerfyApp(QApplication):
         self.window.activateWindow()
 
     def _quit(self):
-        self._tray.hide()
+        if hasattr(self, "_update_timer"):
+            self._update_timer.stop()
+        if hasattr(self, "_tray"):
+            self._tray.hide()
+        if hasattr(self, "window"):
+            self.window.closeEvent = lambda event: event.accept()
+            self.window.close()
         self.quit()
 
     # ─── App Update Checker ────────────────────────────────────────────────────
@@ -164,9 +170,8 @@ class HammerfyApp(QApplication):
         from core.app_updater import download_and_run_installer
         success = download_and_run_installer(url, version)
         if success:
-            # Installer is running — quit the app and exit process so installer can replace exe
+            # Installer is running — quit the app cleanly so installer can replace exe
             self._quit()
-            sys.exit(0)
         else:
             QMessageBox.warning(
                 self.window,
