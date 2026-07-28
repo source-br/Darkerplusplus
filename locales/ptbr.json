@@ -49,6 +49,8 @@
         "tray_desc": "Fechar a janela mantém o Hammerfy ativo na tray do sistema.",
         "start_minimized_label": "Iniciar minimizado",
         "start_minimized_desc": "O Hammerfy inicia sem abrir a janela, direto na tray.",
+        "beta_updates_label": "Receber atualizações beta",
+        "beta_updates_desc": "Receber versões de pré-lançamento (Pre-release).",
         "section_language": "Idioma",
         "language_label": "Idioma da interface"
     },

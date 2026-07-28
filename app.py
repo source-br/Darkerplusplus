@@ -19,7 +19,9 @@ class AppUpdateWorker(QThread):
 
     def run(self):
         from core.app_updater import check_for_update
-        has_update, version, url = check_for_update()
+        from core import tray_settings
+        include_beta = tray_settings.get("beta_updates")
+        has_update, version, url = check_for_update(include_beta=include_beta)
         if has_update and url:
             self.update_available.emit(version, url)
 
@@ -162,8 +164,9 @@ class HammerfyApp(QApplication):
         from core.app_updater import download_and_run_installer
         success = download_and_run_installer(url, version)
         if success:
-            # Installer is running — quit the app so it can replace the exe
+            # Installer is running — quit the app and exit process so installer can replace exe
             self._quit()
+            sys.exit(0)
         else:
             QMessageBox.warning(
                 self.window,
