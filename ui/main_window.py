@@ -17,10 +17,10 @@ from pathlib import Path
 
 # ─── Tool Builder ──────────────────────────────────────────────────────────────
 
-def _build_tools_from_scan() -> list[Tool]:
+def _build_tools_from_scan(latest_build: str | None = None) -> list[Tool]:
     """Scans Steam libraries and returns the full tool list with statuses."""
     raw    = scan_tools()
-    latest = get_latest_build()
+    latest = latest_build
     tools  = []
 
     for t in raw:
@@ -59,16 +59,27 @@ def _build_tools_from_scan() -> list[Tool]:
 
 # ─── Background Workers ────────────────────────────────────────────────────────
 
+class LatestBuildWorker(QThread):
+    """Fetches latest Hammer++ build in background to avoid blocking app boot."""
+    build_fetched = QSignal(str)
+
+    def run(self):
+        build = get_latest_build()
+        if build:
+            self.build_fetched.emit(build)
+
+
 class SilentUpdateWorker(QThread):
     """Resolves 'unknown' versions for manually installed Hammer++ instances."""
     finished = QSignal()
 
-    def __init__(self, tools: list[Tool], parent=None):
+    def __init__(self, tools: list[Tool], build: str | None = None, parent=None):
         super().__init__(parent)
         self._tools = tools
+        self._build = build
 
     def run(self):
-        build = get_latest_build()
+        build = self._build or get_latest_build()
         if not build:
             return
 
@@ -91,13 +102,14 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(900, 600)
         self.resize(1280, 760)
 
-        self._all_tools: list[Tool] = _build_tools_from_scan()
+        self._latest_build: str | None = None
+        self._all_tools: list[Tool] = _build_tools_from_scan(self._latest_build)
         self._current_filter = "all"
 
         self._build_ui()
         self._hide_detail()
         self._load_tools()
-        self._start_silent_update()
+        self._start_latest_build_worker()
         self._start_steam_watcher()
 
     # ─── UI Construction ──────────────────────────────────────────────────────
@@ -194,7 +206,7 @@ class MainWindow(QMainWindow):
 
     def _refresh_tools(self):
         """Rescan and reload — keeps detail panel in sync if open."""
-        self._all_tools = _build_tools_from_scan()
+        self._all_tools = _build_tools_from_scan(self._latest_build)
         self._load_tools()
         if self.detail._tool:
             updated = next((t for t in self._all_tools if t.id == self.detail._tool.id), None)
@@ -331,11 +343,21 @@ class MainWindow(QMainWindow):
 
     # ─── Background Workers ────────────────────────────────────────────────────
 
+    def _start_latest_build_worker(self):
+        self._latest_build_worker = LatestBuildWorker(self)
+        self._latest_build_worker.build_fetched.connect(self._on_latest_build_fetched)
+        self._latest_build_worker.start()
+
+    def _on_latest_build_fetched(self, build: str):
+        self._latest_build = build
+        self._refresh_tools()
+        self._start_silent_update()
+
     def _start_silent_update(self):
         unknown = [t for t in self._all_tools if t.version_installed == "unknown"]
         if not unknown:
             return
-        self._silent_worker = SilentUpdateWorker(unknown, self)
+        self._silent_worker = SilentUpdateWorker(unknown, build=self._latest_build, parent=self)
         self._silent_worker.finished.connect(self._refresh_tools, Qt.QueuedConnection)
         self._silent_worker.start()
 

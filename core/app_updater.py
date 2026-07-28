@@ -63,8 +63,20 @@ def download_and_run_installer(url: str, version: str) -> bool:
         with urllib.request.urlopen(req, timeout=60) as resp:
             dest.write_bytes(resp.read())
 
+        # Clean PyInstaller environment variables to prevent child installer / new app
+        # from inheriting the old instance's temporary _MEIPASS folder and failing with 'Failed to load Python DLL'.
+        env = os.environ.copy()
+        meipass = getattr(sys, "_MEIPASS", None)
+        env.pop("_MEIPASS", None)
+        env.pop("_MEIPASS2", None)
+
+        if meipass and "PATH" in env:
+            paths = env["PATH"].split(os.pathsep)
+            paths = [p for p in paths if p.rstrip("\\/") != meipass.rstrip("\\/")]
+            env["PATH"] = os.pathsep.join(paths)
+
         # Launch installer with flags to run automatically and handle running application files
-        subprocess.Popen([str(dest), "/SILENT", "/CLOSEAPPLICATIONS"])
+        subprocess.Popen([str(dest), "/SILENT", "/CLOSEAPPLICATIONS"], env=env)
         return True
     except Exception:
         return False
