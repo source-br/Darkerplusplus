@@ -164,6 +164,7 @@ class SettingsPanel(QWidget):
         autostart    = is_autostart_enabled()
         tray_enabled = settings.get("minimize_to_tray", True)
         start_min    = settings.get("start_minimized", False)
+        beta_updates = settings.get("beta_updates", True)
 
         self.row_autostart = SettingRow(
             translator.t("settings", "autostart_label"),
@@ -181,16 +182,25 @@ class SettingsPanel(QWidget):
             translator.t("settings", "start_minimized_desc"),
             checked=start_min,
         )
+        self.row_beta_updates = SettingRow(
+            translator.t("settings", "beta_updates_label"),
+            translator.t("settings", "beta_updates_desc"),
+            checked=beta_updates,
+            enabled=False,  # Locked active during beta phase
+        )
 
         self.row_autostart.toggle.toggled.connect(self._on_autostart_changed)
         self.row_tray.toggle.toggled.connect(self._on_tray_changed)
         self.row_start_minimized.toggle.toggled.connect(self._on_start_minimized_changed)
+        self.row_beta_updates.toggle.toggled.connect(self._on_beta_updates_changed)
 
         layout.addWidget(self.row_autostart)
         layout.addWidget(self._divider())
         layout.addWidget(self.row_tray)
         layout.addWidget(self._divider())
         layout.addWidget(self.row_start_minimized)
+        layout.addWidget(self._divider())
+        layout.addWidget(self.row_beta_updates)
 
         return widget
 
@@ -265,6 +275,8 @@ class SettingsPanel(QWidget):
         self.row_tray.desc.setText(translator.t("settings", "tray_desc"))
         self.row_start_minimized.lbl.setText(translator.t("settings", "start_minimized_label"))
         self.row_start_minimized.desc.setText(translator.t("settings", "start_minimized_desc"))
+        self.row_beta_updates.lbl.setText(translator.t("settings", "beta_updates_label"))
+        self.row_beta_updates.desc.setText(translator.t("settings", "beta_updates_desc"))
 
         # Repopulate combo to reflect current selection without triggering signal
         self._populate_lang_combo()
@@ -301,6 +313,11 @@ class SettingsPanel(QWidget):
         if self._building:
             return
         tray_settings.set_value("start_minimized", enabled)
+
+    def _on_beta_updates_changed(self, enabled: bool):
+        if self._building:
+            return
+        tray_settings.set_value("beta_updates", enabled)
 
     def _on_language_changed(self, index: int):
         if self._building:
