@@ -57,7 +57,7 @@ def check_for_update(include_beta: bool = True) -> tuple[bool, str, str, str]:
 
 
 def download_and_run_installer(url: str, version: str, progress_callback=None) -> bool:
-    """Downloads the installer with progress callback and launches it with silent flags."""
+    """Downloads the installer with progress callback and hands off installation to HammerfyUpdater.exe or silent setup."""
     try:
         dest = Path.home() / "Downloads" / f"Hammerfy-Setup-{version}.exe"
         req  = urllib.request.Request(url, headers={"User-Agent": "Hammerfy/0.1"})
@@ -76,8 +76,12 @@ def download_and_run_installer(url: str, version: str, progress_callback=None) -
                         pct = int(downloaded / total * 100)
                         progress_callback(pct)
 
-        # Clean PyInstaller environment variables to prevent child installer / new app
-        # from inheriting the old instance's temporary _MEIPASS folder and failing with 'Failed to load Python DLL'.
+        # Locate Hammerfy.exe and companion HammerfyUpdater.exe
+        app_dir = Path(sys.executable).parent if getattr(sys, "frozen", False) else Path(__file__).parent.parent
+        updater_exe = app_dir / "HammerfyUpdater.exe"
+        hammerfy_exe = app_dir / "Hammerfy.exe" if getattr(sys, "frozen", False) else sys.executable
+
+        # Clean PyInstaller environment variables
         env = os.environ.copy()
         meipass = getattr(sys, "_MEIPASS", None)
         env.pop("_MEIPASS", None)
@@ -88,8 +92,20 @@ def download_and_run_installer(url: str, version: str, progress_callback=None) -
             paths = [p for p in paths if p.rstrip("\\/") != meipass.rstrip("\\/")]
             env["PATH"] = os.pathsep.join(paths)
 
-        # Launch installer with flags to run automatically and handle running application files
-        subprocess.Popen([str(dest), "/SILENT", "/CLOSEAPPLICATIONS"], env=env)
+        if updater_exe.exists():
+            # Launch companion updater companion process
+            cmd = [
+                str(updater_exe),
+                "--pid", str(os.getpid()),
+                "--installer", str(dest),
+                "--version", str(version),
+                "--exe", str(hammerfy_exe)
+            ]
+            subprocess.Popen(cmd, env=env)
+        else:
+            # Direct silent installation fallback (dev mode)
+            subprocess.Popen([str(dest), "/SILENT", "/CLOSEAPPLICATIONS", "/RESTARTAPPLICATIONS"], env=env)
+
         return True
     except Exception:
         return False

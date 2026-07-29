@@ -48,6 +48,7 @@ Name: "quicklaunchicon"; Description: "{cm:TaskQuickLaunchIcon}"; GroupDescripti
 
 [Files]
 Source: "..\dist\Hammerfy.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\dist\HammerfyUpdater.exe"; DestDir: "{app}"; Flags: ignoreversion; Check: FileExists('..\dist\HammerfyUpdater.exe')
 Source: "..\locales\*"; DestDir: "{app}\locales"; Flags: ignoreversion recursesubdirs
 Source: "..\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs
 

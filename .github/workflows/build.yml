@@ -34,10 +34,12 @@ jobs:
 
       - name: Update version in core/version.py
         run: |
-          (Get-Content core\version.py) -replace '__version__ = ".*"', '__version__ = "${{ github.event.inputs.version }}"' | Set-Content core\version.py
+          (Get-Content core\version.py) -replace '__version__ = ".*"', '__version__ = "${{ github.event.inputs.version }}"' -replace 'DEV_MODE = True', 'DEV_MODE = False' | Set-Content core\version.py
 
       - name: Build EXE
-        run: pyinstaller hammerfy.spec
+        run: |
+          pyinstaller hammerfy.spec
+          pyinstaller --onefile --noconsole --name HammerfyUpdater --icon assets/icons/hammerfy-icon.ico updater_app.py
 
       - name: Install Inno Setup
         run: choco install innosetup -y
