@@ -48,10 +48,20 @@ def check_for_update(include_beta: bool = True) -> tuple[bool, str, str, str]:
     if latest_norm == current_norm:
         return False, latest, "", body
 
-    # Find the Setup installer asset
+    # Prefer ZIP update asset for clean silent auto-update
+    zip_asset_url = None
+    exe_asset_url = None
+
     for asset in release.get("assets", []):
-        if "Setup" in asset["name"] and asset["name"].endswith(".exe"):
-            return True, latest, asset["browser_download_url"], body
+        name = asset.get("name", "").lower()
+        if name.endswith(".zip"):
+            zip_asset_url = asset.get("browser_download_url")
+        elif "setup" in name and name.endswith(".exe"):
+            exe_asset_url = asset.get("browser_download_url")
+
+    download_url = zip_asset_url or exe_asset_url
+    if download_url:
+        return True, latest, download_url, body
 
     return False, latest, "", body
 
@@ -68,11 +78,15 @@ def get_update_temp_dir() -> Path:
 
 
 def download_and_run_installer(url: str, version: str, progress_callback=None) -> bool:
-    """Downloads the installer with progress callback to local app temp and hands off installation to HammerfyUpdater.exe or silent setup."""
+    """Downloads the update package (.zip or .exe) with progress callback and hands off installation to HammerfyUpdater.exe or silent extraction."""
     try:
         temp_dir = get_update_temp_dir()
-        dest = temp_dir / f"Hammerfy-Setup-{version}.exe"
-        req  = urllib.request.Request(url, headers={"User-Agent": "Hammerfy/0.1"})
+        is_zip = url.lower().endswith(".zip") or ".zip?" in url.lower()
+        ext = ".zip" if is_zip else ".exe"
+        filename = f"Hammerfy-Update-{version}{ext}"
+        dest = temp_dir / filename
+
+        req = urllib.request.Request(url, headers={"User-Agent": "Hammerfy/0.1"})
         with urllib.request.urlopen(req, timeout=60) as resp:
             total = int(resp.headers.get("Content-Length", 0))
             downloaded = 0
@@ -106,17 +120,28 @@ def download_and_run_installer(url: str, version: str, progress_callback=None) -
 
         if updater_exe.exists():
             # Launch companion updater process
+            arg_type = "--zip" if is_zip else "--installer"
             cmd = [
                 str(updater_exe),
                 "--pid", str(os.getpid()),
-                "--installer", str(dest),
+                arg_type, str(dest),
+                "--target", str(app_dir),
                 "--version", str(version),
                 "--exe", str(hammerfy_exe)
             ]
             subprocess.Popen(cmd, env=env)
         else:
-            # Direct silent installation fallback (dev mode)
-            subprocess.Popen([str(dest), "/SILENT", "/CLOSEAPPLICATIONS", "/RESTARTAPPLICATIONS"], env=env)
+            # Fallback for dev mode / non-frozen execution
+            if is_zip:
+                import zipfile
+                with zipfile.ZipFile(dest, 'r') as z:
+                    z.extractall(app_dir)
+                try:
+                    dest.unlink()
+                except Exception:
+                    pass
+            else:
+                subprocess.Popen([str(dest), "/SILENT", "/CLOSEAPPLICATIONS", "/RESTARTAPPLICATIONS"], env=env)
 
         return True
     except Exception:

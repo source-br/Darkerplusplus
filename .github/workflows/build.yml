@@ -50,8 +50,12 @@ jobs:
         run: |
           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\hammerfy.iss
 
+      - name: Create Update ZIP Package
+        run: |
+          Compress-Archive -Path dist\Hammerfy.exe, dist\HammerfyUpdater.exe, locales, assets, styles -DestinationPath installer\output\Hammerfy-${{ github.event.inputs.version }}.zip
+
       - name: List output files
-        run: Get-ChildItem -Recurse -Filter "*.exe" D:\a\hammerfy\hammerfy\installer
+        run: Get-ChildItem -Recurse installer\output
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -60,6 +64,8 @@ jobs:
           name: Hammerfy ${{ github.event.inputs.version }}
           target_commitish: ${{ github.sha }}
           draft: true
-          files: installer/output/*.exe
+          files: |
+            installer/output/*.exe
+            installer/output/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
