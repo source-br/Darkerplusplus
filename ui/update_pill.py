@@ -1,13 +1,13 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QPainter, QColor, QBrush, QPen
+from PySide6.QtGui import QPainter, QColor, QBrush, QPen, QPainterPath
 from utils.icons import load_icon
 from utils import translator
 
 
 class UpdatePillWidget(QWidget):
     """Pill-shaped update widget shown at the bottom of the sidebar.
-    Displays yellow border on update notification, and interactive progress fill during download."""
+    Displays purple border on update notification, and interactive progress fill during download."""
 
     clicked = Signal()
 
@@ -85,25 +85,30 @@ class UpdatePillWidget(QWidget):
         painter.setRenderHint(QPainter.Antialiasing)
 
         rect = self.rect()
+        r = 10.0  # Pill corner radius
 
-        # Background color — transparent to match sidebar background
-        bg_color = QColor(0, 0, 0, 0)
-        painter.setBrush(QBrush(bg_color))
-        painter.setPen(Qt.NoPen)
-        painter.drawRoundedRect(rect, 10, 10)
+        # Create clip path for the rounded pill
+        path = QPainterPath()
+        path.addRoundedRect(rect, r, r)
 
-        # Progress fill overlay when downloading
+        painter.save()
+        painter.setClipPath(path)
+
+        # Progress fill overlay when downloading — clipped perfectly inside the rounded pill
         if self._is_downloading and self._progress > 0:
             fill_width = int(rect.width() * (self._progress / 100.0))
             fill_rect = rect.adjusted(0, 0, 0, 0)
             fill_rect.setWidth(fill_width)
 
             progress_color = QColor(124, 107, 224, 90)  # Semi-transparent brand purple #7c6be0
+            painter.setPen(Qt.NoPen)
             painter.setBrush(QBrush(progress_color))
-            painter.drawRoundedRect(fill_rect, 10, 10)
+            painter.drawRect(fill_rect)
 
-        # Border styling (brand purple border #7c6be0)
+        painter.restore()
+
+        # Outer border styling (brand purple border #7c6be0)
         border_pen = QPen(QColor("#7c6be0"), 1.5)
         painter.setPen(border_pen)
         painter.setBrush(Qt.NoBrush)
-        painter.drawRoundedRect(rect.adjusted(1, 1, -1, -1), 9, 9)
+        painter.drawRoundedRect(rect.adjusted(1, 1, -1, -1), r - 1.0, r - 1.0)
