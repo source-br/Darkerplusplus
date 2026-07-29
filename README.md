@@ -18,7 +18,7 @@
 > This is an early development version, which may contain bugs and be subject to change.
 
 
-Hammerfy is a hub that aims to install and manage updates, facilitate the management and configuration of Hammer++ and Tools++, focusing on improving the mapping experience for the Source.
+Hammerfy is a hub that aims to install and manage updates, facilitate the management and configuration of Hammer++, focusing on improving the mapping experience for the Source.
 
 ##
 
