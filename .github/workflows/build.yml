@@ -36,10 +36,8 @@ jobs:
         run: |
           (Get-Content core\version.py) -replace '__version__ = ".*"', '__version__ = "${{ github.event.inputs.version }}"' -replace 'DEV_MODE = True', 'DEV_MODE = False' | Set-Content core\version.py
 
-      - name: Build EXE
-        run: |
-          pyinstaller hammerfy.spec
-          pyinstaller --onefile --noconsole --name HammerfyUpdater --icon assets/icons/hammerfy-icon.ico updater_app.py
+      - name: Build EXEs
+        run: pyinstaller hammerfy.spec
 
       - name: Install Inno Setup
         run: choco install innosetup -y

@@ -34,7 +34,8 @@ version_info = VSVersionInfo(
     ]
 )
 
-a = Analysis(
+# 1. Main Hammerfy Executable
+a1 = Analysis(
     ['main.py'],
     pathex=['.'],
     binaries=[],
@@ -63,16 +64,65 @@ a = Analysis(
     noarchive=False,
 )
 
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+pyz1 = PYZ(a1.pure, a1.zipped_data, cipher=block_cipher)
 
-exe = EXE(
-    pyz,
-    a.scripts,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
+exe1 = EXE(
+    pyz1,
+    a1.scripts,
+    a1.binaries,
+    a1.zipfiles,
+    a1.datas,
     [],
     name='Hammerfy',
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    runtime_tmpdir=None,
+    console=False,
+    disable_windowed_traceback=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
+    icon='assets/icons/hammerfy-icon.ico',
+    onefile=True,
+)
+
+# 2. Companion HammerfyUpdater Executable
+a2 = Analysis(
+    ['updater_app.py'],
+    pathex=['.'],
+    binaries=[],
+    datas=[],
+    hiddenimports=[
+        'urllib',
+        'urllib.request',
+        'urllib.error',
+        'http.client',
+        'ssl',
+        'certifi',
+    ],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    win_no_prefer_redirects=False,
+    win_private_assemblies=False,
+    cipher=block_cipher,
+    noarchive=False,
+)
+
+pyz2 = PYZ(a2.pure, a2.zipped_data, cipher=block_cipher)
+
+exe2 = EXE(
+    pyz2,
+    a2.scripts,
+    a2.binaries,
+    a2.zipfiles,
+    a2.datas,
+    [],
+    name='HammerfyUpdater',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

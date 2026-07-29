@@ -56,10 +56,22 @@ def check_for_update(include_beta: bool = True) -> tuple[bool, str, str, str]:
     return False, latest, "", body
 
 
+def get_update_temp_dir() -> Path:
+    """Returns a dedicated local AppData temp directory for downloading update installers."""
+    local_appdata = os.environ.get("LOCALAPPDATA")
+    if local_appdata:
+        temp_dir = Path(local_appdata) / "Hammerfy" / "temp"
+    else:
+        temp_dir = Path.home() / ".hammerfy" / "temp"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    return temp_dir
+
+
 def download_and_run_installer(url: str, version: str, progress_callback=None) -> bool:
-    """Downloads the installer with progress callback and hands off installation to HammerfyUpdater.exe or silent setup."""
+    """Downloads the installer with progress callback to local app temp and hands off installation to HammerfyUpdater.exe or silent setup."""
     try:
-        dest = Path.home() / "Downloads" / f"Hammerfy-Setup-{version}.exe"
+        temp_dir = get_update_temp_dir()
+        dest = temp_dir / f"Hammerfy-Setup-{version}.exe"
         req  = urllib.request.Request(url, headers={"User-Agent": "Hammerfy/0.1"})
         with urllib.request.urlopen(req, timeout=60) as resp:
             total = int(resp.headers.get("Content-Length", 0))
@@ -93,7 +105,7 @@ def download_and_run_installer(url: str, version: str, progress_callback=None) -
             env["PATH"] = os.pathsep.join(paths)
 
         if updater_exe.exists():
-            # Launch companion updater companion process
+            # Launch companion updater process
             cmd = [
                 str(updater_exe),
                 "--pid", str(os.getpid()),
@@ -112,14 +124,15 @@ def download_and_run_installer(url: str, version: str, progress_callback=None) -
 
 
 def cleanup_downloaded_installers():
-    """Removes leftover Hammerfy-Setup-*.exe installers from Downloads folder."""
+    """Removes leftover Hammerfy-Setup-*.exe installers from temp and Downloads folders."""
     try:
-        downloads = Path.home() / "Downloads"
-        if downloads.exists():
-            for installer in downloads.glob("Hammerfy-Setup-*.exe"):
-                try:
-                    installer.unlink()
-                except Exception:
-                    pass
+        dirs_to_clean = [get_update_temp_dir(), Path.home() / "Downloads"]
+        for d in dirs_to_clean:
+            if d.exists():
+                for installer in d.glob("Hammerfy-Setup-*.exe"):
+                    try:
+                        installer.unlink()
+                    except Exception:
+                        pass
     except Exception:
         pass
