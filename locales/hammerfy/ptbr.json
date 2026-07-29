@@ -78,5 +78,12 @@
         "no_connection": "Não foi possível verificar a versão mais recente. Verifique sua conexão.",
         "steam_not_found": "Steam não encontrada.",
         "game_not_found": "Jogo não encontrado na biblioteca Steam.\nInstale {game} primeiro."
+    },
+    "changelog": {
+        "dialog_title": "Hammerfy {version} — Novidades",
+        "title": "O que há de novo na {version}?",
+        "badge": "NOVO",
+        "button": "Entendido!",
+        "fallback": "Esta versão inclui melhorias gerais e correções de bugs."
     }
 }

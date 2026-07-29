@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel, QTextBrowser, QPushButton
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon
-from pathlib import Path
+from utils import translator
 
 
 class ChangelogDialog(QDialog):
@@ -9,13 +8,14 @@ class ChangelogDialog(QDialog):
 
     def __init__(self, version: str, notes: str, parent=None):
         super().__init__(parent)
-        self.setWindowTitle(f"Hammerfy {version} — Novidades")
         self.setFixedSize(520, 420)
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
 
-        self._version = version
-        self._notes = notes or "Esta versão inclui melhorias gerais e correções de bugs."
+        ver = version if version.startswith("v") or version.startswith("V") else f"v{version}"
+        self._version = ver
+        self._notes = notes or translator.t("changelog", "fallback")
 
+        self.setWindowTitle(translator.t("changelog", "dialog_title", version=self._version))
         self._build_ui()
         self._apply_styles()
 
@@ -28,15 +28,15 @@ class ChangelogDialog(QDialog):
         header_layout = QHBoxLayout()
         header_layout.setSpacing(12)
 
-        title = QLabel(f"O que há de novo na {self._version}?")
+        title = QLabel(translator.t("changelog", "title", version=self._version))
         title.setStyleSheet("font-size: 16px; font-weight: 700; color: #f0f0f0; background: transparent;")
 
-        badge = QLabel("NOVO")
+        badge = QLabel(translator.t("changelog", "badge"))
         badge.setStyleSheet("""
             font-size: 10px;
             font-weight: 700;
-            color: #121212;
-            background-color: #e8b84a;
+            color: #ffffff;
+            background-color: #7c6be0;
             border-radius: 4px;
             padding: 2px 6px;
         """)
@@ -51,8 +51,8 @@ class ChangelogDialog(QDialog):
         body_browser.setMarkdown(self._notes)
         body_browser.setStyleSheet("""
             QTextBrowser {
-                background-color: #16161a;
-                border: 1px solid #2a2a38;
+                background-color: #1e1e1e;
+                border: 1px solid #2a2a2a;
                 border-radius: 8px;
                 padding: 14px;
                 color: #d0d0d0;
@@ -60,12 +60,12 @@ class ChangelogDialog(QDialog):
                 line-height: 1.5;
             }
             QScrollBar:vertical {
-                background: #16161a;
+                background: #1e1e1e;
                 width: 8px;
                 margin: 2px;
             }
             QScrollBar::handle:vertical {
-                background: #333344;
+                background: #333333;
                 border-radius: 4px;
                 min-height: 20px;
             }
@@ -76,7 +76,7 @@ class ChangelogDialog(QDialog):
 
         # Footer Button
         footer_layout = QHBoxLayout()
-        btn_close = QPushButton("Entendido!")
+        btn_close = QPushButton(translator.t("changelog", "button"))
         btn_close.setCursor(Qt.PointingHandCursor)
         btn_close.setFixedHeight(36)
         btn_close.setFixedWidth(120)
@@ -90,10 +90,10 @@ class ChangelogDialog(QDialog):
                 border-radius: 6px;
             }
             QPushButton:hover {
-                background-color: #6c5bd0;
+                background-color: #6559c4;
             }
             QPushButton:pressed {
-                background-color: #5c4bc0;
+                background-color: #5448b3;
             }
         """)
         btn_close.clicked.connect(self.accept)
@@ -108,6 +108,6 @@ class ChangelogDialog(QDialog):
     def _apply_styles(self):
         self.setStyleSheet("""
             QDialog {
-                background-color: #121216;
+                background-color: #181818;
             }
         """)

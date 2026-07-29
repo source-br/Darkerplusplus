@@ -44,7 +44,7 @@ class UpdatePillWidget(QWidget):
 
     def _update_icon(self):
         icon_name = "download" if self._is_downloading else "circle-arrow-up"
-        pix = load_icon(icon_name, color="#e8b84a", size=16).pixmap(16, 16)
+        pix = load_icon(icon_name, color="#7c6be0", size=16).pixmap(16, 16)
         self._icon_lbl.setPixmap(pix)
 
     def set_update_info(self, version: str, download_url: str, release_body: str):
@@ -98,12 +98,12 @@ class UpdatePillWidget(QWidget):
             fill_rect = rect.adjusted(0, 0, 0, 0)
             fill_rect.setWidth(fill_width)
 
-            progress_color = QColor(232, 184, 74, 90)  # Semi-transparent yellow #e8b84a
+            progress_color = QColor(124, 107, 224, 90)  # Semi-transparent brand purple #7c6be0
             painter.setBrush(QBrush(progress_color))
             painter.drawRoundedRect(fill_rect, 10, 10)
 
-        # Border styling (yellow border #e8b84a)
-        border_pen = QPen(QColor("#e8b84a"), 1.5)
+        # Border styling (brand purple border #7c6be0)
+        border_pen = QPen(QColor("#7c6be0"), 1.5)
         painter.setPen(border_pen)
         painter.setBrush(Qt.NoBrush)
         painter.drawRoundedRect(rect.adjusted(1, 1, -1, -1), 9, 9)
