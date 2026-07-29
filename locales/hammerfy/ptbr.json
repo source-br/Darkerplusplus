@@ -54,7 +54,12 @@
         "beta_updates_label": "Receber atualizações beta",
         "beta_updates_desc": "Receber versões de pré-lançamento (Pre-release).",
         "section_language": "Idioma",
-        "language_label": "Idioma da interface"
+        "language_label": "Idioma da interface",
+        "section_dev": "Desenvolvedor",
+        "check_update_btn": "Verificar atualização",
+        "check_update_desc": "Força uma verificação de atualização no GitHub.",
+        "open_changelog_btn": "Abrir Changelog",
+        "open_changelog_desc": "Exibe a janela de novidades da versão para testes."
     },
     "about": {
         "description": "Um gerenciador gratuito e open-source\npara o Hammer++, o editor de mapas\npara os jogos da Source Engine.",

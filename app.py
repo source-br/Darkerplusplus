@@ -123,8 +123,10 @@ class HammerfyApp(QApplication):
         # Intercept window close to minimize to tray instead of quitting
         self.window.closeEvent = self._on_window_close
 
-        # Connect settings panel language change signal
+        # Connect settings panel language change & dev mode signals
         self.window.settings_panel.language_changed.connect(self.window._on_language)
+        self.window.settings_panel.check_updates_requested.connect(self._run_update_check)
+        self.window.settings_panel.open_changelog_requested.connect(self._open_dev_changelog)
 
     def _apply_start_behavior(self):
         settings = tray_settings.load()
@@ -239,3 +241,16 @@ class HammerfyApp(QApplication):
                 "Hammerfy",
                 "Não foi possível baixar a atualização. Verifique sua conexão."
             )
+
+    def _open_dev_changelog(self):
+        from ui.changelog_dialog import ChangelogDialog
+        from core.version import get_version
+        sample_notes = (
+            "### Teste de Changelog (Modo Dev)\n\n"
+            "- **Interface**: Novo visual da pílula de atualização na sidebar em roxo (`#7c6be0`).\n"
+            "- **Otimizações**: Abertura instantânea da janela principal (<100ms).\n"
+            "- **Instalador**: Remoção automática de executáveis temporários da pasta Downloads.\n"
+            "- **Multi-idioma**: Suporte completo a Português (Brasil) e Inglês."
+        )
+        dlg = ChangelogDialog(get_version(), sample_notes, self.window)
+        dlg.exec()

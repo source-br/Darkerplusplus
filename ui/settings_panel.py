@@ -1,10 +1,11 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QComboBox
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame, QComboBox, QPushButton
 from PySide6.QtCore import Qt, Signal, QPropertyAnimation, QEasingCurve, Property
 from PySide6.QtGui import QColor, QPainter
 from utils import translator
 from utils.translator import available_languages, current_lang
 from core.autostart import is_autostart_enabled, set_autostart
 from core import tray_settings
+from core.version import is_dev_mode
 
 
 # ─── Toggle Switch ─────────────────────────────────────────────────────────────
@@ -109,11 +110,62 @@ class SettingRow(QWidget):
         layout.addWidget(self.toggle)
 
 
+class SettingButtonRow(QWidget):
+    """A labeled row with a description and an action button."""
+
+    def __init__(self, label: str, description: str, button_text: str, parent=None):
+        super().__init__(parent)
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(0, 4, 0, 4)
+        layout.setSpacing(12)
+
+        text_col = QVBoxLayout()
+        text_col.setSpacing(2)
+
+        self.lbl = QLabel(label)
+        self.lbl.setStyleSheet("font-size: 13px; color: #c0c0c0; background: transparent;")
+
+        self.desc = QLabel(description)
+        self.desc.setStyleSheet("font-size: 10px; color: #555; background: transparent;")
+
+        text_col.addWidget(self.lbl)
+        text_col.addWidget(self.desc)
+
+        self.btn = QPushButton(button_text)
+        self.btn.setFixedHeight(28)
+        self.btn.setCursor(Qt.PointingHandCursor)
+        self.btn.setStyleSheet("""
+            QPushButton {
+                background: #2a2a2a;
+                border: 1px solid #444;
+                border-radius: 6px;
+                padding: 0 12px;
+                font-size: 11px;
+                color: #c0c0c0;
+            }
+            QPushButton:hover {
+                background: #333333;
+                border-color: #7c6be0;
+                color: #ffffff;
+            }
+            QPushButton:pressed {
+                background: #7c6be0;
+                color: #ffffff;
+            }
+        """)
+
+        layout.addLayout(text_col)
+        layout.addStretch()
+        layout.addWidget(self.btn)
+
+
 # ─── Settings Panel ────────────────────────────────────────────────────────────
 
 class SettingsPanel(QWidget):
-    tray_setting_changed = Signal()
-    language_changed     = Signal(str)  # emits language code e.g. "en", "ptbr"
+    tray_setting_changed     = Signal()
+    language_changed         = Signal(str)  # emits language code e.g. "en", "ptbr"
+    check_updates_requested  = Signal()
+    open_changelog_requested = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -143,6 +195,14 @@ class SettingsPanel(QWidget):
         layout.addWidget(self._section_lang_lbl)
         layout.addSpacing(12)
         layout.addWidget(self._build_language_options())
+
+        # Dev mode section (if DEV_MODE is True)
+        if is_dev_mode():
+            layout.addSpacing(32)
+            self._section_dev_lbl = self._section_label(translator.t("settings", "section_dev"))
+            layout.addWidget(self._section_dev_lbl)
+            layout.addSpacing(12)
+            layout.addWidget(self._build_dev_options())
 
         layout.addStretch()
         self._building = False
@@ -280,6 +340,44 @@ class SettingsPanel(QWidget):
 
         # Repopulate combo to reflect current selection without triggering signal
         self._populate_lang_combo()
+
+        if is_dev_mode() and hasattr(self, "_section_dev_lbl"):
+            self._section_dev_lbl.setText(translator.t("settings", "section_dev").upper())
+            self.row_check_update.lbl.setText(translator.t("settings", "check_update_btn"))
+            self.row_check_update.desc.setText(translator.t("settings", "check_update_desc"))
+            self.row_check_update.btn.setText(translator.t("settings", "check_update_btn"))
+
+            self.row_open_changelog.lbl.setText(translator.t("settings", "open_changelog_btn"))
+            self.row_open_changelog.desc.setText(translator.t("settings", "open_changelog_desc"))
+            self.row_open_changelog.btn.setText(translator.t("settings", "open_changelog_btn"))
+
+    # ─── Dev Options ───────────────────────────────────────────────────────────
+
+    def _build_dev_options(self) -> QWidget:
+        widget = QWidget()
+        layout = QVBoxLayout(widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(4)
+
+        self.row_check_update = SettingButtonRow(
+            translator.t("settings", "check_update_btn"),
+            translator.t("settings", "check_update_desc"),
+            translator.t("settings", "check_update_btn"),
+        )
+        self.row_check_update.btn.clicked.connect(self.check_updates_requested.emit)
+
+        self.row_open_changelog = SettingButtonRow(
+            translator.t("settings", "open_changelog_btn"),
+            translator.t("settings", "open_changelog_desc"),
+            translator.t("settings", "open_changelog_btn"),
+        )
+        self.row_open_changelog.btn.clicked.connect(self.open_changelog_requested.emit)
+
+        layout.addWidget(self.row_check_update)
+        layout.addWidget(self._divider())
+        layout.addWidget(self.row_open_changelog)
+
+        return widget
 
     # ─── Divider ───────────────────────────────────────────────────────────────
 

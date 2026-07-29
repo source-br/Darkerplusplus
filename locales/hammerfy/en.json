@@ -54,7 +54,12 @@
         "beta_updates_label": "Receive beta updates",
         "beta_updates_desc": "Receive pre-release versions.",
         "section_language": "Language",
-        "language_label": "Interface language"
+        "language_label": "Interface language",
+        "section_dev": "Developer",
+        "check_update_btn": "Check for updates",
+        "check_update_desc": "Forces a manual update check on GitHub.",
+        "open_changelog_btn": "Open Changelog",
+        "open_changelog_desc": "Displays the release notes window for testing."
     },
     "about": {
         "description": "A free and open-source manager\nfor Hammer++, the map editor\nfor Source Engine games.",
