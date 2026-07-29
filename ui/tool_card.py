@@ -89,41 +89,7 @@ class ToolCard(QWidget):
             lbl.setStyleSheet(f"font-size: {font_size}px; font-weight: 700; color: rgba(255,255,255,0.85);")
             lbl.move(8, 30)
 
-        # Status badge overlaid on the top-right of the banner
-        badge = self._build_status_badge()
-        badge.setParent(outer)
-        badge.move(0, 6)
-        self._status_badge = badge
-
         return outer
-
-    def _build_status_badge(self) -> QLabel:
-        # (bg, fg, border) per status
-        status_style = {
-            ToolStatus.INSTALLED:        ("#1a3a1a", "#5ae87a", "#2a5a2a"),
-            ToolStatus.UPDATE_AVAILABLE: ("#3a2a0a", "#e8b84a", "#5a4a1a"),
-            ToolStatus.AVAILABLE:        ("#1a1a2a", "#666",    "#2a2a3a"),
-            ToolStatus.NOT_AVAILABLE:    ("#1a1a1a", "#444",    "#222"),
-        }
-        status_key = {
-            ToolStatus.INSTALLED:        "installed",
-            ToolStatus.UPDATE_AVAILABLE: "update_available",
-            ToolStatus.AVAILABLE:        "available",
-            ToolStatus.NOT_AVAILABLE:    "not_available",
-        }
-        bg, fg, border = status_style[self.tool.status]
-        badge = QLabel(translator.t("status", status_key[self.tool.status]))
-        badge.setFixedHeight(16)
-        badge.setStyleSheet(f"""
-            background-color: {bg};
-            color: {fg};
-            border: 1px solid {border};
-            border-radius: 3px;
-            font-size: 9px;
-            font-weight: 600;
-            padding: 0px 5px;
-        """)
-        return badge
 
     def _build_actions(self) -> QWidget:
         widget = QWidget()
@@ -249,7 +215,3 @@ class ToolCard(QWidget):
 
         if self._banner_img:
             self._banner_img.setGeometry(0, 0, card_width, banner_height)
-
-        if hasattr(self, "_status_badge"):
-            badge_w = self._status_badge.sizeHint().width()
-            self._status_badge.move(card_width - badge_w - 6, 6)
