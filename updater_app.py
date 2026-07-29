@@ -7,7 +7,7 @@ import zipfile
 import subprocess
 from pathlib import Path
 
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QProgressBar
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QProgressBar
 from PySide6.QtCore import Qt, QThread, Signal
 
 
